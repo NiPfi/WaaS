@@ -26,27 +26,16 @@
   </header>
 
   <main role="main">
-    <section class="jumbotron text-center">
-
-      <div class="container">
-        <h1 class="jumbotron-heading">Welcome to WaaS!</h1>
-        <p class="lead text-muted">Webcrawler as a service, at your service.</p>
-      </div>
-    </section>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h2>What's WaaS?</h2>
-          <p>WaaS (Webcrawler as a Service) lets you keep track of news on your favourite websites. You can define a text or a RegEx pattern WaaS should look for and we'll notify you by E-Mail as soon as WaaS finds your query on the website.
-            If you've been checking in on your favourite blog, band's website or any other website repeatedly only to find out that the news you've been waiting for hasn't released yet, WaaS is the service for you! Using it, you're notified as soon as you</p>
-        </div>
-        <div class="col-md-6">
-          <h2>How does WaaS work?</h2>
-          <p>WaaS uses RegEx (Regular Expressions) to find and match patterns on the target URLs you define. RegEx is very powerful but can be a bit complicated but don't worry! You can also just enter words or a sentence WaaS should look for.
-            If you want to learn more about RegEx, you can check out <a target="_blank" href="https://www.google.com/search?q=regex%20tutorial">any RegEx tutorial</a>, that's to your liking.</p>
-        </div>
-      </div>
+    <div class="container mt-5">
+      <form class="form-signup">
+        <h1>Create a new account</h1>
+        <input type="email" id="inputEmail" class="form-control" placeholder="E-Mail address" required autofocus
+          autocomplete="email">
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required autocomplete="off">
+        <input type="password" id="inputPasswordRepeat" class="form-control" placeholder="Repeat password" required
+          autocomplete="off">
+        <button class="btn btn-lg btn-primary" type="submit">Sign up</button>
+      </form>
     </div>
   </main>
 

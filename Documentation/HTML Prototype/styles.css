@@ -1,3 +1,5 @@
+/* General styles */
+
 .navbar {
     background-color: rgb(65, 72, 78);
 }
@@ -20,4 +22,15 @@
 
 .footer a {
     color: #777;
+}
+
+
+/* Signup and Signin*/
+
+.form-signup {
+    width: 25rem;
+}
+
+.form-signup > *:not(:last-child) {
+    margin-bottom: 1rem;
 }
