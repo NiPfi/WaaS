@@ -18,25 +18,24 @@
   <header>
     <nav class="navbar navbar-dark">
       <a href="index.html" class="navbar-brand">WaaS</a>
-      <div>
-        <a href="login.html" class="btn btn-link">Log In</a>
-        <a href="register.html" class="btn btn-outline-light">Sign Up</a>
+      <div class="nav-item dropdown">
+        <a role="button" href="#" class="btn btn-link dropdown-toggle" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">erik.example@domain.tld</a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+          <a class="dropdown-item" href="profiledit.html">Edit your profile</a>
+          <div class="dropdown-item">
+            <a class="btn btn-outline-danger" href="index.html">Sign out</a>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
 
-  <main role="main">
-    <div class="container">
-      <div class="row justify-content-center">
-        <form id="formLogin" class="form-signup">
-          <h1>Log in to WaaS</h1>
-          <input type="email" id="inputEmail" class="form-control" placeholder="E-Mail address" required autofocus
-            autocomplete="email">
-          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required autocomplete="off">
-          <button class="btn btn-lg btn-primary" type="submit">Log in</button>
-          <a href="notimplemented.html" class="btn btn-link">Forgot your password?</a>
-        </form>
-      </div>
+  <main role="main" class="container">
+    <div class="row">
+      <h1>Your crawls</h1>
+    </div>
+    <div class="row">
+
     </div>
   </main>
 
@@ -53,15 +52,6 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
     crossorigin="anonymous"></script>
-
-  <!-- JQuery onSubmit handler -->
-  <script type="text/javascript">
-    $("#formLogin").submit(function (event) {
-      window.location.replace("overview.html")
-      event.preventDefault();
-    });
-  </script>
-
 </body>
 
 </html>
