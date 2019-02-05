@@ -76,12 +76,12 @@ nav {
     color: #777;
 }
 
+input:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
 /* Signup and Signin*/
 
 .form-signup {
     width: 25rem;
-}
-
-.form-signup > *:not(:last-child) {
-    margin-bottom: 1rem;
 }

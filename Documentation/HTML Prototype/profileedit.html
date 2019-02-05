@@ -15,29 +15,52 @@
 </head>
 
 <body>
-  <header>
-    <nav class="navbar navbar-dark">
-      <a href="index.html" class="navbar-brand">WaaS</a>
-      <div>
-        <a href="login.html" class="btn btn-link">Log In</a>
-        <a href="register.html" class="btn btn-outline-light">Sign Up</a>
+  <header class="navbar navbar-dark">
+    <a href="index.html" class="navbar-brand">WaaS</a>
+    <nav>
+      <div class="nav-item dropdown">
+        <a role="button" href="#" class="btn btn-link dropdown-toggle" id="profileDropdown" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">erik.example@domain.tld</a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+          <a class="dropdown-item" href="profileedit.html">Edit your profile</a>
+          <div class="dropdown-item">
+            <a class="btn btn-outline-danger" href="index.html">Sign out</a>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
 
   <main role="main">
     <div class="container">
-      <div class="row justify-content-center">
-        <form id="formRegister" class="form-signup">
-          <h1>Create a new account</h1>
+
+      <div class="row">
+        <form id="formEditEmail">
+          <h1>Edit your profile</h1>
+          <h2>E-Mail</h2>
           <input type="email" id="inputEmail" class="form-control" placeholder="E-Mail address" required autofocus
-            autocomplete="email">
+            autocomplete="email" value="erik.example@domain.tld">
+            <button class="btn btn-lg btn-primary" type="submit">Change E-Mail</button>
+        </form>
+      </div>
+
+      <div class="row mt-5">
+        <form id="formEditPassword">
+          <h2>Password</h2>
           <input type="password" id="inputPassword" class="form-control" placeholder="Password" required autocomplete="off">
           <input type="password" id="inputPasswordRepeat" class="form-control" placeholder="Repeat password" required
             autocomplete="off">
-          <button class="btn btn-lg btn-primary" type="submit">Sign up</button>
+          <button class="btn btn-lg btn-primary" type="submit">Change password</button>
         </form>
       </div>
+
+      <div class="row mt-5">
+        <div>
+          <h2>Account</h2>
+          <a href="index.html" class="btn btn-lg btn-danger">Delete account</a>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -57,8 +80,13 @@
 
   <!-- JQuery onSubmit handler -->
   <script type="text/javascript">
-    $("#formRegister").submit(function (event) {
-      window.location.replace("login.html")
+    $("#formEditEmail").submit(function (event) {
+      alert("E-Mail changed. Check your inbox to confirm the new address.")
+      event.preventDefault();
+    });
+
+    $("#formEditPassword").submit(function (event) {
+      alert("Password changed.")
       event.preventDefault();
     });
   </script>
