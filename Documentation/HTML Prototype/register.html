@@ -28,7 +28,7 @@
   <main role="main">
     <div class="container mt-5">
       <div class="row justify-content-center">
-        <form class="form-signup">
+        <form id="formRegister" class="form-signup">
           <h1>Create a new account</h1>
           <input type="email" id="inputEmail" class="form-control" placeholder="E-Mail address" required autofocus
             autocomplete="email">
@@ -54,6 +54,15 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
     crossorigin="anonymous"></script>
+
+  <!-- JQuery onSubmit handler -->
+  <script type="text/javascript">
+    $("#formRegister").submit(function (event) {
+      window.location.replace("login.html")
+      event.preventDefault();
+    });
+  </script>
+
 </body>
 
 </html>
