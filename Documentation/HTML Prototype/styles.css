@@ -1,3 +1,23 @@
 .navbar {
     background-color: rgb(65, 72, 78);
 }
+
+.navbar-dark .btn-link {
+    color: #f8f9fa;
+}
+
+.navbar-dark .btn-link:hover {
+    color: lightgrey;
+}
+
+.footer {
+    position: absolute;
+    padding: 1rem;
+    bottom: 0;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.footer a {
+    color: #777;
+}
