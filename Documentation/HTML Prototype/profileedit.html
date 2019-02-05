@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
     crossorigin="anonymous">
 
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous">
+
   <link rel="stylesheet" href="./styles.css">
 
   <title>WaaS (STATIC PROTOTYPE)</title>
@@ -16,7 +20,10 @@
 
 <body>
   <header class="navbar navbar-dark">
-    <a href="index.html" class="navbar-brand">WaaS</a>
+    <div>
+      <a href="index.html" class="navbar-brand">WaaS</a>
+      <a href="overview.html" class="btn-link"><span class="fas fa-arrow-left"></span> Back to my crawls</a>
+    </div>
     <nav>
       <div class="nav-item dropdown">
         <a role="button" href="#" class="btn btn-link dropdown-toggle" id="profileDropdown" data-toggle="dropdown"
@@ -40,7 +47,7 @@
           <h2>E-Mail</h2>
           <input type="email" id="inputEmail" class="form-control" placeholder="E-Mail address" required autofocus
             autocomplete="email" value="erik.example@domain.tld">
-            <button class="btn btn-lg btn-primary" type="submit">Change E-Mail</button>
+          <button class="btn btn-lg btn-primary" type="submit">Change E-Mail</button>
         </form>
       </div>
 
