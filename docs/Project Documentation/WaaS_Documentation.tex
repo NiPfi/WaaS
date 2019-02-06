@@ -1,0 +1,72 @@
+\documentclass[titlepage, 12pt]{article}
+
+\usepackage[margin=1.25in]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{float}
+\restylefloat{table}
+\usepackage[
+    bookmarksopen,
+    bookmarksdepth=2,
+    breaklinks=true
+    ]{hyperref}
+
+\newcommand{\authorName}{Nicola Pfister \& Jonas Meise}
+
+
+\lhead{WaaS - WebE FFHS}
+\rhead{\authorName}
+
+\author{\authorName}
+\title{WaaS - Documentation \\ \medskip \large WebE - FFHS}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\renewcommand{\contentsname}{Table of Contents}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Introduction}
+
+
+
+\pagebreak
+
+\section{Requirements Engineering\label{sectionRequirementsEngineering}}
+
+\begin{itemize}
+    \item Name of the application: WaaS
+    \item zweck
+    \item name vorname
+\end{itemize}
+
+
+\subsection{Context}
+
+zweck der applikation
+
+\subsection{Functional Requirements}
+
+blabla
+
+\pagebreak
+
+\listoftables
+
+\pagebreak
+
+\renewcommand{\refname}{Quellen}
+\bibliography{uni}
+\bibliographystyle{ieeetr}
+
+
+
+
+\end{document}
