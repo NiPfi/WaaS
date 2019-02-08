@@ -35,26 +35,115 @@
 
 \section{Introduction}
 
-
-
-\pagebreak
+TODO
 
 \section{Requirements Engineering\label{sectionRequirementsEngineering}}
 
 \begin{itemize}
     \item Name of the application: WaaS
-    \item zweck
-    \item name vorname
+    \item Purpose: TODO
+    \item Names: Nicola Pfister, Jonas Meise
 \end{itemize}
 
 
 \subsection{Context}
 
-zweck der applikation
+purpose of the application
 
 \subsection{Functional Requirements}
 
-blabla
+The following chapter contains the functional requirements for WaaS.
+
+\subsubsection{Target Group}
+
+TODO
+
+\subsubsection{{Use Cases}}
+
+\begin{table}[H]
+    \begin{center}
+
+        \begin{tabular}{p{4cm}|p{10cm}}
+            \textbf{UST-1 Register}\\
+            \hline
+            Goal & A user registers a useraccount for WaaS. \\
+            \hline
+            Actors & Eventual user of WaaS \\
+            \hline
+            Precondition  & The user owns a valid email address that is not yet used for an existing useraccount \\
+            \hline
+            Trigger & Click on the button: "Register" \\
+            \hline
+            Main path & 
+            \begin{itemize}
+                \item [1] The user clicks the button: "SignUp".
+                \item [2] The user enters his credentials into the register form (email address, and password).
+                \item [3] The user clicks on: "Register".
+                \item [4] WaaS creates a useraccount entry in the database.
+                \item [5] The user gets redirected to the Login Page.
+            \end{itemize} \\
+            \hline
+            Alternative path & 
+            \begin{itemize}
+                \item [1a] The user enters a invalid input data.
+                \item [2a] A validation error message shows up.
+            \end{itemize} \\
+            \hline
+            Postcondition & A new useraccount was created in the database with the credentials the user entered into the register form. \\
+        \end{tabular}
+
+        \caption{UST-1}
+    \label{table:UST-1}
+        
+    \end{center}
+\end{table}
+
+\begin{table}[H]
+    \begin{center}
+
+        \begin{tabular}{p{4cm}|p{10cm}}
+            \textbf{UST-2 Login}\\
+            \hline
+            Goal & A user logs in with an existing user account. \\
+            \hline
+            Actors & registered users \\
+            \hline
+            Precondition  & UST-\ref{table:UST-1} \\
+            \hline
+            Trigger & Click on the button: "LogIn" \\
+            \hline
+            Main path & 
+            \begin{itemize}
+                \item [1] The user enters a valid email address an password into the login form.
+                \item [2] The user clicks on the button: "LogIn".
+            \end{itemize} \\
+            \hline
+            Alternative path & 
+            \begin{itemize}
+                \item [1a] The user enters a invalid input data.
+                \item [2a] A validation error message shows up.
+            \end{itemize} \\
+            \hline
+            Postcondition & The user is now logged in and is situated on the overview page \\
+        \end{tabular}
+
+        \caption{UST-2}
+    \label{table:UST-2}
+        
+    \end{center}
+\end{table}
+
+
+
+\subsection{Non-functional Requirements}
+
+todo:
+
+scalability
+
+elasticity
+
+...
 
 \pagebreak
 
@@ -62,7 +151,6 @@ blabla
 
 \pagebreak
 
-\renewcommand{\refname}{Quellen}
 \bibliography{uni}
 \bibliographystyle{ieeetr}
 
