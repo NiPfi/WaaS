@@ -35,20 +35,29 @@
 
 \section{Introduction}
 
-TODO
+This is the documentation of the project WaaS, which was done as part of the module Web Engineering at the FFHS. The goal of the project is to create a concept and implement a web application which fullfills the following criteria:
+
+\begin{itemize}
+    \item Basic user authentication (register, login/logout, delete and update user)
+    \item Public and dynamic/user specific content
+    \item Persist user data (in database or file)
+    \item Basic validation and error handling
+    \item Support for sessions and cookies
+\end{itemize}
 
 \section{Requirements Engineering\label{sectionRequirementsEngineering}}
 
-\begin{itemize}
-  \item Name of the application: WaaS
-  \item Purpose: TODO
-  \item Names: Nicola Pfister, Jonas Meise
-\end{itemize}
+This chapter contains purpose and context of the Webapplication WaaS aswell as the functional and non-functional requirements.
 
+\begin{itemize}
+  \item \textbf{Name of the application:} WaaS
+  \item \textbf{Purpose:} WaaS is a webapplication that allows it's users to crawl urls with specified search patterns and notifies them as it finds the pattern.
+  \item \textbf{Names:} Nicola Pfister, Jonas Meise
+\end{itemize}
 
 \subsection{Purpose \& Context}
 
-purpose of the application
+WaaS (Webcrawler as a Service) is a service, that allows users to keep track of news on their favourite websites, by giving them the possibility to create "crawls". A crawl is defined with a URL, a search pattern and an email address. WaaS will regularly check those URLs for the given search patterns and notifies the users via their email address when it finds the pattern it was searching for.
 
 \subsection{Functional Requirements}
 
