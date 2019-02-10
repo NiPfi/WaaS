@@ -4,6 +4,8 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+\usepackage{graphicx}
+
 \usepackage{float}
 \restylefloat{table}
 \usepackage[
@@ -58,8 +60,13 @@ This chapter contains purpose and context of the Webapplication WaaS aswell as t
 \subsection{Purpose \& Context}
 
 WaaS (Webcrawler as a Service) is a service, that allows users to keep track of news on their favourite websites, by giving them the possibility to create "crawls". A crawl is defined with a URL, a search pattern and an email address. WaaS will regularly check those URLs for the given search patterns and notifies the users via their email address when it finds the pattern it was searching for.
-
-TODO: Context
+\medskip \\
+The following graphic visualizes the context of the app with it's use cases.
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{UseCaseDiagram.PNG}
+  \caption{Use Case Diagram}
+  \label{fig:useCaseDiagram}
+\end{figure}
 
 \subsection{Functional Requirements}
 
@@ -277,6 +284,7 @@ The target group of WaaS are mainly people that are regularly checking websites 
 \pagebreak
 
 \listoftables
+\listoffigures
 
 \pagebreak
 
