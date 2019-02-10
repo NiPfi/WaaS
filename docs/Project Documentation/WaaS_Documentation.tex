@@ -14,8 +14,16 @@
     breaklinks=true
     ]{hyperref}
 
-\newcommand{\authorName}{Nicola Pfister \& Jonas Meise}
 
+\newenvironment{packed_itemize}{
+  \vspace{-\topsep}
+  \begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
+  }{\end{itemize}}
+
+\newcommand{\authorName}{Nicola Pfister \& Jonas Meise}
 
 \lhead{WaaS - WebE FFHS}
 \rhead{\authorName}
@@ -47,6 +55,10 @@ This is the documentation of the project WaaS, which was done as part of the mod
     \item Support for sessions and cookies
 \end{itemize}
 
+The technologies for the project were not predefined, so we decided to use .NET Core for the web application and AngularJS for the front end due to personal preferences.
+
+\pagebreak
+
 \section{Requirements Engineering\label{sectionRequirementsEngineering}}
 
 This chapter contains purpose and context of the Webapplication WaaS aswell as the functional and non-functional requirements.
@@ -63,7 +75,7 @@ WaaS (Webcrawler as a Service) is a service, that allows users to keep track of 
 \medskip \\
 The following graphic visualizes the context of the app with it's use cases.
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{UseCaseDiagram.PNG}
+  \includegraphics[width=0.95\linewidth]{UseCaseDiagram.PNG}
   \caption{Use Case Diagram}
   \label{fig:useCaseDiagram}
 \end{figure}
@@ -93,19 +105,19 @@ The target group of WaaS are mainly people that are regularly checking websites 
       Trigger          & Click on the button: "Register"                                                                             \\
       \hline
       Main path        &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1] The user clicks the button: "SignUp".
         \item [2] The user enters his credentials into the register form (email address, and password).
         \item [3] The user clicks on: "Register".
         \item [4] WaaS creates a useraccount entry in the database.
         \item [5] The user gets redirected to the Login Page.
-      \end{itemize}                                                                                                      \\
+      \end{packed_itemize}                                                                                                      \\
       \hline
       Alternative path &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1a] The user enters a invalid input data.
         \item [2a] A validation error message shows up.
-      \end{itemize}                                                                                                      \\
+      \end{packed_itemize}                                                                                                      \\
       \hline
       Postcondition    & A new useraccount was created in the database with the credentials the user entered into the register form. \\
     \end{tabular}
@@ -131,16 +143,16 @@ The target group of WaaS are mainly people that are regularly checking websites 
       Trigger          & Click on the button: "LogIn"                                   \\
       \hline
       Main path        &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1] The user enters a valid email address an password into the login form.
         \item [2] The user clicks on the button: "LogIn".
-      \end{itemize}                                                         \\
+      \end{packed_itemize}                                                         \\
       \hline
       Alternative path &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1a] The user enters a invalid input data.
         \item [2a] A validation error message shows up.
-      \end{itemize}                                                         \\
+      \end{packed_itemize}                                                         \\
       \hline
       Postcondition    & The user is now logged in and is situated on the overview page \\
     \end{tabular}
@@ -166,16 +178,16 @@ The target group of WaaS are mainly people that are regularly checking websites 
         Trigger          & Click on the button: "+"                                   \\
         \hline
         Main path        &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [1] The user enters a URL and a search pattern into the New Crawl form.
           \item [2] The user clicks on the button: "Save".
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Alternative path &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [1a] The user clicks the button "Cancel".
           \item [2a] The user redirected back to the overview page.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Postcondition    & The newly created crawl is persisted in the database \& The new crawl gets displayed on the users overview page. \\
       \end{tabular}
@@ -201,22 +213,22 @@ The target group of WaaS are mainly people that are regularly checking websites 
         Trigger          & Click on the delete crawl button.                            \\
         \hline
         Main path        &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [1] The user clicks on the delete button of the crawl he wishes to remove.
           \item [2] A confirmation dialogue is shown.
           \item [3] The user clicks the "Delete" button.
           \item [4] The crawl gets deleted from the database.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Alternative path &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [3a] The user clicks the button "Cancel".
           \item [4a] The confirmation dialogue closes.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Postcondition    & The crawl is deleted from the database \& The crawl does not get displayed on the users overview page anymore. \\
       \end{tabular}
-  
+      \vspace{-2mm}
       \caption{UST-4}
       \label{table:UST-4}
   
@@ -227,7 +239,7 @@ The target group of WaaS are mainly people that are regularly checking websites 
     \begin{center}
   
       \begin{tabular}{p{4cm}|p{10cm}}
-        \textbf{UST-5}\\ \textbf{Edit Crawl}                                            \\
+        \textbf{UST-5} \textbf{Edit Crawl}                                            \\
         \hline
         Goal             & A user edits an existing crawl.                  \\
         \hline
@@ -238,23 +250,24 @@ The target group of WaaS are mainly people that are regularly checking websites 
         Trigger          & Click on the edit crawl button.                            \\
         \hline
         Main path        &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [1] The user clicks on the edit button of the crawl he wishes to edit.
           \item [2] The Edit Crawl form is shown.
           \item [3] The user changes the Crawls URL.
           \item [4] The user clicks "Save".
           \item [5] The changes get persisted in the database.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Alternative path &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [4a] The user clicks the button "Cancel".
           \item [5a] The Edit Crawl form closes.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
-        Postcondition    & The updated crawl gets displayed on the users overview page. \\
+        Postcondition    & The updated crawl gets displayed on the overview page. \\
       \end{tabular}
-  
+
+      \vspace{-2mm}
       \caption{UST-5}
       \label{table:UST-5}
   
