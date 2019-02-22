@@ -1,6 +1,10 @@
 # WaaS
 
+<!-- markdownlint-disable MD026 -->
+
 ## What's WaaS?
+
+<!-- markdownlint-enable MD026 -->
 
 WaaS is short for Web scraper as a service. It's a web-application that allows users to define crawls that look for a RegEx Pattern on an URL. WaaS will periodically check the website for matching patterns and notify the users via E-Mail.
 
