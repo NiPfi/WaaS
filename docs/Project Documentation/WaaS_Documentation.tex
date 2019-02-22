@@ -48,11 +48,11 @@
 This is the documentation of the project WaaS, which was done as part of the module Web Engineering at the FFHS. The goal of the project is to create a concept and implement a web application which fulfills at least the following criteria:
 
 \begin{itemize}
-    \item Basic user authentication (register, login/logout, delete and update user)
-    \item Public and dynamic/user specific content
-    \item Persist user data (in database or file)
-    \item Basic validation and error handling
-    \item Support for sessions and cookies
+  \item Basic user authentication (register, login/logout, delete and update user)
+  \item Public and dynamic/user specific content
+  \item Persist user data (in database or file)
+  \item Basic validation and error handling
+  \item Support for sessions and cookies
 \end{itemize}
 
 The technologies for the project were not predefined, so we decided to use .NET Core for the web application and AngularJS for the front end due to personal preferences.
@@ -94,15 +94,15 @@ The target group of WaaS are mainly people that are regularly checking websites 
   \begin{center}
 
     \begin{tabular}{p{4cm}|p{10cm}}
-      \textbf{UST-1 Register}                                                                                                        \\
+      \textbf{UST-1 Register}                                                                                                         \\
       \hline
       Goal             & A user registers a user account for WaaS.                                                                    \\
       \hline
-      Actors           & Eventual user of WaaS                                                                                       \\
+      Actors           & Eventual user of WaaS                                                                                        \\
       \hline
       Precondition     & The user owns a valid email address that is not yet used for an existing user account                        \\
       \hline
-      Trigger          & Click on the button: "Register"                                                                             \\
+      Trigger          & Click on the button: "Register"                                                                              \\
       \hline
       Main path        &
       \begin{packed_itemize}
@@ -111,13 +111,13 @@ The target group of WaaS are mainly people that are regularly checking websites 
         \item [3] The user clicks on: "Register".
         \item [4] WaaS creates a user account entry in the database.
         \item [5] The user gets redirected to the Login Page.
-      \end{packed_itemize}                                                                                                      \\
+      \end{packed_itemize}                                                                                                       \\
       \hline
       Alternative path &
       \begin{packed_itemize}
         \item [1a] The user enters a invalid input data.
         \item [2a] A validation error message shows up.
-      \end{packed_itemize}                                                                                                      \\
+      \end{packed_itemize}                                                                                                       \\
       \hline
       Postcondition    & A new user account was created in the database with the credentials the user entered into the register form. \\
     \end{tabular}
@@ -164,116 +164,163 @@ The target group of WaaS are mainly people that are regularly checking websites 
 \end{table}
 
 \begin{table}[H]
-    \begin{center}
+  \begin{center}
 
-      \begin{tabular}{p{4cm}|p{10cm}}
-        \textbf{UST-3}\\ \textbf{Create Scrape}                                            \\
-        \hline
-        Goal             & A user creates a new scrape.                  \\
-        \hline
-        Actors           & logged in users                                               \\
-        \hline
-        Precondition     & UST-\ref{table:UST-1} \& UST-\ref{table:UST-2}                \\
-        \hline
-        Trigger          & Click on the button: "+"                                   \\
-        \hline
-        Main path        &
-        \begin{packed_itemize}
-          \item [1] The user enters a URL and a search pattern into the New Scrape form.
-          \item [2] The user clicks on the button: "Save".
-        \end{packed_itemize}                                                         \\
-        \hline
-        Alternative path &
-        \begin{packed_itemize}
-          \item [1a] The user clicks the button "Cancel".
-          \item [2a] The user redirected back to the overview page.
-        \end{packed_itemize}                                                         \\
-        \hline
-        Postcondition    & The newly created scrape is persisted in the database \& The new scrape gets displayed on the users overview page. \\
-      \end{tabular}
+    \begin{tabular}{p{4cm}|p{10cm}}
+      \textbf{UST-3}                                                                                                                        \\ \textbf{Create Scrape}                                            \\
+      \hline
+      Goal             & A user creates a new scrape.                                                                                       \\
+      \hline
+      Actors           & logged in users                                                                                                    \\
+      \hline
+      Precondition     & UST-\ref{table:UST-1} \& UST-\ref{table:UST-2}                                                                     \\
+      \hline
+      Trigger          & Click on the button: "+"                                                                                           \\
+      \hline
+      Main path        &
+      \begin{packed_itemize}
+        \item [1] The user enters a URL and a search pattern into the New Scrape form.
+        \item [2] The user clicks on the button: "Save".
+      \end{packed_itemize}                                                                                                             \\
+      \hline
+      Alternative path &
+      \begin{packed_itemize}
+        \item [1a] The user clicks the button "Cancel".
+        \item [2a] The user redirected back to the overview page.
+      \end{packed_itemize}                                                                                                             \\
+      \hline
+      Postcondition    & The newly created scrape is persisted in the database \& The new scrape gets displayed on the users overview page. \\
+    \end{tabular}
 
-      \caption{UST-3}
-      \label{table:UST-3}
+    \caption{UST-3}
+    \label{table:UST-3}
 
-    \end{center}
-  \end{table}
+  \end{center}
+\end{table}
 
-  \begin{table}[H]
-    \begin{center}
+\begin{table}[H]
+  \begin{center}
 
-      \begin{tabular}{p{4cm}|p{10cm}}
-        \textbf{UST-4}\\ \textbf{Delete Scrape}                                            \\
-        \hline
-        Goal             & A user deletes an existing scrape.                  \\
-        \hline
-        Actors           & logged in user                                               \\
-        \hline
-        Precondition     & UST-\ref{table:UST-3}                                     \\
-        \hline
-        Trigger          & Click on the delete scrape button.                            \\
-        \hline
-        Main path        &
+    \begin{tabular}{p{4cm}|p{10cm}}
+      \textbf{UST-4}                                                                                                                      \\ \textbf{Delete Scrape}                                            \\
+      \hline
+      Goal             & A user deletes an existing scrape.                                                                               \\
+      \hline
+      Actors           & logged in user                                                                                                   \\
+      \hline
+      Precondition     & UST-\ref{table:UST-3}                                                                                            \\
+      \hline
+      Trigger          & Click on the delete scrape button.                                                                               \\
+      \hline
+      Main path        &
 
-        \begin{packed_itemize}
-          \item [1] The user clicks on the delete button of the scrape he wishes to remove.
-          \item [2] A confirmation dialogue is shown.
-          \item [3] The user clicks the "Delete" button.
-          \item [4] The scrape gets deleted from the database.
-        \end{packed_itemize}                                                         \\
-        \hline
-        Alternative path &
-        \begin{packed_itemize}
-          \item [3a] The user clicks the button "Cancel".
-          \item [4a] The confirmation dialogue closes.
-        \end{packed_itemize}                                                         \\
-        \hline
-        Postcondition    & The scrape is deleted from the database \& The scrape does not get displayed on the users overview page anymore. \\
-      \end{tabular}
-      \vspace{-2mm}
-      \caption{UST-4}
-      \label{table:UST-4}
+      \begin{packed_itemize}
+        \item [1] The user clicks on the delete button of the scrape he wishes to remove.
+        \item [2] A confirmation dialogue is shown.
+        \item [3] The user clicks the "Delete" button.
+        \item [4] The scrape gets deleted from the database.
+      \end{packed_itemize}                                                                                                          \\
+      \hline
+      Alternative path &
+      \begin{packed_itemize}
+        \item [3a] The user clicks the button "Cancel".
+        \item [4a] The confirmation dialogue closes.
+      \end{packed_itemize}                                                                                                          \\
+      \hline
+      Postcondition    & The scrape is deleted from the database \& The scrape does not get displayed on the users overview page anymore. \\
+    \end{tabular}
+    \vspace{-2mm}
+    \caption{UST-4}
+    \label{table:UST-4}
 
-    \end{center}
-  \end{table}
+  \end{center}
+\end{table}
 
-  \begin{table}[H]
-    \begin{center}
+\begin{table}[H]
+  \begin{center}
 
-      \begin{tabular}{p{4cm}|p{10cm}}
-        \textbf{UST-5} \textbf{Edit Scrape}                                            \\
-        \hline
-        Goal             & A user edits an existing scrape.                  \\
-        \hline
-        Actors           & logged in user                                               \\
-        \hline
-        Precondition     & UST-\ref{table:UST-3}                                     \\
-        \hline
-        Trigger          & Click on the edit scrape button.                            \\
-        \hline
-        Main path        &
-        \begin{packed_itemize}
-          \item [1] The user clicks on the edit button of the Scrape he wishes to edit.
-          \item [2] The Edit Scrape form is shown.
-          \item [3] The user changes the Scrape's URL.
-          \item [4] The user clicks "Save".
-          \item [5] The changes get persisted in the database.
-        \end{packed_itemize}                                                         \\
-        \hline
-        Alternative path &
-        \begin{packed_itemize}
-          \item [4a] The user clicks the button "Cancel".
-          \item [5a] The Edit Scrape form closes.
-        \end{packed_itemize}                                                         \\
-        \hline
-        Postcondition    & The updated Scrape gets displayed on the overview page. \\
-      \end{tabular}
+    \begin{tabular}{p{4cm}|p{10cm}}
+      \textbf{UST-5} \textbf{Edit Scrape}                                        \\
+      \hline
+      Goal             & A user edits an existing scrape.                        \\
+      \hline
+      Actors           & logged in user                                          \\
+      \hline
+      Precondition     & UST-\ref{table:UST-3}                                   \\
+      \hline
+      Trigger          & Click on the edit scrape button.                        \\
+      \hline
+      Main path        &
+      \begin{packed_itemize}
+        \item [1] The user clicks on the edit button of the Scrape he wishes to edit.
+        \item [2] The Edit Scrape form is shown.
+        \item [3] The user changes the Scrape's URL.
+        \item [4] The user clicks "Save".
+        \item [5] The changes get persisted in the database.
+      \end{packed_itemize}                                                 \\
+      \hline
+      Alternative path &
+      \begin{packed_itemize}
+        \item [4a] The user clicks the button "Cancel".
+        \item [5a] The Edit Scrape form closes.
+      \end{packed_itemize}                                                 \\
+      \hline
+      Postcondition    & The updated Scrape gets displayed on the overview page. \\
+    \end{tabular}
 
-      \vspace{-2mm}
-      \caption{UST-5}
-      \label{table:UST-5}
+    \vspace{-2mm}
+    \caption{UST-5}
+    \label{table:UST-5}
 
-    \end{center}
-  \end{table}
+  \end{center}
+\end{table}
+
+\begin{table}[H]
+  \begin{center}
+
+    \begin{tabular}{p{4cm}|p{10cm}}
+      \textbf{UST-6} \textbf{Receive and Dismiss Notification}                                       \\
+      \hline
+      Goal                              & A user gets notified about a Scrape having been triggered. \\
+      \hline
+      Actors                            & user                                                       \\
+      \hline
+      Precondition                      & UST-\ref{table:UST-3}                                      \\
+      \hline
+      Trigger                           & WaaS found defined Scrape pattern on Scrape URL.           \\
+      \hline
+      Main path                         &
+      \begin{packed_itemize}
+        \item [1] The user receives an E-Mail notifying him about the triggered Scrape.
+        \item [2] The user clicks on the link in the E-Mail.
+        \item [3] The notification gets dismissed by the system.
+        \item [4] The user gets redirected to the URL of the Scrape.
+      \end{packed_itemize}                                                                     \\
+      \hline
+      Alternate path: Notification Tray &
+      \begin{packed_itemize}
+        \item [1a] The user logs in to WaaS.
+        \item [1b] The user opens the notification tray.
+        \item [2a] The user clicks on the notification in the tray
+      \end{packed_itemize}                                                                     \\
+      \hline
+      Alternate path: Notification Tray Dismiss All &
+      \begin{packed_itemize}
+        \item [1a] The user logs in to WaaS.
+        \item [1b] The user opens the notification tray.
+        \item [2a] The user dismisses all notifications.
+        \item [3a] All previously unread notifications get marked read.
+      \end{packed_itemize}                                                                      \\
+      \hline
+      Postcondition                     & The user has been notified about his scrape being triggered.    \\
+    \end{tabular}
+
+    \vspace{-2mm}
+    \caption{UST-6}
+    \label{table:UST-6}
+
+  \end{center}
+\end{table}
 
 \subsection{Non-functional Requirements}
 
