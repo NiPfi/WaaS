@@ -179,14 +179,15 @@ The target group of WaaS are mainly people that are regularly checking websites 
       \hline
       Main path        &
       \begin{packed_itemize}
-        \item [1] The user enters a URL and a search pattern into the New Scrape form.
-        \item [2] The user clicks on the button: "Save".
+        \item [1] The user enters a URL into the New Scrape form.
+        \item [2] The form shows if the entered URL is valid.
+        \item [3] The user enters a Scrape pattern into the New Scrape form.
+        \item [4] The user clicks on the button: "Save".
       \end{packed_itemize}                                                                                                             \\
       \hline
       Alternative path &
       \begin{packed_itemize}
         \item [1a] The user clicks the button "Cancel".
-        \item [2a] The user redirected back to the overview page.
       \end{packed_itemize}                                                                                                             \\
       \hline
       Postcondition    & The newly created scrape is persisted in the database \& The new scrape gets displayed on the users overview page. \\
@@ -255,14 +256,15 @@ The target group of WaaS are mainly people that are regularly checking websites 
         \item [1] The user clicks on the edit button of the Scrape he wishes to edit.
         \item [2] The Edit Scrape form is shown.
         \item [3] The user changes the Scrape's URL.
-        \item [4] The user clicks "Save".
-        \item [5] The changes get persisted in the database.
+        \item [4] The form shows if the entered URL is valid.
+        \item [5] The user clicks "Save".
+        \item [6] The changes get persisted in the database.
       \end{packed_itemize}                                                 \\
       \hline
       Alternative path &
       \begin{packed_itemize}
-        \item [4a] The user clicks the button "Cancel".
-        \item [5a] The Edit Scrape form closes.
+        \item [2a] The user clicks the button "Cancel".
+        \item [3a] The Edit Scrape form closes.
       \end{packed_itemize}                                                 \\
       \hline
       Postcondition    & The updated Scrape gets displayed on the overview page. \\
@@ -320,6 +322,36 @@ The target group of WaaS are mainly people that are regularly checking websites 
     \vspace{-2mm}
     \caption{UST-6}
     \label{table:UST-6}
+
+  \end{center}
+\end{table}
+
+\begin{table}[H]
+  \begin{center}
+
+    \begin{tabular}{p{4cm}|p{10cm}}
+      \textbf{UST-7} & \textbf{Show Scrape History}                      \\
+      \hline
+      Goal           & A user can see all past triggers of a Scrape.     \\
+      \hline
+      Actors         & logged in user                                    \\
+      \hline
+      Precondition   & UST-\ref{table:UST-3}                             \\
+      \hline
+      Trigger        & User opens Scrape details.                        \\
+      \hline
+      Main path      &
+      \begin{packed_itemize}
+        \item [1] The opens the Scrape details.
+        \item [2] Details include an overview of past triggers for the Scrape.
+      \end{packed_itemize}                                         \\
+      \hline
+      Postcondition  & The user has gotten information about his Scrape. \\
+    \end{tabular}
+
+    \vspace{-2mm}
+    \caption{UST-7}
+    \label{table:UST-7}
 
   \end{center}
 \end{table}
