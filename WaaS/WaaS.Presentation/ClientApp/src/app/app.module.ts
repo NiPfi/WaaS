@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule.withServerTransition({appId: 'ng-cli-universal'})
   ],
   providers: [],
   bootstrap: [AppComponent]
