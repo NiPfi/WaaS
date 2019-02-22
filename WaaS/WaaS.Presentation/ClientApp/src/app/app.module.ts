@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from './app.component';
 
@@ -9,8 +8,7 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
-    NgbModule
+    BrowserModule.withServerTransition({appId: 'ng-cli-universal'})
   ],
   providers: [],
   bootstrap: [AppComponent]
