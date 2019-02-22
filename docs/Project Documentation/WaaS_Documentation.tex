@@ -279,40 +279,42 @@ The target group of WaaS are mainly people that are regularly checking websites 
   \begin{center}
 
     \begin{tabular}{p{4cm}|p{10cm}}
-      \textbf{UST-6}                                & \textbf{Receive and Dismiss Notification}                    \\
+      \textbf{UST-6}                & \textbf{Receive and Dismiss Notification}                    \\
       \hline
-      Goal                                          & A user gets notified about a Scrape having been triggered.   \\
+      Goal                          & A user gets notified about a Scrape having been triggered.   \\
       \hline
-      Actors                                        & user                                                         \\
+      Actors                        & user                                                         \\
       \hline
-      Precondition                                  & UST-\ref{table:UST-3}                                        \\
+      Precondition                  & UST-\ref{table:UST-3}                                        \\
       \hline
-      Trigger                                       & WaaS found defined Scrape pattern on Scrape URL.             \\
+      Trigger                       & WaaS found defined Scrape pattern on Scrape URL.             \\
       \hline
-      Main path                                     &
+      Main path                     &
       \begin{packed_itemize}
         \item [1] The user receives an E-Mail notifying him about the triggered Scrape.
         \item [2] The user clicks on the link in the E-Mail.
         \item [3] The notification gets dismissed by the system.
         \item [4] The user gets redirected to the URL of the Scrape.
-      \end{packed_itemize}                                                                                   \\
+      \end{packed_itemize}                                                                   \\
       \hline
-      Alternate path: Notification Tray             &
+      Alternate path:                                                                              \\
+      Notification Tray             &
       \begin{packed_itemize}
         \item [1a] The user logs in to WaaS.
         \item [1b] The user opens the notification tray.
         \item [2a] The user clicks on the notification in the tray
-      \end{packed_itemize}                                                                                   \\
+      \end{packed_itemize}                                                                   \\
       \hline
-      Alternate path: Notification Tray Dismiss All &
+      Alternate path:                                                                              \\
+      Notification Tray Dismiss All &
       \begin{packed_itemize}
         \item [1a] The user logs in to WaaS.
         \item [1b] The user opens the notification tray.
         \item [2a] The user dismisses all notifications.
         \item [3a] All previously unread notifications get marked read.
-      \end{packed_itemize}                                                                                   \\
+      \end{packed_itemize}                                                                   \\
       \hline
-      Postcondition                                 & The user has been notified about his scrape being triggered. \\
+      Postcondition                 & The user has been notified about his scrape being triggered. \\
     \end{tabular}
 
     \vspace{-2mm}
