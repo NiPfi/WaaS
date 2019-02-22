@@ -8,13 +8,12 @@
 
 \usepackage{float}
 \restylefloat{table}
-\usepackage[
-    bookmarksopen,
-    bookmarksdepth=2,
-    breaklinks=true
-    ]{hyperref}
 
 \usepackage{bookmark}
+\bookmarksetup{
+  open,
+  depth=2
+}
 
 \newenvironment{packed_itemize}{
   \vspace{-\topsep}
@@ -75,6 +74,7 @@ This chapter contains purpose and context of the web application WaaS as well as
 WaaS (Web Scraper as a Service) is a service, that allows users to keep track of news on their favourite websites, by giving them the possibility to create "Scrapes". A Scrape is defined with a URL, a search pattern and an email address. WaaS will regularly check those URLs for the given search patterns and notifies the users via their email address when it finds the pattern it was searching for.
 \medskip \\
 The following graphic visualizes the context of the app with it's use cases.
+
 \begin{figure}[H]
   \includegraphics[width=0.95\linewidth]{UseCaseDiagram.PNG}
   \caption{Use Case Diagram}
@@ -376,6 +376,34 @@ The target group of WaaS are mainly people that are regularly checking websites 
           \item Due to the use of relational database technology, horizontal scalability is too big of a task to be realized in the given time frame and is therefore outside of the scope of this project.
         \end{enumerate}
 \end{enumerate}
+
+\section{GUI and Navigation Design}
+\subsection{Navigation Model}
+
+The following diagram depicts principal states and possible user interactions to navigate between them.
+
+\begin{figure}[H]
+  \includegraphics[width=0.95\linewidth]{navigationmodel_waas.png}
+  \caption{Navigation Model}
+  \label{fig:navigationModel}
+\end{figure}
+
+The boxes represent states and the arrows the means to transition from one state to another. The boxes with a missing corner represent a modal and the arrows leading up to the modals aren't state transitions since the modals don't
+represent a complete state but a GUI element within their parent state. The modal blocks other interactions until it is dismissed, either through cancelling it or following through on its action. \\
+The user enters the page on "Home" and needs to log in to get to the main state called "Overview". From there, all other interactions to manage Scrapes are possible.
+
+\subsubsection{Potential sources of errors}
+The following issues may arise from the navigation.
+
+\paragraph{User doesn't want to register}
+It is possible, that a user wants to see how WaaS works, without registering beforehand.
+This is not possible in the navigation model since a user needs to be logged in to use WaaS. Since it is possible for users to delete their accounts it is a minor issue though.
+
+\paragraph{User gets lost in a branch state}
+A user could get lost in a state because he doesn't see, how to leave it. Usually, a user will then use the browsers back button, so it's important to either make sure it works or to offer the user an obvious alternative back action.
+
+\subsection{HTML Prototype}
+To visualize the navigation model, a HTML Prototype was created and is available either in the adjacent documents to this documentation or through the GitHub Page on \url{https://nipfi.github.io/ffhs-WebE/HTML%20Prototype/index.html}.
 
 \pagebreak
 
