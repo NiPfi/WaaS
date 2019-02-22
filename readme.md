@@ -21,7 +21,8 @@ We're using Visual Studio to run and debug the back-end of the app but you can a
 
 1. Clone or download this git repository.
 2. Open a cli in the `WaaS\WaaS.Presentation\ClientApp` folder.
-3. Start the Angular SPA using `npm start`.
-4. Open the WaaS.sln in Visual Studio.
-5. Set WaaS.Presentation as the Startup project.
-6. Start the application.
+3. Download the required npm dependencies using `npm i`
+4. Start the Angular SPA using `npm start`.
+5. Open the WaaS.sln in Visual Studio.
+6. Set WaaS.Presentation as the Startup project.
+7. Start the application.
