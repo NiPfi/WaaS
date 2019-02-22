@@ -4,6 +4,8 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+\usepackage{graphicx}
+
 \usepackage{float}
 \restylefloat{table}
 \usepackage[
@@ -12,8 +14,16 @@
     breaklinks=true
     ]{hyperref}
 
-\newcommand{\authorName}{Nicola Pfister \& Jonas Meise}
 
+\newenvironment{packed_itemize}{
+  \vspace{-\topsep}
+  \begin{itemize}
+    \setlength{\itemsep}{1pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
+  }{\end{itemize}}
+
+\newcommand{\authorName}{Nicola Pfister \& Jonas Meise}
 
 \lhead{WaaS - WebE FFHS}
 \rhead{\authorName}
@@ -45,6 +55,10 @@ This is the documentation of the project WaaS, which was done as part of the mod
     \item Support for sessions and cookies
 \end{itemize}
 
+The technologies for the project were not predefined, so we decided to use .NET Core for the web application and AngularJS for the front end due to personal preferences.
+
+\pagebreak
+
 \section{Requirements Engineering\label{sectionRequirementsEngineering}}
 
 This chapter contains purpose and context of the web application WaaS as well as the functional and non-functional requirements.
@@ -57,9 +71,14 @@ This chapter contains purpose and context of the web application WaaS as well as
 
 \subsection{Purpose \& Context}
 
-WaaS (Web scraper as a Service) is a service, that allows users to keep track of news on their favourite websites, by giving them the possibility to create "scrapes". A scrape is defined with a URL, a search pattern and an email address. WaaS will regularly check those URLs for the given search patterns and notifies the users via their email address when it finds the pattern it was searching for.
-
-TODO: Context
+WaaS (Web Scraper as a Service) is a service, that allows users to keep track of news on their favourite websites, by giving them the possibility to create "Scrapes". A Scrape is defined with a URL, a search pattern and an email address. WaaS will regularly check those URLs for the given search patterns and notifies the users via their email address when it finds the pattern it was searching for.
+\medskip \\
+The following graphic visualizes the context of the app with it's use cases.
+\begin{figure}[H]
+  \includegraphics[width=0.95\linewidth]{UseCaseDiagram.PNG}
+  \caption{Use Case Diagram}
+  \label{fig:useCaseDiagram}
+\end{figure}
 
 \subsection{Functional Requirements}
 
@@ -67,7 +86,7 @@ The following chapter contains the functional requirements for WaaS.
 
 \subsubsection{Target Group}
 
-TODO
+The target group of WaaS are mainly people that are regularly checking websites for news. That concludes people of all ages who understand what a web scraper is. It can also be used from people who want to check wether or not the new episode of their favourite tv series is already online. All of those people are generally expected to have some basic skills in the field of IT or are at least interested in it.
 
 \subsubsection{{Use Cases}}
 
@@ -86,19 +105,19 @@ TODO
       Trigger          & Click on the button: "Register"                                                                             \\
       \hline
       Main path        &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1] The user clicks the button: "SignUp".
         \item [2] The user enters his credentials into the register form (email address, and password).
         \item [3] The user clicks on: "Register".
         \item [4] WaaS creates a user account entry in the database.
         \item [5] The user gets redirected to the Login Page.
-      \end{itemize}                                                                                                      \\
+      \end{packed_itemize}                                                                                                      \\
       \hline
       Alternative path &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1a] The user enters a invalid input data.
         \item [2a] A validation error message shows up.
-      \end{itemize}                                                                                                      \\
+      \end{packed_itemize}                                                                                                      \\
       \hline
       Postcondition    & A new user account was created in the database with the credentials the user entered into the register form. \\
     \end{tabular}
@@ -124,16 +143,16 @@ TODO
       Trigger          & Click on the button: "LogIn"                                   \\
       \hline
       Main path        &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1] The user enters a valid email address an password into the login form.
         \item [2] The user clicks on the button: "LogIn".
-      \end{itemize}                                                         \\
+      \end{packed_itemize}                                                         \\
       \hline
       Alternative path &
-      \begin{itemize}
+      \begin{packed_itemize}
         \item [1a] The user enters a invalid input data.
         \item [2a] A validation error message shows up.
-      \end{itemize}                                                         \\
+      \end{packed_itemize}                                                         \\
       \hline
       Postcondition    & The user is now logged in and is situated on the overview page \\
     \end{tabular}
@@ -159,16 +178,16 @@ TODO
         Trigger          & Click on the button: "+"                                   \\
         \hline
         Main path        &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [1] The user enters a URL and a search pattern into the New Scrape form.
           \item [2] The user clicks on the button: "Save".
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Alternative path &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [1a] The user clicks the button "Cancel".
           \item [2a] The user redirected back to the overview page.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Postcondition    & The newly created scrape is persisted in the database \& The new scrape gets displayed on the users overview page. \\
       \end{tabular}
@@ -194,22 +213,23 @@ TODO
         Trigger          & Click on the delete scrape button.                            \\
         \hline
         Main path        &
-        \begin{itemize}
+
+        \begin{packed_itemize}
           \item [1] The user clicks on the delete button of the scrape he wishes to remove.
           \item [2] A confirmation dialogue is shown.
           \item [3] The user clicks the "Delete" button.
           \item [4] The scrape gets deleted from the database.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Alternative path &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [3a] The user clicks the button "Cancel".
           \item [4a] The confirmation dialogue closes.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Postcondition    & The scrape is deleted from the database \& The scrape does not get displayed on the users overview page anymore. \\
       \end{tabular}
-
+      \vspace{-2mm}
       \caption{UST-4}
       \label{table:UST-4}
 
@@ -220,7 +240,7 @@ TODO
     \begin{center}
 
       \begin{tabular}{p{4cm}|p{10cm}}
-        \textbf{UST-5}\\ \textbf{Edit Scrape}                                            \\
+        \textbf{UST-5} \textbf{Edit Scrape}                                            \\
         \hline
         Goal             & A user edits an existing scrape.                  \\
         \hline
@@ -231,23 +251,24 @@ TODO
         Trigger          & Click on the edit scrape button.                            \\
         \hline
         Main path        &
-        \begin{itemize}
-          \item [1] The user clicks on the edit button of the scrape he wishes to edit.
+        \begin{packed_itemize}
+          \item [1] The user clicks on the edit button of the Scrape he wishes to edit.
           \item [2] The Edit Scrape form is shown.
-          \item [3] The user changes the Scrapes URL.
+          \item [3] The user changes the Scrape's URL.
           \item [4] The user clicks "Save".
           \item [5] The changes get persisted in the database.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
         Alternative path &
-        \begin{itemize}
+        \begin{packed_itemize}
           \item [4a] The user clicks the button "Cancel".
           \item [5a] The Edit Scrape form closes.
-        \end{itemize}                                                         \\
+        \end{packed_itemize}                                                         \\
         \hline
-        Postcondition    & The updated scrape gets displayed on the users overview page. \\
+        Postcondition    & The updated Scrape gets displayed on the overview page. \\
       \end{tabular}
 
+      \vspace{-2mm}
       \caption{UST-5}
       \label{table:UST-5}
 
@@ -277,6 +298,7 @@ TODO
 \pagebreak
 
 \listoftables
+\listoffigures
 
 \pagebreak
 
