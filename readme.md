@@ -1,4 +1,4 @@
-# WaaS
+# WaaS [![Build status](https://dev.azure.com/WebE-WaaS/WaaS/_apis/build/status/WebE-WaaS%20-%20CI)](https://dev.azure.com/WebE-WaaS/WaaS/_build/latest?definitionId=1)
 
 <!-- markdownlint-disable MD026 -->
 
