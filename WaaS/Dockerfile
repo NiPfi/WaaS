@@ -4,10 +4,10 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
-COPY ["WaaS/WaaS.Presentation/WaaS.Presentation.csproj", "WaaS/WaaS.Presentation/"]
-RUN dotnet restore "WaaS/WaaS.Presentation/WaaS.Presentation.csproj"
+COPY ["WaaS.Presentation/WaaS.Presentation.csproj", "WaaS.Presentation/"]
+RUN dotnet restore "WaaS.Presentation/WaaS.Presentation.csproj"
 COPY . .
-WORKDIR "/src/WaaS/WaaS.Presentation"
+WORKDIR "/src/WaaS.Presentation"
 RUN dotnet build "WaaS.Presentation.csproj" -c Release -o /app
 
 FROM build AS publish
