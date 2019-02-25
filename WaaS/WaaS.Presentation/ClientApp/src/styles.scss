@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-html, body, app-root {
+html, body {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+}
+
+.fill-viewport-height {
   height: 100vh;
 }

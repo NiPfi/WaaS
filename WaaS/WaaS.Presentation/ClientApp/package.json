@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:ssr": "ng run ClientApp:server",
+    "build:ssr:production": "ng run ClientApp:server:production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
