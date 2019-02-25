@@ -19,10 +19,6 @@ COPY --from=node:alpine / /
 WORKDIR /src/WaaS.Presentation
 RUN dotnet publish "WaaS.Presentation.csproj" -c Release -o /app
 WORKDIR /src/WaaS.Presentation/ClientApp
-RUN npm run build:ssr
-RUN ls -al
-RUN cp -R dist-server /app/ClientApp/
-RUN cp -R node_modules /app/ClientApp/
 
 FROM base AS final
 WORKDIR /app

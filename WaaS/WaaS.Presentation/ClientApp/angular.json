@@ -108,6 +108,26 @@
             "outputPath": "dist-server",
             "main": "src/main.server.ts",
             "tsConfig": "src/tsconfig.server.json"
+          },
+          "configurations": {
+            "dev": {
+              "optimization": false,
+              "outputHashing": "media",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "bundleDependencies": "all"
+            },
+            "production": {
+              "optimization": false,
+              "outputHashing": "media",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "bundleDependencies": "all"
+            }
           }
         }
       }
