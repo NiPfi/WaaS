@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaaS.Infrastructure", "WaaS\WaaS.Infrastructure\WaaS.Infrastructure.csproj", "{349A713A-E34F-427E-B919-B3F71E50C200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaaS.Presentation", "WaaS\WaaS.Presentation\WaaS.Presentation.csproj", "{97023212-EA7E-44FA-AA67-48DBC53BFBCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaaS.Presentation", "WaaS\WaaS.Presentation\WaaS.Presentation.csproj", "{97023212-EA7E-44FA-AA67-48DBC53BFBCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaaS.Shared", "WaaS.Shared\WaaS.Shared.csproj", "{9D636251-F801-4D88-A9DA-61771C61073F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{97023212-EA7E-44FA-AA67-48DBC53BFBCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97023212-EA7E-44FA-AA67-48DBC53BFBCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97023212-EA7E-44FA-AA67-48DBC53BFBCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D636251-F801-4D88-A9DA-61771C61073F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D636251-F801-4D88-A9DA-61771C61073F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D636251-F801-4D88-A9DA-61771C61073F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D636251-F801-4D88-A9DA-61771C61073F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

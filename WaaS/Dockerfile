@@ -9,6 +9,8 @@ EXPOSE 5000
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY ["WaaS.Presentation/WaaS.Presentation.csproj", "WaaS.Presentation/"]
+COPY ["WaaS.Infrastructure/WaaS.Infrastructure.csproj", "WaaS.Infrastructure/"]
+COPY ["WaaS.Shared/WaaS.Shared.csproj", "WaaS.Shared/"]
 RUN dotnet restore "WaaS.Presentation/WaaS.Presentation.csproj"
 COPY . .
 WORKDIR /src/WaaS.Presentation

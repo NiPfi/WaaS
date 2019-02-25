@@ -789,3 +789,4 @@ TSWLatexianTemp*
 *.bbl
 
 # End of https://www.gitignore.io/api/latex
+*.DotSettings
