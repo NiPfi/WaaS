@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <ProjectGuid>{11B5F3FE-BD89-451C-8E93-28EB96068E1F}</ProjectGuid>
+    <ProjectGuid>{349A713A-E34F-427E-B919-B3F71E50C200}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WaaS.Shared\WaaS.Shared.csproj" />
