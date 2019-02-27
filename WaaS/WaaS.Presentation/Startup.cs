@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WaaS.Business;
+using WaaS.Business.Interfaces;
+using WaaS.Business.Services;
 using WaaS.Infrastructure;
 
 namespace WaaS.Presentation
@@ -29,7 +32,11 @@ namespace WaaS.Presentation
         configuration.RootPath = "ClientApp/dist";
       });
 
+      services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
+
+      services.AddScoped<IUserService, UserService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

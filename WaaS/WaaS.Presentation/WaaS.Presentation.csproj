@@ -22,6 +22,7 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WaaS.Business\WaaS.Business.csproj" />
     <ProjectReference Include="..\WaaS.Infrastructure\WaaS.Infrastructure.csproj" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
