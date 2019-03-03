@@ -4,6 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
 
 import { User } from './user';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuthService {
   }
 
   login(loginUser: User) {
-    return this.http.post<any>(`${config.apiUrl}/users/authenticate`, { loginUser }).pipe(map(user => {
+    return this.http.post<any>(`${environment.apiUrl}/users/authenticate`, { loginUser }).pipe(map(user => {
       if (user && user.token) {
         localStorage.setItem('currentUser', JSON.stringify(user));
       }
