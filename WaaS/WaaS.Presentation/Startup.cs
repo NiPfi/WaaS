@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
 using WaaS.Business.Interfaces.Services;
@@ -91,6 +92,7 @@ namespace WaaS.Presentation
     {
       if (env.IsDevelopment())
       {
+        IdentityModelEventSource.ShowPII = true;
         app.UseDeveloperExceptionPage();
       }
       else
