@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/operators';
 
 import { User } from './user';
@@ -11,14 +10,14 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  constructor(private jwtHelper: JwtHelperService, private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   public isAuthenticated(): boolean {
-    return !this.jwtHelper.isTokenExpired(this.parseUser().token);
+    return this.retrieveUserString();
   }
 
-  public get token(): any {
-    return this.jwtHelper.decodeToken(this.parseUser().token);
+  public get token(): string {
+    return this.parseUser().token;
   }
 
   login(loginUser: User) {
@@ -34,6 +33,10 @@ export class AuthService {
   }
 
   private parseUser(): User {
+    return this.retrieveUserString();
+  }
+
+  private retrieveUserString(): any {
     return JSON.parse(localStorage.getItem('currentUser'));
   }
 
