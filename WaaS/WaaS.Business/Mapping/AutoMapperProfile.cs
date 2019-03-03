@@ -9,8 +9,11 @@ namespace WaaS.Business.Mapping
   {
     public AutoMapperProfile()
     {
+      CreateMap<UserDto, IdentityUser>()
+        .ForMember(
+          destination => destination.UserName,
+          options => options.MapFrom(source => source.Email));
       CreateMap<IdentityUser, UserDto>();
-      CreateMap<UserDto, IdentityUser>();
     }
   }
 }
