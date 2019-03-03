@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
+using WaaS.Business.Entities;
 using WaaS.Business.Interfaces;
+using WaaS.Business.Interfaces.Services;
 using WaaS.Infrastructure;
-using WaaS.Shared.Entities;
 
 namespace WaaS.Presentation.Controllers
 {

@@ -3,32 +3,32 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business.Dtos;
-using WaaS.Business.Interfaces;
-using WaaS.Infrastructure;
+using WaaS.Business.Entities;
+using WaaS.Business.Interfaces.Repositories;
+using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Business.Services
 {
   public class UserService : IUserService
   {
 
-    private WaasDbContext _context;
+    private IUserRepository _userRepository;
 
     private readonly ApplicationSettings _applicationSettings;
     private readonly DateTime _tokenExpirationDate = DateTime.UtcNow.AddHours(12);
 
-    public UserService(WaasDbContext context, IOptions<ApplicationSettings> applicationSettings)
+    public UserService(IOptions<ApplicationSettings> applicationSettings, IUserRepository userRepository)
     {
-      _context = context;
+      _userRepository = userRepository;
       _applicationSettings = applicationSettings.Value;
     }
 
     public async Task<UserDto> Authenticate(string userEmail, string password)
     {
-      var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == userEmail);
+      var user = await _userRepository.Get(email: userEmail);
 
       var returnUserDto = new UserDto();
 

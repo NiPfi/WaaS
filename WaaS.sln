@@ -4,19 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaaS.Infrastructure", "WaaS\WaaS.Infrastructure\WaaS.Infrastructure.csproj", "{349A713A-E34F-427E-B919-B3F71E50C200}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8704F87A-374D-4439-BFAE-6BD36D16FC5E} = {8704F87A-374D-4439-BFAE-6BD36D16FC5E}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaaS.Presentation", "WaaS\WaaS.Presentation\WaaS.Presentation.csproj", "{3F41CB99-B797-4E88-93E2-799D89F76F7A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{349A713A-E34F-427E-B919-B3F71E50C200} = {349A713A-E34F-427E-B919-B3F71E50C200}
-		{815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B} = {815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaaS.Shared", "WaaS\WaaS.Shared\WaaS.Shared.csproj", "{815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaaS.Business", "WaaS\WaaS.Business\WaaS.Business.csproj", "{8704F87A-374D-4439-BFAE-6BD36D16FC5E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B} = {815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaaS.Business", "WaaS\WaaS.Business\WaaS.Business.csproj", "{8704F87A-374D-4439-BFAE-6BD36D16FC5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +29,6 @@ Global
 		{3F41CB99-B797-4E88-93E2-799D89F76F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F41CB99-B797-4E88-93E2-799D89F76F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F41CB99-B797-4E88-93E2-799D89F76F7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{815FA39E-1BE0-4F0B-AF0B-0E2BF0A8D33B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8704F87A-374D-4439-BFAE-6BD36D16FC5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8704F87A-374D-4439-BFAE-6BD36D16FC5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8704F87A-374D-4439-BFAE-6BD36D16FC5E}.Release|Any CPU.ActiveCfg = Release|Any CPU

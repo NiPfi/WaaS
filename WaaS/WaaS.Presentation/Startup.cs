@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
 using WaaS.Business.Interfaces;
+using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Services;
 using WaaS.Infrastructure;
 

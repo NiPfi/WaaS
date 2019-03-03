@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
-using WaaS.Shared.Entities;
 
-namespace WaaS.Business.Interfaces
+namespace WaaS.Business.Interfaces.Services
 {
   public interface IUserService
   {
