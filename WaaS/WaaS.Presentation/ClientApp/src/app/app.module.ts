@@ -7,13 +7,15 @@ import { FooterComponent } from './footer/footer.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@auth0/angular-jwt';
 import { TestComponent } from './test/test.component';
+import { LoginComponent } from './authentication/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    TestComponent
+    TestComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'})
