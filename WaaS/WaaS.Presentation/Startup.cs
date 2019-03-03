@@ -1,7 +1,10 @@
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
-using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Services;
 using WaaS.Infrastructure;
@@ -31,6 +33,20 @@ namespace WaaS.Presentation
       var applicationSettings = Configuration.GetSection("ApplicationSettings");
       services.Configure<ApplicationSettings>(applicationSettings);
 
+      services.AddIdentityCore<IdentityUser>()
+        .AddEntityFrameworkStores<WaasDbContext>()
+        .AddDefaultTokenProviders();
+
+      services.Configure<IdentityOptions>(options =>
+      {
+        options.Password.RequiredLength = 8;
+
+        options.Lockout.AllowedForNewUsers = false;
+
+        options.User.RequireUniqueEmail = true;
+      });
+
+      JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -42,10 +58,11 @@ namespace WaaS.Presentation
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
 
-            ValidIssuer = "http://localhost:5000",
-            ValidAudience = "http:localhost:5000",
+            ValidIssuer = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
+            ValidAudience = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
             IssuerSigningKey =
-              new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.Get<ApplicationSettings>().JwtSecret))
+              new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.Get<ApplicationSettings>().JwtSecret)),
+            ClockSkew = TimeSpan.Zero
           };
         });
 
