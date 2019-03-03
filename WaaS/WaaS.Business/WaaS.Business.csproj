@@ -2,17 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <ProjectGuid>{2A042551-8667-4F2E-AEB3-E6B9063D0690}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Options">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.options\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
