@@ -51,11 +51,15 @@ namespace WaaS.Presentation
 
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-      // In production, the Angular files will be served from this directory
-      services.AddSpaStaticFiles(configuration =>
+      ServiceProvider serviceProvider = services.BuildServiceProvider();
+      IHostingEnvironment env = serviceProvider.GetService<IHostingEnvironment>();
+      if (env.IsProduction())
       {
-        configuration.RootPath = "ClientApp/dist";
-      });
+        services.AddSpaStaticFiles(configuration =>
+        {
+          configuration.RootPath = "ClientApp/dist";
+        });
+      }
 
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
 
@@ -79,8 +83,12 @@ namespace WaaS.Presentation
       app.UseAuthentication();
 
       app.UseHttpsRedirection();
-      app.UseStaticFiles();
-      app.UseSpaStaticFiles();
+
+      if (env.IsProduction())
+      {
+        app.UseStaticFiles();
+        app.UseSpaStaticFiles();
+      }
 
       app.UseMvc(routes =>
       {

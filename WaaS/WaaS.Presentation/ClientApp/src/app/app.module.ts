@@ -10,6 +10,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { JwtInterceptor } from './authentication/jwt/jwt.interceptor';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { JwtInterceptor } from './authentication/jwt/jwt.interceptor';
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
-    RouterModule.forRoot([])
+    AppRoutingModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}

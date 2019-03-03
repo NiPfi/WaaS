@@ -17,9 +17,29 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\dist\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\dist\**" />
+    <EmbeddedResource Remove="ClientApp\dist\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\dist\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ClientApp\dist\es2015-polyfills.js" />
+    <None Remove="ClientApp\dist\es2015-polyfills.js.map" />
+    <None Remove="ClientApp\dist\favicon.ico" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\main.js" />
+    <None Remove="ClientApp\dist\main.js.map" />
+    <None Remove="ClientApp\dist\polyfills.js" />
+    <None Remove="ClientApp\dist\polyfills.js.map" />
+    <None Remove="ClientApp\dist\runtime.js" />
+    <None Remove="ClientApp\dist\runtime.js.map" />
+    <None Remove="ClientApp\dist\styles.js" />
+    <None Remove="ClientApp\dist\styles.js.map" />
+    <None Remove="ClientApp\dist\vendor.js" />
+    <None Remove="ClientApp\dist\vendor.js.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WaaS.Business\WaaS.Business.csproj" />
