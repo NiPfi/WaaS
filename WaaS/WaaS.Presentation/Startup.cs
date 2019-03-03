@@ -1,3 +1,5 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +7,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
 using WaaS.Business.Interfaces;
 using WaaS.Business.Services;
@@ -24,6 +27,27 @@ namespace WaaS.Presentation
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      var applicationSettings = Configuration.GetSection("ApplicationSettings");
+      services.Configure<ApplicationSettings>(applicationSettings);
+
+      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+          options.SaveToken = true;
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = "http://localhost:5000",
+            ValidAudience = "http:localhost:5000",
+            IssuerSigningKey =
+              new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.Get<ApplicationSettings>().JwtSecret))
+          };
+        });
+
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
       // In production, the Angular files will be served from this directory
@@ -31,8 +55,6 @@ namespace WaaS.Presentation
       {
         configuration.RootPath = "ClientApp/dist";
       });
-
-      services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
 
@@ -52,6 +74,8 @@ namespace WaaS.Presentation
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
+
+      app.UseAuthentication();
 
       app.UseHttpsRedirection();
       app.UseStaticFiles();

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
-using WaaS.Shared.Entities;
+using WaaS.Business.Entities;
 
 namespace WaaS.Infrastructure
 {
