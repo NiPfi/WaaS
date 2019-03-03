@@ -4,11 +4,10 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TestComponent } from './test/test.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { HomeComponent } from './home/home.component';
-import { RouterModule } from '@angular/router';
 import { JwtInterceptor } from './authentication/jwt/jwt.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -23,7 +22,8 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
