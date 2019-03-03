@@ -12,4 +12,9 @@ export class AuthService {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
   }
+
+  public getToken(): any {
+    return this.jwtHelper.decodeToken(localStorage.getItem('token'));
+  }
+
 }
