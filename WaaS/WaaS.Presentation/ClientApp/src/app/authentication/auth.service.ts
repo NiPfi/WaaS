@@ -28,6 +28,10 @@ export class AuthService {
     }))
   }
 
+  logout() {
+    localStorage.removeItem('currentUser');
+  }
+
   private parseUser(): User {
     return JSON.parse(localStorage.getItem('currentUser'));
   }

@@ -8,6 +8,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@auth0/angular-jwt';
 import { TestComponent } from './test/test.component';
 import { LoginComponent } from './authentication/login/login.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { LoginComponent } from './authentication/login/login.component';
     HeaderComponent,
     FooterComponent,
     TestComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'})
