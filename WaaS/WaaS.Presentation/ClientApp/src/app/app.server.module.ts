@@ -7,6 +7,7 @@ import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
+import { AlertModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AppModule } from './app.module';
     ModuleMapLoaderModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AlertModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
