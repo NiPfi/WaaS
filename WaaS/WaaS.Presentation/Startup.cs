@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +34,7 @@ namespace WaaS.Presentation
       var applicationSettings = Configuration.GetSection("ApplicationSettings");
       services.Configure<ApplicationSettings>(applicationSettings);
 
-      services.AddIdentityCore<IdentityUser>()
+      services.AddDefaultIdentity<IdentityUser>()
         .AddEntityFrameworkStores<WaasDbContext>()
         .AddDefaultTokenProviders();
 
@@ -77,6 +78,8 @@ namespace WaaS.Presentation
           configuration.RootPath = "ClientApp/dist";
         });
       }
+
+      services.AddAutoMapper();
 
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
 

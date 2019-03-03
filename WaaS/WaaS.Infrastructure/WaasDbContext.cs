@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces;
 
 namespace WaaS.Infrastructure
 {
-  public sealed class WaasDbContext : DbContext
+  public sealed class WaasDbContext : IdentityDbContext
   {
     public DbSet<ScrapeJob> ScrapeJobs { get; set; }
 
@@ -16,6 +17,8 @@ namespace WaaS.Infrastructure
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<ScrapeJob>().ToTable("ScrapeJob");
+
+      base.OnModelCreating(modelBuilder);
     }
   }
 }
