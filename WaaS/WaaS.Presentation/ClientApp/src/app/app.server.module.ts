@@ -8,6 +8,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 import { AlertModule } from 'ngx-bootstrap';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 @NgModule({
   imports: [
@@ -17,6 +19,8 @@ import { AlertModule } from 'ngx-bootstrap';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule,
     AlertModule.forRoot()
   ],
   bootstrap: [AppComponent]

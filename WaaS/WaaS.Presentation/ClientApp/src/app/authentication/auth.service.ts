@@ -33,8 +33,11 @@ export class AuthService {
     }));
   }
 
-  register(registerUser: User) {
-    return this.http.post<User>(`${environment.apiUrl}/users`, registerUser);
+  register(registerUser: User, captchaResponse: string) {
+    return this.http.post<User>(`${environment.apiUrl}/users`, {
+      user: registerUser,
+      captchaResponse: captchaResponse
+    });
   }
 
   logout() {

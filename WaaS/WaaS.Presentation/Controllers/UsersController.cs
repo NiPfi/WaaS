@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
+using WaaS.Business;
 using WaaS.Business.Dtos;
 using WaaS.Business.Interfaces.Services;
 
@@ -12,27 +16,47 @@ namespace WaaS.Presentation.Controllers
   public class UsersController : ControllerBase
   {
     private readonly IUserService _userService;
+    private readonly ApplicationSettings _applicationSettings;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, IOptions<ApplicationSettings> applicationSettings)
     {
       _userService = userService;
+      _applicationSettings = applicationSettings.Value;
     }
 
     // POST: api/Users
     [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<UserDto>> Register(UserDto user)
+    public async Task<ActionResult<UserDto>> Register(UserCaptchaDto userCaptchaDto)
     {
-      var createdUser = await _userService.Create(user);
+
+      if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      {
+
+        var createdUser = await _userService.Create(userCaptchaDto.User);
 
 
-      if (createdUser != null)
-      {
-        return Ok(createdUser);
-      } else
-      {
-        return BadRequest();
+        if (createdUser != null)
+        {
+          return Ok(createdUser);
+        }
       }
+      return BadRequest();
+    }
+
+    private bool CaptchaResponseValid(string captchaResponse)
+    {
+      if (string.IsNullOrEmpty(captchaResponse)) return false;
+
+      var secret = _applicationSettings.ReCaptchaSecretKey;
+      if (string.IsNullOrEmpty(secret)) throw new Exception("uninitialized secret");
+
+      var client = new System.Net.WebClient();
+
+      var googleReply = client.DownloadString(
+          $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={captchaResponse}");
+
+      return JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
     }
 
     [AllowAnonymous]

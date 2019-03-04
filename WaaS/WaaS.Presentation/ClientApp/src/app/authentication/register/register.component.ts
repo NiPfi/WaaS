@@ -33,7 +33,8 @@ export class RegisterComponent implements OnInit {
       password: ['', [
         Validators.required,
         Validators.minLength(8),
-      ]]
+      ]],
+      recaptchaReactive: [null, Validators.required]
     });
 
     // get return url from route parameters or default to '/'
@@ -43,7 +44,7 @@ export class RegisterComponent implements OnInit {
   // convenience getter for easy access to form fields
   get form() { return this.registerForm.controls; }
 
-  onSubmit() {
+  onSubmit(captchaResponse: string) {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -53,7 +54,7 @@ export class RegisterComponent implements OnInit {
 
     this.loading = true;
     var userDto = new User(this.form.email.value, this.form.password.value);
-    this.authService.register(userDto)
+    this.authService.register(userDto, captchaResponse)
       .pipe(first())
       .subscribe(
         data => {
