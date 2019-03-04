@@ -25,8 +25,12 @@ export class AuthService {
     return this.parseUser().email;
   }
 
-  login(loginUser: User) {
-    return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, loginUser).pipe(map(user => {
+  login(loginUser: User, captchaResponse: string) {
+    return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {
+      user: loginUser,
+      captchaResponse: captchaResponse
+    }
+      ).pipe(map(user => {
       if (user && user.token) {
         localStorage.setItem('currentUser', JSON.stringify(user));
       }
