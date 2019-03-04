@@ -1,9 +1,13 @@
 <header>
   <nav class="navbar navbar-dark bg-dark">
-    <a href="index.html" class="navbar-brand">WaaS</a>
-    <div>
-      <a href="login.html" class="btn btn-link navbar-text">Log In</a>
-      <a href="register.html" class="btn btn-outline-light">Sign Up</a>
+    <a class="navbar-brand" routerLink="">WaaS</a>
+    <div *ngIf="authService.isAuthenticated()">
+      <a class="btn btn-link navbar-text" routerLink="test">Test</a>
+      <button class="btn btn-link navbar-text" (click)="logout()">{{authService.getUserEmail()}}</button>
+    </div>
+    <div *ngIf="!authService.isAuthenticated()">
+      <a class="btn btn-link navbar-text" routerLink="login">Log In</a>
+      <a class="btn btn-outline-light" routerLink="register">Sign Up</a>
     </div>
   </nav>
 </header>

@@ -4,11 +4,12 @@
     <ProjectGuid>{349A713A-E34F-427E-B919-B3F71E50C200}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WaaS.Shared\WaaS.Shared.csproj" />
+    <ProjectReference Include="..\WaaS.Business\WaaS.Business.csproj" />
   </ItemGroup>
 </Project>

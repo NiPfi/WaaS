@@ -1,10 +1,21 @@
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using WaaS.Business;
+using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Services;
 using WaaS.Infrastructure;
 
 namespace WaaS.Presentation
@@ -21,15 +32,59 @@ namespace WaaS.Presentation
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+      var applicationSettings = Configuration.GetSection("ApplicationSettings");
+      services.Configure<ApplicationSettings>(applicationSettings);
 
-      // In production, the Angular files will be served from this directory
-      services.AddSpaStaticFiles(configuration =>
+      services.AddDefaultIdentity<IdentityUser>()
+        .AddEntityFrameworkStores<WaasDbContext>()
+        .AddDefaultTokenProviders();
+
+      services.Configure<IdentityOptions>(options =>
       {
-        configuration.RootPath = "ClientApp/dist";
+        options.Password.RequiredLength = 8;
+
+        options.Lockout.AllowedForNewUsers = false;
+
+        options.User.RequireUniqueEmail = true;
       });
 
+      JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+          options.SaveToken = true;
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
+            ValidAudience = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
+            IssuerSigningKey =
+              new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationSettings.Get<ApplicationSettings>().JwtSecret)),
+            ClockSkew = TimeSpan.Zero
+          };
+        });
+
+      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+      ServiceProvider serviceProvider = services.BuildServiceProvider();
+      IHostingEnvironment env = serviceProvider.GetService<IHostingEnvironment>();
+      if (env.IsProduction())
+      {
+        services.AddSpaStaticFiles(configuration =>
+        {
+          configuration.RootPath = "ClientApp/dist";
+        });
+      }
+
+      services.AddAutoMapper();
+
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
+
+      services.AddScoped<IUserService, UserService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +92,7 @@ namespace WaaS.Presentation
     {
       if (env.IsDevelopment())
       {
+        IdentityModelEventSource.ShowPII = true;
         app.UseDeveloperExceptionPage();
       }
       else
@@ -46,9 +102,15 @@ namespace WaaS.Presentation
         app.UseHsts();
       }
 
+      app.UseAuthentication();
+
       app.UseHttpsRedirection();
-      app.UseStaticFiles();
-      app.UseSpaStaticFiles();
+
+      if (env.IsProduction())
+      {
+        app.UseStaticFiles();
+        app.UseSpaStaticFiles();
+      }
 
       app.UseMvc(routes =>
       {
