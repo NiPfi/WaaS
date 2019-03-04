@@ -1,8 +1,11 @@
 <header>
   <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" routerLink="">WaaS</a>
-    <div>
+    <div *ngIf="authService.isAuthenticated()">
       <a class="btn btn-link navbar-text" routerLink="test">Test</a>
+      <button class="btn btn-link navbar-text" (click)="logout()">{{authService.getUserEmail()}}</button>
+    </div>
+    <div *ngIf="!authService.isAuthenticated()">
       <a class="btn btn-link navbar-text" routerLink="login">Log In</a>
       <a class="btn btn-outline-light" routerLink="register">Sign Up</a>
     </div>

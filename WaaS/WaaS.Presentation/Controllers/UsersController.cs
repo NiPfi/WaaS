@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
-using WaaS.Business.Entities;
 using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Presentation.Controllers
@@ -26,7 +25,14 @@ namespace WaaS.Presentation.Controllers
     {
       var createdUser = await _userService.Create(user);
 
-      return Ok(createdUser);
+
+      if (createdUser != null)
+      {
+        return Ok(createdUser);
+      } else
+      {
+        return BadRequest();
+      }
     }
 
     [AllowAnonymous]

@@ -9,10 +9,10 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(req: import("@angular/common/http").HttpRequest<any>, next: import("@angular/common/http").HttpHandler): import("rxjs").Observable<import("@angular/common/http").HttpEvent<any>> {
 
-    if (this.authService.isAuthenticated) {
+    if (this.authService.isAuthenticated()) {
       req = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.authService.token}`
+          Authorization: `Bearer ${this.authService.getToken()}`
         }
       });
     }
