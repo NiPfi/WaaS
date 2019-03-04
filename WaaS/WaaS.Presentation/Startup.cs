@@ -68,6 +68,8 @@ namespace WaaS.Presentation
           };
         });
 
+      services.AddResponseCompression();
+
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
       ServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -100,6 +102,8 @@ namespace WaaS.Presentation
         app.UseExceptionHandler("/Error");
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
+
+        app.UseResponseCompression();
       }
 
       app.UseAuthentication();
