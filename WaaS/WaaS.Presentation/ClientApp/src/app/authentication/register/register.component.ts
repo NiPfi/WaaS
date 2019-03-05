@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { User } from '../user';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,8 @@ export class RegisterComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   error = '';
+
+  @ViewChild('captchaRef') reCaptcha: RecaptchaComponent;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,6 +66,7 @@ export class RegisterComponent implements OnInit {
         error => {
           this.error = error;
           this.loading = false;
+          this.reCaptcha.reset();
         });
   }
 
