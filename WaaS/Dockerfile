@@ -2,9 +2,9 @@ FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 # Get Node.js for npm scripts
 COPY --from=node:alpine / /
 WORKDIR /app
-ENV ASPNETCORE_URLS=http://+:5000
 ENV ASPNETCORE_ENVIRONMENT=Production
 EXPOSE 5000
+EXPOSE 5001
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
