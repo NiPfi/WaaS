@@ -1,17 +1,28 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { User } from './user';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.localStorage = window.localStorage;
+    }
+  }
+
+  private localStorage: any;
 
   public isAuthenticated(): boolean {
     return this.retrieveUserString() != null;
@@ -28,11 +39,13 @@ export class AuthService {
   login(loginUser: User, captchaResponse: string) {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {
       user: loginUser,
-      captchaResponse: captchaResponse
+      captchaResponse
     }
-      ).pipe(map(user => {
+    ).pipe(map(user => {
       if (user && user.token) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        if (this.localStorage) {
+          this.localStorage.setItem('currentUser', JSON.stringify(user));
+        }
       }
     }));
   }
@@ -40,12 +53,14 @@ export class AuthService {
   register(registerUser: User, captchaResponse: string) {
     return this.http.post<User>(`${environment.apiUrl}/users`, {
       user: registerUser,
-      captchaResponse: captchaResponse
+      captchaResponse
     });
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
+    if (this.localStorage) {
+      this.localStorage.removeItem('currentUser');
+    }
     this.router.navigate(['']);
   }
 
@@ -54,7 +69,9 @@ export class AuthService {
   }
 
   private retrieveUserString(): any {
-    return JSON.parse(localStorage.getItem('currentUser'));
+    if (this.localStorage) {
+      return JSON.parse(this.localStorage.getItem('currentUser'));
+    }
   }
 
 }
