@@ -4,9 +4,10 @@
     <div *ngIf="authService.isAuthenticated()">
       <a class="btn btn-link navbar-text" routerLink="test">Test</a>
       <div class="btn-group" dropdown>
-        <button id="user-menu-button" dropdownToggle type="button" class="btn btn-link navbar-text dropdown-toggle" aria-controls="user-menu-dropdown">{{authService.getUserEmail()}} <span class="caret"></span></button>
-        <ul id="user-menu-dropdown" *dropdownMenu class="dropdown-menu" role="menu">
-          <li role="menuitem"><a class="dropdown-item" href="#">Test</a></li>
+        <button id="user-menu-button" dropdownToggle type="button" class="btn btn-outline-light dropdown-toggle" aria-controls="user-menu-dropdown">{{authService.getUserEmail()}} <span class="caret"></span></button>
+        <ul id="user-menu-dropdown" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+          <li role="menuitem"><a class="dropdown-item" href="#">Edit Profile</a></li>
+          <li role="menuitem"><a class="dropdown-item" href="#">Sign out</a></li>
         </ul>
       </div>
     </div>
