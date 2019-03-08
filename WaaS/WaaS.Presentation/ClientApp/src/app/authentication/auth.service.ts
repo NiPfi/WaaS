@@ -43,11 +43,15 @@ export class AuthService {
     }
     ).pipe(map(user => {
       if (user && user.token) {
-        if (this.localStorage) {
-          this.localStorage.setItem('currentUser', JSON.stringify(user));
-        }
+        this.updateUser(user);
       }
     }));
+  }
+
+  updateUser(user: User) {
+    if (this.localStorage) {
+      this.localStorage.setItem('currentUser', JSON.stringify(user));
+    }
   }
 
   register(registerUser: User, captchaResponse: string) {

@@ -3,6 +3,7 @@ import { AuthService } from '../authentication/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { EditProfileService } from './edit-profile.service';
+import { User } from '../authentication/user';
 
 @Component({
   selector: 'app-edit-profile',
@@ -30,6 +31,26 @@ export class EditProfileComponent implements OnInit {
     this.changePasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
+  }
+
+  onSubmitEmail() {
+    if (this.changeEmailForm.invalid) {
+      return;
+    }
+
+    const userDto = new User(this.changeEmailForm.controls.email.value, null);
+
+    return this.editProfileService.update(userDto);
+  }
+
+  onSubmitPassword() {
+    if (this.changePasswordForm.invalid) {
+      return;
+    }
+
+    const userDto = new User(this.authService.getUserEmail(), this.changePasswordForm.controls.password.value);
+
+    return this.editProfileService.update(userDto);
   }
 
   openDeleteModal(template: TemplateRef<any>) {

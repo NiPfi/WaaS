@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    var userDto = new User(this.form.email.value, this.form.password.value);
+    const userDto = new User(this.form.email.value, this.form.password.value);
     this.authService.login(userDto, captchaResponse)
       .pipe(first())
       .subscribe(

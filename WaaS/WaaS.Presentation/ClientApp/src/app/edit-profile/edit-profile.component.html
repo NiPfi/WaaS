@@ -1,12 +1,12 @@
 <div class="container">
   <h1>Edit Profile</h1>
   <h2>Change your E-Mail Address</h2>
-  <form [formGroup]="changeEmailForm">
+  <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmitEmail()">
     <input type="email" formControlName="email" class="form-control" />
     <button type="submit" class="btn btn-primary">Change E-Mail</button>
   </form>
   <h2>Change your Password</h2>
-  <form [formGroup]="changePasswordForm">
+  <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmitPassword()">
     <input type="password" formControlName="password" class="form-control" />
     <button type="submit" class="btn btn-primary">Change Password</button>
   </form>
