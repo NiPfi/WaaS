@@ -86,6 +86,7 @@ namespace WaaS.Business.Services
       }
       else
       {
+        idUser.UserName = userDto.Email;
         var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, userDto.Email);
         result = await _userManager.ChangeEmailAsync(idUser, userDto.Email, token);
       }
@@ -93,6 +94,7 @@ namespace WaaS.Business.Services
       if (result.Succeeded)
       {
         userDto.Password = null;
+        userDto.Token = GenerateJwtToken(idUser);
         return userDto;
       }
 
