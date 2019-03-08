@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   error = '';
-  
+
   @ViewChild('captchaRef') reCaptcha: RecaptchaComponent;
 
   constructor(

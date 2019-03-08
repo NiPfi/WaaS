@@ -1,3 +1,16 @@
-<p>
-  edit-profile works!
-</p>
+<div class="container">
+  <h1>Edit Profile</h1>
+  <h2>Change your E-Mail Address</h2>
+  <form [formGroup]="changeEmailForm">
+    <input type="email" formControlName="email" class="form-control"/>
+    <button type="submit" class="btn btn-primary">Change E-Mail</button>
+  </form>
+  <h2>Change your Password</h2>
+  <form [formGroup]="changePasswordForm">
+    <input type="password" formControlName="password" class="form-control"/>
+    <button type="submit" class="btn btn-primary">Change Password</button>
+  </form>
+  <h2>Your account</h2>
+  <button type="button" class="btn btn-danger">Delete account</button>
+
+</div>>
