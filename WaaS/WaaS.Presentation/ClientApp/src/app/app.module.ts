@@ -6,6 +6,7 @@ import { RECAPTCHA_SETTINGS, RecaptchaModule, RecaptchaSettings } from 'ng-recap
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,11 +14,11 @@ import { AppComponent } from './app.component';
 import { JwtInterceptor } from './authentication/jwt/jwt.interceptor';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { TestComponent } from './test/test.component';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -31,22 +32,24 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     EditProfileComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
     AlertModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: RECAPTCHA_SETTINGS, useValue: {
-      siteKey: environment.reCaptchaSiteKey,
-      size: 'invisible'
-    } as RecaptchaSettings
-  }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    {
+      provide: RECAPTCHA_SETTINGS, useValue: {
+        siteKey: environment.reCaptchaSiteKey,
+        size: 'invisible'
+      } as RecaptchaSettings
+    }
   ],
   bootstrap: [AppComponent]
 })

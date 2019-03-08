@@ -74,6 +74,20 @@ namespace WaaS.Business.Services
       return null;
     }
 
+    public async Task<UserDto> Delete(ClaimsPrincipal principal)
+    {
+      var idUser = await _userManager.GetUserAsync(principal);
+
+      var result = await _userManager.DeleteAsync(idUser);
+
+      if (result.Succeeded)
+      {
+        return _mapper.Map<UserDto>(idUser);
+      }
+
+      return null;
+    }
+
     private string GenerateJwtToken(IdentityUser user)
     {
       var tokenHandler = new JwtSecurityTokenHandler();
@@ -82,9 +96,10 @@ namespace WaaS.Business.Services
       {
         Subject = new ClaimsIdentity(new[]
         {
-          new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-          new Claim(ClaimTypes.NameIdentifier, user.Id)
+          new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+          new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+          new Claim(JwtRegisteredClaimNames.Email, user.Email),
+          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         }),
         Expires = _tokenExpirationDate,
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

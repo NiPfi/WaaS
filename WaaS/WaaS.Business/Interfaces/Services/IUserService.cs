@@ -1,7 +1,7 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WaaS.Business.Dtos;
-using WaaS.Business.Entities;
 
 namespace WaaS.Business.Interfaces.Services
 {
@@ -9,5 +9,6 @@ namespace WaaS.Business.Interfaces.Services
   {
     Task<IdentityUser> Create(UserDto user);
     Task<UserDto> Authenticate(string userEmail, string password);
+    Task<UserDto> Delete(ClaimsPrincipal principal);
   }
 }

@@ -46,6 +46,8 @@ namespace WaaS.Presentation
         options.Lockout.AllowedForNewUsers = false;
 
         options.User.RequireUniqueEmail = true;
+
+        options.ClaimsIdentity.UserIdClaimType = JwtRegisteredClaimNames.Sub;
       });
 
       JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
