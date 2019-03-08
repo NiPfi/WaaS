@@ -3,7 +3,12 @@
     <a class="navbar-brand" routerLink="">WaaS</a>
     <div *ngIf="authService.isAuthenticated()">
       <a class="btn btn-link navbar-text" routerLink="test">Test</a>
-      <button class="btn btn-link navbar-text" (click)="logout()">{{authService.getUserEmail()}}</button>
+      <div class="btn-group" dropdown>
+        <button id="user-menu-button" dropdownToggle type="button" class="btn btn-link navbar-text dropdown-toggle" aria-controls="user-menu-dropdown">{{authService.getUserEmail()}} <span class="caret"></span></button>
+        <ul id="user-menu-dropdown" *dropdownMenu class="dropdown-menu" role="menu">
+          <li role="menuitem"><a class="dropdown-item" href="#">Test</a></li>
+        </ul>
+      </div>
     </div>
     <div *ngIf="!authService.isAuthenticated()">
       <a class="btn btn-link navbar-text" routerLink="login">Log In</a>

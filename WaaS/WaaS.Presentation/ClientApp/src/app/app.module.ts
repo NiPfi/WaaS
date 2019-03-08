@@ -2,8 +2,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
-import { AlertModule } from 'ngx-bootstrap';
+import { RECAPTCHA_SETTINGS, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+import { BsDropdownModule } from 'ngx-bootstrap';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,8 +17,6 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { TestComponent } from './test/test.component';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
-import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { environment } from 'src/environments/environment';
     ReactiveFormsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    BsDropdownModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

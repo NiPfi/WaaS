@@ -7,7 +7,7 @@ import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
-import { AlertModule } from 'ngx-bootstrap';
+import { AlertModule, BsDropdownModule } from 'ngx-bootstrap';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
@@ -21,7 +21,8 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
     ReactiveFormsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    BsDropdownModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
