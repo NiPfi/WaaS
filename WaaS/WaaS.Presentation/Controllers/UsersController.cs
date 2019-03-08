@@ -27,7 +27,7 @@ namespace WaaS.Presentation.Controllers
     // POST: api/Users
     [AllowAnonymous]
     [HttpPost]
-    public async Task<ActionResult<UserDto>> Register(UserCaptchaDto userCaptchaDto)
+    public async Task<IActionResult> Register(UserCaptchaDto userCaptchaDto)
     {
 
       if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
@@ -46,7 +46,7 @@ namespace WaaS.Presentation.Controllers
 
     [AllowAnonymous]
     [HttpPost("authenticate")]
-    public async Task<ActionResult<UserDto>> Authenticate(UserCaptchaDto userCaptchaDto)
+    public async Task<IActionResult> Authenticate(UserCaptchaDto userCaptchaDto)
     {
       if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
       {
@@ -55,45 +55,32 @@ namespace WaaS.Presentation.Controllers
 
         if (user == null)
         {
-          return NotFound();
+          return Unauthorized();
         }
 
-        return user;
+        return Ok(user);
       }
 
       return Unauthorized();
 
     }
 
-    //// PUT: api/Users/5
-    //[HttpPut("{id}")]
-    //public async Task<IActionResult> PutUser(int id, UserDto userDto)
-    //{
+    // PUT: api/Users
+    [HttpPut, Authorize]
+    public async Task<IActionResult> PutUser(UserDto userDto)
+    {
+      var user = await _userService.Update(User, userDto);
+      if (user != null)
+      {
+        return Ok(user);
+      }
 
-    //_context.Entry(user).State = EntityState.Modified;
-
-    //try
-    //{
-    //  await _context.SaveChangesAsync();
-    //}
-    //catch (DbUpdateConcurrencyException)
-    //{
-    //  if (!UserExists(id))
-    //  {
-    //    return NotFound();
-    //  }
-    //  else
-    //  {
-    //    throw;
-    //  }
-    //}
-
-    //  return NoContent();
-    //}
+      return BadRequest();
+    }
 
     // DELETE: api/Users
     [HttpDelete, Authorize]
-    public async Task<ActionResult<UserDto>> DeleteUser()
+    public async Task<IActionResult> DeleteUser()
     {
       var user = await _userService.Delete(User);
       if (user != null)

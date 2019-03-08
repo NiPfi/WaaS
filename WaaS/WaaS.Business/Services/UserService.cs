@@ -37,7 +37,7 @@ namespace WaaS.Business.Services
       _applicationSettings = applicationSettings.Value;
     }
 
-    public async Task<IdentityUser> Create(UserDto userDto)
+    public async Task<UserDto> Create(UserDto userDto)
     {
       if (userDto.Email != null && userDto.Password != null)
       {
@@ -46,7 +46,8 @@ namespace WaaS.Business.Services
 
         if (result.Succeeded)
         {
-          return userEntity;
+          userEntity.PasswordHash = null;
+          return _mapper.Map<UserDto>(userEntity);
         }
 
       }
@@ -69,6 +70,30 @@ namespace WaaS.Business.Services
 
         return userDto;
 
+      }
+
+      return null;
+    }
+
+    public async Task<UserDto> Update(ClaimsPrincipal principal, UserDto userDto)
+    {
+      var idUser = await _userManager.GetUserAsync(principal);
+      IdentityResult result;
+      if (userDto.Password != null)
+      {
+        var token = await _userManager.GeneratePasswordResetTokenAsync(idUser);
+        result = await _userManager.ResetPasswordAsync(idUser, token, userDto.Password);
+      }
+      else
+      {
+        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, userDto.Email);
+        result = await _userManager.ChangeEmailAsync(idUser, userDto.Email, token);
+      }
+
+      if (result.Succeeded)
+      {
+        userDto.Password = null;
+        return userDto;
       }
 
       return null;
