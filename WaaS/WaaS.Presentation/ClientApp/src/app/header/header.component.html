@@ -7,7 +7,7 @@
         <button id="user-menu-button" dropdownToggle type="button" class="btn btn-outline-light dropdown-toggle" aria-controls="user-menu-dropdown">{{authService.getUserEmail()}} <span class="caret"></span></button>
         <ul id="user-menu-dropdown" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
           <li role="menuitem"><a class="dropdown-item" href="#">Edit Profile</a></li>
-          <li role="menuitem"><a class="dropdown-item" href="#">Sign out</a></li>
+          <li role="menuitem"><button type="button" (click)="logout()" class="btn btn-danger btn-block">Sign out</button></li>
         </ul>
       </div>
     </div>
