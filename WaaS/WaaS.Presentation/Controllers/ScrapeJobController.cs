@@ -25,7 +25,13 @@ namespace WaaS.Presentation.Controllers
     [HttpPost, Authorize]
     public async Task<IActionResult> CreateScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      throw new NotImplementedException();
+      var scrapeJob = await _scrapeJobService.Create(scrapeJobDto);
+      if (scrapeJob != null)
+      {
+        return Ok(scrapeJob);
+      }
+
+      return BadRequest();
     }
 
     [HttpGet ,Authorize]
@@ -37,13 +43,25 @@ namespace WaaS.Presentation.Controllers
     [HttpPut, Authorize]
     public async Task<IActionResult> PutScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      throw new NotImplementedException();
+      var scrapeJob = await _scrapeJobService.Update(scrapeJobDto);
+      if (scrapeJob != null)
+      {
+        return Ok(scrapeJob);
+      }
+
+      return BadRequest();
     }
 
     [HttpDelete, Authorize]
     public async Task<IActionResult> DeleteScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      throw new NotImplementedException();
+      var success = await _scrapeJobService.Delete(scrapeJobDto.Id);
+      if (success)
+      {
+        return Ok();
+      }
+
+      return BadRequest();
     }
 
   }
