@@ -104,12 +104,20 @@ namespace WaaS.Presentation.Controllers
         throw new Exception("uninitialized secret");
       }
 
-      var client = new System.Net.WebClient();
+      string googleReply;
 
-      var googleReply = client.DownloadString(
-        $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={captchaResponse}");
+      using (var client = new System.Net.WebClient())
+      {
+        googleReply = client.DownloadString(
+          $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={captchaResponse}");
+      }
 
-      return JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
+      if(!string.IsNullOrWhiteSpace(googleReply))
+      {
+        return JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
+      }
+
+      return false;
     }
   }
 }
