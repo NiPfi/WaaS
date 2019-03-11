@@ -91,6 +91,8 @@ namespace WaaS.Presentation.Controllers
       return BadRequest();
     }
 
+    #region private methods
+
     private bool CaptchaResponseValid(string captchaResponse)
     {
       if (string.IsNullOrEmpty(captchaResponse))
@@ -112,12 +114,15 @@ namespace WaaS.Presentation.Controllers
           $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={captchaResponse}");
       }
 
-      if(!string.IsNullOrWhiteSpace(googleReply))
+      if (!string.IsNullOrWhiteSpace(googleReply))
       {
         return JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
       }
 
       return false;
     }
+
+    #endregion
+
   }
 }
