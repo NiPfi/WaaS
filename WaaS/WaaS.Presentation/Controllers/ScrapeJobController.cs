@@ -23,25 +23,25 @@ namespace WaaS.Presentation.Controllers
     }
 
     [HttpPost, Authorize]
-    public Task<IActionResult> CreateScrapeJob(ScrapeJobDto scrapeJobDto)
+    public async Task<IActionResult> CreateScrapeJob(ScrapeJobDto scrapeJobDto)
     {
       throw new NotImplementedException();
     }
 
     [HttpGet ,Authorize]
-    public Task<IActionResult> GetUsersScrapeJobs()
+    public async Task<IActionResult> GetUsersScrapeJobs()
     {
       throw new NotImplementedException();
     }
 
     [HttpPut, Authorize]
-    public Task<IActionResult> PutScrapeJob(ScrapeJobDto scrapeJobDto)
+    public async Task<IActionResult> PutScrapeJob(ScrapeJobDto scrapeJobDto)
     {
       throw new NotImplementedException();
     }
 
     [HttpDelete, Authorize]
-    public Task<IActionResult> DeleteScrapeJob(ScrapeJobDto scrapeJobDto)
+    public async Task<IActionResult> DeleteScrapeJob(ScrapeJobDto scrapeJobDto)
     {
       throw new NotImplementedException();
     }
