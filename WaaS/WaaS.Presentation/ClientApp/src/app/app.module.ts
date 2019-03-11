@@ -19,6 +19,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { TestComponent } from './test/test.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { TestComponent } from './test/test.component';
     LoginComponent,
     HomeComponent,
     RegisterComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
