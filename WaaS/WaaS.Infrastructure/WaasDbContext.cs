@@ -14,11 +14,11 @@ namespace WaaS.Infrastructure
       Database.Migrate();
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-      modelBuilder.Entity<ScrapeJob>().ToTable("ScrapeJob");
+      builder.Entity<ScrapeJob>().ToTable("ScrapeJob");
 
-      base.OnModelCreating(modelBuilder);
+      base.OnModelCreating(builder);
     }
   }
 }
