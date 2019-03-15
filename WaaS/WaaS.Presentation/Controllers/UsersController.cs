@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WaaS.Business;
 using WaaS.Business.Dtos;
 using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Exceptions;
 
 namespace WaaS.Presentation.Controllers
 {
@@ -101,7 +102,7 @@ namespace WaaS.Presentation.Controllers
       var secret = _applicationSettings.ReCaptchaSecretKey;
       if (string.IsNullOrEmpty(secret))
       {
-        throw new Exception("uninitialized secret");
+        throw new InvalidApplicationConfigurationException("ReCaptcha secret key not configured");
       }
 
       string googleReply;
