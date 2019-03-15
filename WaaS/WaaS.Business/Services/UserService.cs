@@ -115,6 +115,8 @@ namespace WaaS.Business.Services
       return null;
     }
 
+    #region private methods
+
     private string GenerateJwtToken(IdentityUser user)
     {
       var tokenHandler = new JwtSecurityTokenHandler();
@@ -131,10 +133,13 @@ namespace WaaS.Business.Services
         Expires = _tokenExpirationDate,
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
         Issuer = _applicationSettings.JwtIssuer,
-        Audience =  _applicationSettings.JwtIssuer
+        Audience = _applicationSettings.JwtIssuer
       };
 
       return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
     }
   }
+
+  #endregion
+
 }

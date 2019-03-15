@@ -7,6 +7,7 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { HomeComponent } from './home/home.component';
 import { TestComponent } from './test/test.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
     path: 'profile',
     component: EditProfileComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'about',
+    component: AboutComponent
   },
 
   // otherwise redirect to home
