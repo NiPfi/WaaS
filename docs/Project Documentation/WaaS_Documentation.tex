@@ -414,9 +414,54 @@ Since WaaS is a rather small and simple application we found it unnecessary to d
 \subsection{HTML Prototype}
 To visualize the navigation model, a HTML Prototype was created and is available either in the adjacent documents to this documentation or through the GitHub Page on \url{https://nipfi.github.io/ffhs-WebE/HTML%20Prototype/index.html}.
 
+\section{Used technologies and frameworks}
+
+\subsection{Front End}
+
+\paragraph{Angular}
+The front end is implemented using Angular because its dynamic nature makes it ideal for handling user interaction with a RESTful web service.
+Through its architecture it promotes a clean style of coding and its reliance on TypeScript makes Front End Code much more understandable for developers with a background in object oriented programming paradigms.
+Furthermore, it has a great spread in enterprise applications and because of this also a healthy developer community. \\
+Angular offers most features needed for WaaS by itself, therefore no further frameworks are required. Some components and functionality may be added through 3rd party dependencies though.
+
+\subsection{Back End}
+
+\paragraph{.NET Core}
+As a relatively young part of the .NET landscape .NET Core improves on many shortcomings of .NET Framework. Not only is it open-source, it also runs cross-platform and is generally less demanding in resources,
+which makes it more suited for deployments in cloud services, containerized or not.
+
+\subparagraph{ASP.NET Core}
+ASP.NET Core is the .NET Core equivalent of the ASP.NET web application framework and provides powerful yet simple to use methods for implementing REST APIs. It practically is built-in to any
+.NET Core web application project which makes it an easy choice.
+
+\subparagraph{Entity Framework Core}
+EF Core is the default O/R mapper for .NET Core projects. It offers connectors for almost any relevant relational database technology and makes it relatively easy to handle database modelling tasks
+while allowing for the data model to change in a safe way through it's code-first migrations feature. It's an ideal technology for smaller web application projects.
+
+\subparagraph{ASP.NET Core Identity}
+WaaS uses ASP.NET Core Identity because in many cases it's a better choice for security to rely on a well-maintained framework rather than badly implementing a custom authentication and authorization mechanism and
+since it's quite a basic requirement for many web applications, we believe it to be a better approach to consolidate efforts to promote web application security. ASP.NET Core Identity integrates very well with the other
+frameworks used in this back end dependency constellation.
+
+\subsection{Deployment}
+
+\paragraph{Docker}
+By using Docker, WaaS can be deployed in virtually any environment from a simple docker host to a more complex orchestrated container platform with relative ease.
+The complexity of managing software dependencies in a restricted server environment is completely eliminated which is advantageous
+even though the build process for a docker image can be tedious to maintain.
+
+\section {Usability testing methodology}
+Even though there is no formal usability testing planned at the moment, WaaS should offer a good amount of user-friendliness.
+If possible, users should be offered help in the form of visual guides where necessary.
+Furthermore, users should be able to provide feedback for example in the form of GitHub issues or a simple E-Mail, in order to record and implement the requirements of the actual users of WaaS.
+The Usability of WaaS could be evaluated by a simplified usability test with the help of friends and family.
+There is also the possibility to use an Automated Expert Review for the purpose of a quick and low-cost usability review.
+Lastly, A/B tests could be used to evaluate specific changes in the application which is possible due to the containerized deployment strategy allowing to have two slightly different
+instances of an application up and running or to replace one version with another in a relatively easy way.
+
 \pagebreak
 
-\listoftablesö
+\listoftables
 \listoffigures
 
 \pagebreak
