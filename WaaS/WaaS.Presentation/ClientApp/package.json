@@ -8,7 +8,7 @@
     "build:ssr": "ng run ClientApp:server",
     "build:ssr:production": "ng run ClientApp:server:production",
     "test": "ng test",
-    "test:production": "ng test --watch=false --code-coverage",
+    "test:production": "ng test --configuration=production",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

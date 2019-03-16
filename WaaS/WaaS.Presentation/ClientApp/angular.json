@@ -88,6 +88,12 @@
               "src/favicon.ico",
               "src/assets"
             ]
+          },
+          "configurations": {
+            "production": {
+              "codeCoverage": true,
+              "karmaConfig": "src/karma.ci.conf.js"
+            }
           }
         },
         "lint": {
