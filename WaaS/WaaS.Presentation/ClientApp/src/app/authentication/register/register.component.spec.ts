@@ -1,4 +1,10 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MockComponent } from 'ng-mocks';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { AlertModule } from 'ngx-bootstrap';
 
 import { RegisterComponent } from './register.component';
 
@@ -8,9 +14,18 @@ describe('RegisterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterComponent ]
+      declarations: [
+        RegisterComponent,
+        MockComponent(RecaptchaComponent)
+      ],
+      imports: [
+        AlertModule.forRoot(),
+        ReactiveFormsModule,
+        RouterTestingModule,
+        HttpClientTestingModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
