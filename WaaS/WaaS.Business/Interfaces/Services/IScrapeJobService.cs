@@ -10,7 +10,7 @@ namespace WaaS.Business.Interfaces.Services
   public interface IScrapeJobService
   {
     Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob);
-    IQueryable<ScrapeJobDto> ReadAll();
+    IEnumerable<ScrapeJobDto> ReadAll();
     Task<ScrapeJobDto> Read(uint id);
     Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob);
     Task<bool> Delete(uint id);

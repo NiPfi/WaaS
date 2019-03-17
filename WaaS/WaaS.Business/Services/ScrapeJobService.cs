@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,40 +15,96 @@ namespace WaaS.Business.Services
   {
 
     private readonly IRepository<ScrapeJob, uint> _scrapeJobsRepository;
+    private readonly IMapper _mapper;
 
-    public ScrapeJobService(IRepository<ScrapeJob, uint> scrapeJobsRepository)
+    public ScrapeJobService(IMapper mapper, IRepository<ScrapeJob, uint> scrapeJobsRepository)
     {
+      _mapper = mapper;
       _scrapeJobsRepository = scrapeJobsRepository;
     }
 
-    public Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob)
+    public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob)
     {
-      throw new NotImplementedException();
+
+      if(string.IsNullOrEmpty(scrapeJob.Url) || string.IsNullOrEmpty(scrapeJob.Pattern)){
+
+        var entity = _mapper.Map<ScrapeJob>(scrapeJob);
+
+        var success = await _scrapeJobsRepository.Add(entity);
+
+        if (success)
+        {
+          return _mapper.Map<ScrapeJobDto>(entity);
+        }
+
+      }
+
+      return null;
+
     }
 
-    public Task<bool> Delete(uint id)
+    public async Task<bool> Delete(uint id)
     {
-      throw new NotImplementedException();
+      return await _scrapeJobsRepository.Delete(id);
     }
 
-    public Task<ScrapeJobDto> Read(uint id)
+    public async Task<ScrapeJobDto> Read(uint id)
     {
-      throw new NotImplementedException();
+
+      var entity = await _scrapeJobsRepository.Get(id);
+
+      if(entity != null)
+      {
+        return _mapper.Map<ScrapeJobDto>(entity);
+      }
+
+      return null;
+
     }
 
-    public IQueryable<ScrapeJobDto> ReadAll()
+    public IEnumerable<ScrapeJobDto> ReadAll()
     {
-      throw new NotImplementedException();
+
+      var entities = _scrapeJobsRepository.GetAll().ToList();
+
+      if (entities.Any())
+      {
+        var scrapeJobs =  entities.Select(_mapper.Map<ScrapeJob, ScrapeJobDto>);
+      }
+
+      return Enumerable.Empty<ScrapeJobDto>();
+
     }
 
-    public Task<ScrapeJobDto> ToggleEnabled(uint id)
+    public async Task<ScrapeJobDto> ToggleEnabled(uint id)
     {
-      throw new NotImplementedException();
+
+      var success = await _scrapeJobsRepository.Update(id, e => e.Enabled = !e.Enabled);
+
+      if (success)
+      {
+        var updatedEntity = await _scrapeJobsRepository.Get(id);
+        return _mapper.Map<ScrapeJobDto>(updatedEntity);
+      }
+
+      return null;
+
     }
 
-    public Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob)
+    public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob)
     {
-      throw new NotImplementedException();
+
+      var success = await _scrapeJobsRepository.Update(scrapeJob.Id, e => e = _mapper.Map(scrapeJob, e));
+
+      if (success)
+      {
+        var updatedEntity = await _scrapeJobsRepository.Get(scrapeJob.Id);
+        return _mapper.Map<ScrapeJobDto>(updatedEntity);
+      }
+
+      return null;
+
     }
+
   }
 }
