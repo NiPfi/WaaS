@@ -76,6 +76,11 @@ namespace WaaS.Business.Services
 
     }
 
+    public IEnumerable<ScrapeJobDto> ReadUsersScrapeJobs(UserDto user)
+    {
+      throw new NotImplementedException();
+    }
+
     public async Task<ScrapeJobDto> ToggleEnabled(uint id)
     {
 

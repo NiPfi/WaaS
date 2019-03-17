@@ -11,6 +11,7 @@ namespace WaaS.Business.Interfaces.Services
   {
     Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob);
     IEnumerable<ScrapeJobDto> ReadAll();
+    IEnumerable<ScrapeJobDto> ReadUsersScrapeJobs(UserDto user);
     Task<ScrapeJobDto> Read(uint id);
     Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob);
     Task<bool> Delete(uint id);

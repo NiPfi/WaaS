@@ -35,9 +35,16 @@ namespace WaaS.Presentation.Controllers
     }
 
     [HttpGet ,Authorize]
-    public async Task<IActionResult> GetUsersScrapeJobs()
+    public IActionResult GetUsersScrapeJobs()
     {
-      throw new NotImplementedException();
+      //TODO get current user from token
+      var scrapeJobs =  _scrapeJobService.ReadUsersScrapeJobs(new UserDto());
+      if (scrapeJobs.Any())
+      {
+        return Ok(scrapeJobs);
+      }
+
+      return BadRequest();
     }
 
     [HttpPut, Authorize]
