@@ -39,7 +39,7 @@ namespace WaaS.Business.Services
 
     public async Task<UserDto> Create(UserDto user)
     {
-      if (string.IsNullOrEmpty(user.Email) && string.IsNullOrEmpty(user.Password))
+      if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
       {
         var userEntity = _mapper.Map<IdentityUser>(user);
         var result = await _userManager.CreateAsync(userEntity, user.Password);
