@@ -16,7 +16,7 @@ namespace WaaS.Business.Mapping
       CreateMap<IdentityUser, UserDto>();
 
       CreateMap<ScrapeJobDto, ScrapeJob>();
-      CreateMap<ScrapeJobDto, ScrapeJob>();
+      CreateMap<ScrapeJob, ScrapeJobDto>();
 
     }
   }
