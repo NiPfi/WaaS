@@ -1,7 +1,9 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
@@ -14,10 +16,16 @@ namespace WaaS.Business.Services
   class ScrapeJobService : IScrapeJobService
   {
 
-    private readonly IRepository<ScrapeJob, uint> _scrapeJobsRepository;
+    private readonly IScrapeJobRepository _scrapeJobsRepository;
     private readonly IMapper _mapper;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public ScrapeJobService(IMapper mapper, IRepository<ScrapeJob, uint> scrapeJobsRepository)
+    public ScrapeJobService
+      (
+      IMapper mapper,
+      IScrapeJobRepository scrapeJobsRepository,
+      UserManager<IdentityUser> userManager
+      )
     {
       _mapper = mapper;
       _scrapeJobsRepository = scrapeJobsRepository;
@@ -45,11 +53,14 @@ namespace WaaS.Business.Services
 
     public async Task<bool> Delete(uint id)
     {
+      //TODO check if dto is one of current user
+
       return await _scrapeJobsRepository.Delete(id);
     }
 
     public async Task<ScrapeJobDto> Read(uint id)
     {
+      //TODO check if dto is one of current user
 
       var entity = await _scrapeJobsRepository.Get(id);
 
@@ -69,20 +80,31 @@ namespace WaaS.Business.Services
 
       if (entities.Any())
       {
-        var scrapeJobs =  entities.Select(_mapper.Map<ScrapeJob, ScrapeJobDto>);
+        return _mapper.Map<IEnumerable<ScrapeJobDto>>(entities);
       }
 
       return Enumerable.Empty<ScrapeJobDto>();
 
     }
 
-    public IEnumerable<ScrapeJobDto> ReadUsersScrapeJobs(UserDto user)
+    public async Task<IEnumerable<ScrapeJobDto>> ReadUsersScrapeJobs(ClaimsPrincipal principal)
     {
-      throw new NotImplementedException();
+      var idUser = await _userManager.GetUserAsync(principal);
+
+      var entities = _scrapeJobsRepository.ReadUsersScrapeJobs(idUser.Id);
+
+      if (entities.Any())
+      {
+        return _mapper.Map<IEnumerable<ScrapeJobDto>>(entities);
+      }
+
+      return Enumerable.Empty<ScrapeJobDto>();
+
     }
 
     public async Task<ScrapeJobDto> ToggleEnabled(uint id)
     {
+      //TODO check if dto is one of current user
 
       var success = await _scrapeJobsRepository.Update(id, e => e.Enabled = !e.Enabled);
 
@@ -98,7 +120,8 @@ namespace WaaS.Business.Services
 
     public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob)
     {
-
+      //TODO check if dto is one of current user
+      
       var success = await _scrapeJobsRepository.Update(scrapeJob.Id, e => e = _mapper.Map(scrapeJob, e));
 
       if (success)
@@ -110,6 +133,14 @@ namespace WaaS.Business.Services
       return null;
 
     }
+
+    #region private methods
+    private bool IsOfCurrentUser(string userId, ScrapeJobDto scrapeJob)
+    {
+      throw new NotImplementedException();
+    }
+
+    #endregion
 
   }
 }

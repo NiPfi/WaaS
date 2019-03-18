@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
@@ -11,7 +12,7 @@ namespace WaaS.Business.Interfaces.Services
   {
     Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob);
     IEnumerable<ScrapeJobDto> ReadAll();
-    IEnumerable<ScrapeJobDto> ReadUsersScrapeJobs(UserDto user);
+    Task<IEnumerable<ScrapeJobDto>> ReadUsersScrapeJobs(ClaimsPrincipal principal);
     Task<ScrapeJobDto> Read(uint id);
     Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob);
     Task<bool> Delete(uint id);

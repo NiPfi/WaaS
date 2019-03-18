@@ -12,7 +12,7 @@ namespace WaaS.Presentation.Controllers
   [Authorize]
   [Route("api/[controller]")]
   [ApiController]
-  public class ScrapeJobController : Controller
+  public class ScrapeJobController : ControllerBase
   {
 
     private readonly IScrapeJobService _scrapeJobService;
@@ -35,10 +35,10 @@ namespace WaaS.Presentation.Controllers
     }
 
     [HttpGet ,Authorize]
-    public IActionResult GetUsersScrapeJobs()
+    public async Task<IActionResult> GetUsersScrapeJobs()
     {
       //TODO get current user from token
-      var scrapeJobs =  _scrapeJobService.ReadUsersScrapeJobs(new UserDto());
+      var scrapeJobs =  await _scrapeJobService.ReadUsersScrapeJobs(User);
       if (scrapeJobs.Any())
       {
         return Ok(scrapeJobs);
