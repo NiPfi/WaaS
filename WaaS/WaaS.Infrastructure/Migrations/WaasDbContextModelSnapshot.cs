@@ -193,13 +193,18 @@ namespace WaaS.Infrastructure.Migrations
 
                     b.Property<bool>("Enabled");
 
-                    b.Property<string>("IdentityUserForeignKey");
+                    b.Property<string>("IdentityUserForeignKey")
+                        .IsRequired();
 
                     b.Property<string>("Pattern");
 
                     b.Property<string>("Url");
 
+                    b.Property<long>("UserSpecificId");
+
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("UserSpecificId", "IdentityUserForeignKey");
 
                     b.HasIndex("IdentityUserForeignKey");
 
@@ -277,7 +282,8 @@ namespace WaaS.Infrastructure.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
-                        .HasForeignKey("IdentityUserForeignKey");
+                        .HasForeignKey("IdentityUserForeignKey")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WaaS.Business.Entities.ScrapeJobEvent", b =>

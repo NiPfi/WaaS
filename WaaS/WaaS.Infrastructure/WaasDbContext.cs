@@ -17,7 +17,10 @@ namespace WaaS.Infrastructure
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-      builder.Entity<ScrapeJob>().ToTable("ScrapeJob");
+      var scrapeJobsBuilder = builder.Entity<ScrapeJob>();
+      scrapeJobsBuilder.ToTable("ScrapeJob");
+      scrapeJobsBuilder.HasAlternateKey(sj => new {sj.UserSpecificId, sj.IdentityUserForeignKey});
+
       builder.Entity<ScrapeJobEvent>().ToTable("ScrapeJobEvent");
 
       base.OnModelCreating(builder);

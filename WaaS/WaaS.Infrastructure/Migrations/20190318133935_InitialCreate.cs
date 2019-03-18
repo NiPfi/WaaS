@@ -158,21 +158,23 @@ namespace WaaS.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
+                    UserSpecificId = table.Column<long>(nullable: false),
                     Enabled = table.Column<bool>(nullable: false),
                     Url = table.Column<string>(nullable: true),
                     Pattern = table.Column<string>(nullable: true),
                     AlternativeEmail = table.Column<string>(nullable: true),
-                    IdentityUserForeignKey = table.Column<string>(nullable: true)
+                    IdentityUserForeignKey = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ScrapeJob", x => x.Id);
+                    table.UniqueConstraint("AK_ScrapeJob_UserSpecificId_IdentityUserForeignKey", x => new { x.UserSpecificId, x.IdentityUserForeignKey });
                     table.ForeignKey(
                         name: "FK_ScrapeJob_AspNetUsers_IdentityUserForeignKey",
                         column: x => x.IdentityUserForeignKey,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
