@@ -27,6 +27,7 @@ namespace WaaS.Business.Services
       UserManager<IdentityUser> userManager
       )
     {
+      _userManager = userManager;
       _mapper = mapper;
       _scrapeJobsRepository = scrapeJobsRepository;
     }

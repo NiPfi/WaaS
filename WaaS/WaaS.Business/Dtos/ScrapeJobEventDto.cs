@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WaaS.Business.Dtos
 {
-  class ScrapeJobEventDto
+  public class ScrapeJobEventDto
   {
     public uint Id { get; set; }
     public int HTTPResponseCode { get; set; }
