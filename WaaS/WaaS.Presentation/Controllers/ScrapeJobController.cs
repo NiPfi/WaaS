@@ -50,7 +50,7 @@ namespace WaaS.Presentation.Controllers
     [HttpPut, Authorize]
     public async Task<IActionResult> PutScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      var scrapeJob = await _scrapeJobService.Update(scrapeJobDto);
+      var scrapeJob = await _scrapeJobService.Update(scrapeJobDto, User);
       if (scrapeJob != null)
       {
         return Ok(scrapeJob);
@@ -62,7 +62,7 @@ namespace WaaS.Presentation.Controllers
     [HttpDelete, Authorize]
     public async Task<IActionResult> DeleteScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      var success = await _scrapeJobService.Delete(scrapeJobDto.Id);
+      var success = await _scrapeJobService.Delete(scrapeJobDto.Id, User);
       if (success)
       {
         return Ok();

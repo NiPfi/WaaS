@@ -13,12 +13,13 @@ using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Business.Services
 {
-  class ScrapeJobService : IScrapeJobService
+  public class ScrapeJobService : IScrapeJobService
   {
 
     private readonly IScrapeJobRepository _scrapeJobsRepository;
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
+    //TODO fix _userManager warning (probably dependency injection problem)
 
     public ScrapeJobService
       (
@@ -27,8 +28,8 @@ namespace WaaS.Business.Services
       UserManager<IdentityUser> userManager
       )
     {
-      _userManager = userManager;
       _mapper = mapper;
+      _userManager = userManager;
       _scrapeJobsRepository = scrapeJobsRepository;
     }
 
@@ -52,22 +53,29 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<bool> Delete(uint id)
+    public async Task<bool> Delete(uint id, ClaimsPrincipal principal)
     {
-      //TODO check if dto is one of current user
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
+      {
+        return await _scrapeJobsRepository.Delete(id);
+      }
 
-      return await _scrapeJobsRepository.Delete(id);
+      return false;
+
     }
 
-    public async Task<ScrapeJobDto> Read(uint id)
+    public async Task<ScrapeJobDto> Read(uint id, ClaimsPrincipal principal)
     {
-      //TODO check if dto is one of current user
-
-      var entity = await _scrapeJobsRepository.Get(id);
-
-      if(entity != null)
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
       {
-        return _mapper.Map<ScrapeJobDto>(entity);
+        var entity = await _scrapeJobsRepository.Get(id);
+
+        if (entity != null)
+        {
+          return _mapper.Map<ScrapeJobDto>(entity);
+        }
       }
 
       return null;
@@ -103,32 +111,36 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<ScrapeJobDto> ToggleEnabled(uint id)
+    public async Task<ScrapeJobDto> ToggleEnabled(uint id, ClaimsPrincipal principal)
     {
-      //TODO check if dto is one of current user
-
-      var success = await _scrapeJobsRepository.Update(id, e => e.Enabled = !e.Enabled);
-
-      if (success)
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
       {
-        var updatedEntity = await _scrapeJobsRepository.Get(id);
-        return _mapper.Map<ScrapeJobDto>(updatedEntity);
+        var success = await _scrapeJobsRepository.Update(id, e => e.Enabled = !e.Enabled);
+
+        if (success)
+        {
+          var updatedEntity = await _scrapeJobsRepository.Get(id);
+          return _mapper.Map<ScrapeJobDto>(updatedEntity);
+        }
       }
 
       return null;
 
     }
 
-    public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob)
+    public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
     {
-      //TODO check if dto is one of current user
-      
-      var success = await _scrapeJobsRepository.Update(scrapeJob.Id, e => e = _mapper.Map(scrapeJob, e));
-
-      if (success)
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfCurrentUser(idUser.Id, scrapeJob.Id))
       {
-        var updatedEntity = await _scrapeJobsRepository.Get(scrapeJob.Id);
-        return _mapper.Map<ScrapeJobDto>(updatedEntity);
+        var success = await _scrapeJobsRepository.Update(scrapeJob.Id, e => e = _mapper.Map(scrapeJob, e));
+
+        if (success)
+        {
+          var updatedEntity = await _scrapeJobsRepository.Get(scrapeJob.Id);
+          return _mapper.Map<ScrapeJobDto>(updatedEntity);
+        }
       }
 
       return null;
@@ -136,9 +148,11 @@ namespace WaaS.Business.Services
     }
 
     #region private methods
-    private bool IsOfCurrentUser(string userId, ScrapeJobDto scrapeJob)
+    private async Task<bool> ScrapeJobIsOfCurrentUser(string userId, uint scrapeJobId)
     {
-      throw new NotImplementedException();
+      var scrapeJobEntity = await _scrapeJobsRepository.Get(scrapeJobId);
+
+      return userId.Equals(scrapeJobEntity.IdentityUser.Id);
     }
 
     #endregion
