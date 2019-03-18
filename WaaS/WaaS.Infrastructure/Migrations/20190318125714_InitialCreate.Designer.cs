@@ -10,14 +10,14 @@ using WaaS.Infrastructure;
 namespace WaaS.Infrastructure.Migrations
 {
     [DbContext(typeof(WaasDbContext))]
-    [Migration("20190303183858_InitialCreate")]
+    [Migration("20190318125714_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -195,13 +195,39 @@ namespace WaaS.Infrastructure.Migrations
 
                     b.Property<bool>("Enabled");
 
+                    b.Property<string>("IdentityUserForeignKey");
+
                     b.Property<string>("Pattern");
 
                     b.Property<string>("Url");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdentityUserForeignKey");
+
                     b.ToTable("ScrapeJob");
+                });
+
+            modelBuilder.Entity("WaaS.Business.Entities.ScrapeJobEvent", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("HTTPResponseCode");
+
+                    b.Property<int>("HTTPResponseTimeInMS");
+
+                    b.Property<string>("Message");
+
+                    b.Property<long>("ScrapeJobForeignKey");
+
+                    b.Property<DateTime>("TimeStamp");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScrapeJobForeignKey");
+
+                    b.ToTable("ScrapeJobEvent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -246,6 +272,21 @@ namespace WaaS.Infrastructure.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WaaS.Business.Entities.ScrapeJob", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserForeignKey");
+                });
+
+            modelBuilder.Entity("WaaS.Business.Entities.ScrapeJobEvent", b =>
+                {
+                    b.HasOne("WaaS.Business.Entities.ScrapeJob", "ScrapeJob")
+                        .WithMany("Events")
+                        .HasForeignKey("ScrapeJobForeignKey")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

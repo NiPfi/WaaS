@@ -48,21 +48,6 @@ namespace WaaS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ScrapeJob",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false),
-                    Enabled = table.Column<bool>(nullable: false),
-                    Url = table.Column<string>(nullable: true),
-                    Pattern = table.Column<string>(nullable: true),
-                    AlternativeEmail = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ScrapeJob", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -168,6 +153,50 @@ namespace WaaS.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ScrapeJob",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false),
+                    Enabled = table.Column<bool>(nullable: false),
+                    Url = table.Column<string>(nullable: true),
+                    Pattern = table.Column<string>(nullable: true),
+                    AlternativeEmail = table.Column<string>(nullable: true),
+                    IdentityUserForeignKey = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScrapeJob", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ScrapeJob_AspNetUsers_IdentityUserForeignKey",
+                        column: x => x.IdentityUserForeignKey,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScrapeJobEvent",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false),
+                    HTTPResponseCode = table.Column<int>(nullable: false),
+                    HTTPResponseTimeInMS = table.Column<int>(nullable: false),
+                    Message = table.Column<string>(nullable: true),
+                    TimeStamp = table.Column<DateTime>(nullable: false),
+                    ScrapeJobForeignKey = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScrapeJobEvent", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ScrapeJobEvent_ScrapeJob_ScrapeJobForeignKey",
+                        column: x => x.ScrapeJobForeignKey,
+                        principalTable: "ScrapeJob",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -206,6 +235,16 @@ namespace WaaS.Infrastructure.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScrapeJob_IdentityUserForeignKey",
+                table: "ScrapeJob",
+                column: "IdentityUserForeignKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScrapeJobEvent_ScrapeJobForeignKey",
+                table: "ScrapeJobEvent",
+                column: "ScrapeJobForeignKey");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -226,10 +265,13 @@ namespace WaaS.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ScrapeJob");
+                name: "ScrapeJobEvent");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "ScrapeJob");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
