@@ -18,6 +18,9 @@ namespace WaaS.Business.Mapping
       CreateMap<ScrapeJobDto, ScrapeJob>();
       CreateMap<ScrapeJob, ScrapeJobDto>();
 
+      CreateMap<ScrapeJobEventDto, ScrapeJobEvent>();
+      CreateMap<ScrapeJobEvent, ScrapeJobEventDto>();
+
     }
   }
 }
