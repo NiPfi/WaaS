@@ -14,7 +14,9 @@ namespace WaaS.Business.Entities
     public string Message { get; set; }
     public DateTime TimeStamp { get; set; }
 
-    public int ScrapeJobId { get; set; }
+    public uint ScrapeJobForeignKey { get; set; }
+
+    [ForeignKey("ScrapeJobForeignKey")]
     public virtual ScrapeJob ScrapeJob { get; set; }
   }
 }

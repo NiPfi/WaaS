@@ -13,6 +13,9 @@ namespace WaaS.Business.Entities
     public string Pattern { get; set; }
     public string AlternativeEmail { get; set; }
 
+    public string IdentityUserForeignKey { get; set; }
+
+    [ForeignKey("IdentityUserForeignKey")]
     public virtual IdentityUser IdentityUser { get; set; }
     public virtual ICollection<ScrapeJobEvent> Events { get; set; }
   }
