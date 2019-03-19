@@ -14,6 +14,13 @@ namespace WaaS.Business.Mapping
           destination => destination.UserName,
           options => options.MapFrom(source => source.Email));
       CreateMap<IdentityUser, UserDto>();
+
+      CreateMap<ScrapeJobDto, ScrapeJob>();
+      CreateMap<ScrapeJob, ScrapeJobDto>();
+
+      CreateMap<ScrapeJobEventDto, ScrapeJobEvent>();
+      CreateMap<ScrapeJobEvent, ScrapeJobEventDto>();
+
     }
   }
 }

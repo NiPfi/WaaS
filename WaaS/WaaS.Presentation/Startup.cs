@@ -14,9 +14,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
+using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Services;
 using WaaS.Infrastructure;
+using WaaS.Infrastructure.Repositories;
 
 namespace WaaS.Presentation
 {
@@ -89,6 +91,7 @@ namespace WaaS.Presentation
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
 
       services.AddScoped<IUserService, UserService>();
+      services.AddScoped<IScrapeJobRepository, ScrapeJobRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

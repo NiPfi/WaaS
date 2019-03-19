@@ -12,7 +12,7 @@ namespace WaaS.Presentation.Controllers
   [Authorize]
   [Route("api/[controller]")]
   [ApiController]
-  public class ScrapeJobController : Controller
+  public class ScrapeJobController : ControllerBase
   {
 
     private readonly IScrapeJobService _scrapeJobService;
@@ -37,13 +37,20 @@ namespace WaaS.Presentation.Controllers
     [HttpGet ,Authorize]
     public async Task<IActionResult> GetUsersScrapeJobs()
     {
-      throw new NotImplementedException();
+      //TODO get current user from token
+      var scrapeJobs =  await _scrapeJobService.ReadUsersScrapeJobs(User);
+      if (scrapeJobs.Any())
+      {
+        return Ok(scrapeJobs);
+      }
+
+      return BadRequest();
     }
 
     [HttpPut, Authorize]
     public async Task<IActionResult> PutScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      var scrapeJob = await _scrapeJobService.Update(scrapeJobDto);
+      var scrapeJob = await _scrapeJobService.Update(scrapeJobDto, User);
       if (scrapeJob != null)
       {
         return Ok(scrapeJob);
@@ -55,7 +62,7 @@ namespace WaaS.Presentation.Controllers
     [HttpDelete, Authorize]
     public async Task<IActionResult> DeleteScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      var success = await _scrapeJobService.Delete(scrapeJobDto.Id);
+      var success = await _scrapeJobService.Delete(scrapeJobDto.Id, User);
       if (success)
       {
         return Ok();
