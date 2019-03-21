@@ -19,7 +19,6 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobRepository _scrapeJobsRepository;
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
-    //TODO fix _userManager warning (probably dependency injection problem)
 
     public ScrapeJobService
       (
@@ -36,7 +35,7 @@ namespace WaaS.Business.Services
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob)
     {
 
-      if(string.IsNullOrEmpty(scrapeJob.Url) || string.IsNullOrEmpty(scrapeJob.Pattern)){
+      if(!string.IsNullOrEmpty(scrapeJob.Url) || !string.IsNullOrEmpty(scrapeJob.Pattern)){
 
         var entity = _mapper.Map<ScrapeJob>(scrapeJob);
 
@@ -148,6 +147,7 @@ namespace WaaS.Business.Services
     }
 
     #region private methods
+
     private async Task<bool> ScrapeJobIsOfCurrentUser(string userId, uint scrapeJobId)
     {
       var scrapeJobEntity = await _scrapeJobsRepository.Get(scrapeJobId);
