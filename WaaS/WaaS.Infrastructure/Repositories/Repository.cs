@@ -9,14 +9,14 @@ namespace WaaS.Infrastructure.Repositories
 {
   public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey> where TKey : IEquatable<TKey>
   {
-    private readonly WaasDbContext _context;
+    protected readonly WaasDbContext _context;
 
     public Repository(WaasDbContext context)
     {
       _context = context;
     }
 
-    private DbSet<TEntity> DbSet => _context.Set<TEntity>();
+    protected DbSet<TEntity> DbSet => _context.Set<TEntity>();
 
     public Task<TEntity> Get(TKey id)
     {

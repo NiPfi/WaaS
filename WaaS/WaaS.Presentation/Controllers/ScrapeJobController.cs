@@ -37,7 +37,6 @@ namespace WaaS.Presentation.Controllers
     [HttpGet ,Authorize]
     public async Task<IActionResult> GetUsersScrapeJobs()
     {
-      //TODO get current user from token
       var scrapeJobs =  await _scrapeJobService.ReadUsersScrapeJobs(User);
       if (scrapeJobs.Any())
       {

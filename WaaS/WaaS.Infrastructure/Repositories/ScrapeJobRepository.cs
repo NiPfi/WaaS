@@ -16,7 +16,9 @@ namespace WaaS.Infrastructure.Repositories
 
     public IQueryable<ScrapeJob> ReadUsersScrapeJobs(string userId)
     {
-      throw new NotImplementedException();
+
+      return GetAll().Where(x => x.IdentityUser.Id.Equals(userId));
+
     }
   }
 }
