@@ -71,14 +71,22 @@ namespace WaaS.Presentation.Controllers
       if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
       {
         var userDto = userCaptchaDto.User;
-        var user = await _userService.Authenticate(userDto.Email, userDto.Password);
-
-        if (user == null)
+        try
         {
-          return BadRequest(new BadRequestError("Something about this Email Password combination was incorrect"));
+          var user = await _userService.Authenticate(userDto.Email, userDto.Password);
+
+          if (user == null)
+          {
+            return BadRequest(new BadRequestError("Something about this Email Password combination was incorrect"));
+          }
+
+          return Ok(user);
+        }
+        catch (SignInUserServiceException exception)
+        {
+          return BadRequest(new BadRequestError("Login failed. Please verify your E-Mail and Password and try again!"));
         }
 
-        return Ok(user);
       }
 
       return BadRequest(new BadRequestError("Captcha was invalid"));

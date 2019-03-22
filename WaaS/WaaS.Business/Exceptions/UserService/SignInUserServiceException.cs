@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WaaS.Business.Exceptions.UserService
 {
-  class SignInUserServiceException: UserServiceException
+  public class SignInUserServiceException: UserServiceException
   {
     public SignInResult SignInResult { get; }
 
