@@ -18,7 +18,7 @@ namespace WaaS.Infrastructure.Repositories
 
     protected DbSet<TEntity> DbSet => _context.Set<TEntity>();
 
-    public Task<TEntity> Get(TKey id)
+    public Task<TEntity> GetAsync(TKey id)
     {
       return DbSet.FindAsync(id);
     }
@@ -28,13 +28,13 @@ namespace WaaS.Infrastructure.Repositories
       return DbSet.AsNoTracking().AsQueryable();
     }
 
-    public async Task<bool> Add(TEntity entity)
+    public async Task<bool> AddAsync(TEntity entity)
     {
       await DbSet.AddAsync(entity);
       return 1 == await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> Delete(TKey id)
+    public async Task<bool> DeleteAsync(TKey id)
     {
       var entity = await DbSet.FindAsync(id);
       DbSet.Remove(entity);
@@ -42,7 +42,7 @@ namespace WaaS.Infrastructure.Repositories
       return 1 == await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> Update(TKey id, Action<TEntity> changeAction)
+    public async Task<bool> UpdateAsync(TKey id, Action<TEntity> changeAction)
     {
       var entity = await DbSet.FindAsync(id);
       changeAction(entity);

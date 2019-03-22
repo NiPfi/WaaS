@@ -17,7 +17,7 @@ namespace WaaS.Business.Interfaces.Repositories
     /// </summary>
     /// <param name="id">The unique identifier <see cref="TKey"/> of an <see cref="IEntity{TKey}"/></param>
     /// <returns>A <see cref="Task{TResult}"/> that will resolve to the entity</returns>
-    Task<TEntity> Get(TKey id);
+    Task<TEntity> GetAsync(TKey id);
 
     /// <summary>
     /// Gets an <see cref="IQueryable{TEntity}"/> referring to all items stored in this repository
@@ -30,14 +30,14 @@ namespace WaaS.Business.Interfaces.Repositories
     /// </summary>
     /// <param name="entity">The <see cref="IEntity{TKey}"/> that is to be added to this repository</param>
     /// <returns>A <see cref="Task{TResult}"/> that will resolve to a boolean that is true if the operation was successful, false otherwise</returns>
-    Task<bool> Add(TEntity entity);
+    Task<bool> AddAsync(TEntity entity);
 
     /// <summary>
     /// Removes an <see cref="IEntity{TKey}"/> from this repository
     /// </summary>
     /// <param name="id">The unique identifier <see cref="TKey"/> of an <see cref="IEntity{TKey}"/></param>
     /// <returns>A <see cref="Task{TResult}"/> that will resolve to a boolean that is true if the operation was successful, false otherwise</returns>
-    Task<bool> Delete(TKey id);
+    Task<bool> DeleteAsync(TKey id);
 
     /// <summary>
     /// Updates an <see cref="IEntity{TKey}"/> with new values
@@ -45,6 +45,6 @@ namespace WaaS.Business.Interfaces.Repositories
     /// <param name="id">The unique identifier <see cref="TKey"/> of an <see cref="IEntity{TKey}"/></param>
     /// <param name="changeAction">An <see cref="Action{T}"/> lambda expression that can be used to insert the updated values</param>
     /// <returns></returns>
-    Task<bool> Update(TKey id, Action<TEntity> changeAction);
+    Task<bool> UpdateAsync(TKey id, Action<TEntity> changeAction);
   }
 }

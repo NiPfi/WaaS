@@ -39,7 +39,7 @@ namespace WaaS.Business.Services
 
         var entity = _mapper.Map<ScrapeJob>(scrapeJob);
 
-        var success = await _scrapeJobRepository.Add(entity);
+        var success = await _scrapeJobRepository.AddAsync(entity);
 
         if (success)
         {
@@ -57,7 +57,7 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
       {
-        return await _scrapeJobRepository.Delete(id);
+        return await _scrapeJobRepository.DeleteAsync(id);
       }
 
       return false;
@@ -69,7 +69,7 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
       {
-        var entity = await _scrapeJobRepository.Get(id);
+        var entity = await _scrapeJobRepository.GetAsync(id);
 
         if (entity != null)
         {
@@ -115,11 +115,11 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
       {
-        var success = await _scrapeJobRepository.Update(id, e => e.Enabled = !e.Enabled);
+        var success = await _scrapeJobRepository.UpdateAsync(id, e => e.Enabled = !e.Enabled);
 
         if (success)
         {
-          var updatedEntity = await _scrapeJobRepository.Get(id);
+          var updatedEntity = await _scrapeJobRepository.GetAsync(id);
           return _mapper.Map<ScrapeJobDto>(updatedEntity);
         }
       }
@@ -133,11 +133,11 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfCurrentUser(idUser.Id, scrapeJob.Id))
       {
-        var success = await _scrapeJobRepository.Update(scrapeJob.Id, e => e = _mapper.Map(scrapeJob, e));
+        var success = await _scrapeJobRepository.UpdateAsync(scrapeJob.Id, e => e = _mapper.Map(scrapeJob, e));
 
         if (success)
         {
-          var updatedEntity = await _scrapeJobRepository.Get(scrapeJob.Id);
+          var updatedEntity = await _scrapeJobRepository.GetAsync(scrapeJob.Id);
           return _mapper.Map<ScrapeJobDto>(updatedEntity);
         }
       }
@@ -150,7 +150,7 @@ namespace WaaS.Business.Services
 
     private async Task<bool> ScrapeJobIsOfCurrentUser(string userId, uint scrapeJobId)
     {
-      var scrapeJobEntity = await _scrapeJobRepository.Get(scrapeJobId);
+      var scrapeJobEntity = await _scrapeJobRepository.GetAsync(scrapeJobId);
 
       return userId.Equals(scrapeJobEntity.IdentityUser.Id);
     }
