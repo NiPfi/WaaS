@@ -6,9 +6,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ConvertNewLinePipe implements PipeTransform {
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private readonly sanitizer: DomSanitizer) {}
 
-  transform(value: string, sanitize?: boolean): string {
+  transform(value: string, sanitize = false): string {
     if (typeof value !== 'string') {
       return value;
     }
