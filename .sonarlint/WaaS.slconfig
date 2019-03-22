@@ -1,0 +1,11 @@
+{
+  "ServerUri": "https://loeustation.synology.me:9000",
+  "Organization": null,
+  "ProjectKey": "webe-waas",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AWmQPgBqpj7kNRnh4vUE",
+      "ProfileTimestamp": "2019-03-22T16:56:23+01:00"
+    }
+  }
+}
