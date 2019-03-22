@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
+using WaaS.Business.Exceptions.UserService;
 using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Business.Services
@@ -50,9 +51,11 @@ namespace WaaS.Business.Services
           return _mapper.Map<UserDto>(userEntity);
         }
 
+        throw new IdentityUserServiceException(result.Errors);
+
       }
 
-      return null;
+      throw new UserServiceException("Both E-Mail and Password are required");
 
     }
 
@@ -72,7 +75,8 @@ namespace WaaS.Business.Services
 
       }
 
-      return null;
+      throw new SignInUserServiceException(result);
+
     }
 
     public async Task<UserDto> Update(ClaimsPrincipal principal, UserDto userDto)

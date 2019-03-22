@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using WaaS.Business;
 using WaaS.Business.Dtos;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Exceptions;
+using WaaS.Business.Exceptions.UserService;
 using WaaS.Presentation.Errors;
 
 namespace WaaS.Presentation.Controllers
@@ -31,23 +35,33 @@ namespace WaaS.Presentation.Controllers
     [HttpPost]
     public async Task<IActionResult> Register(UserCaptchaDto userCaptchaDto)
     {
-
-      if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      if (!CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+        return BadRequest(new BadRequestError("Captcha was invalid"));
+      try
       {
-
         var createdUser = await _userService.Create(userCaptchaDto.User);
-
 
         if (createdUser != null)
         {
           return Ok(createdUser);
         }
-        else
-        {
-          return BadRequest(new BadRequestError("Something about this Email Password combination was incorrect"));
-        }
       }
-      return BadRequest(new BadRequestError("Captcha was invalid"));
+      catch(IdentityUserServiceException exception)
+      {
+        var builder = new StringBuilder();
+
+        var i = 0;
+        foreach (IdentityError identityError in exception.IdentityErrors)
+        {
+          builder.Append(identityError.Description);
+          i++;
+          if (i < exception.IdentityErrors.Count()) builder.Append("\n");
+        }
+
+        return BadRequest(new BadRequestError(builder.ToString()));
+      }
+
+      return BadRequest(new BadRequestError("Something went wrong processing this registration"));
     }
 
     [AllowAnonymous]
