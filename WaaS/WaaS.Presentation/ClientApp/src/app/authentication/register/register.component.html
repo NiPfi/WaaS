@@ -1,6 +1,7 @@
 <div class="container">
   <h2>Register</h2>
-  <alert type="danger" *ngIf="error && error != ''" [dismissible]="true" (onClosed)="onErrorAlertClosed()">{{error}}
+  <alert type="danger" *ngIf="error && error != ''" [dismissible]="true" (onClosed)="onErrorAlertClosed()">
+    <span [innerHtml]="error | convertNewLine: true"></span>
   </alert>
   <form [formGroup]="registerForm">
     <div class="form-group">

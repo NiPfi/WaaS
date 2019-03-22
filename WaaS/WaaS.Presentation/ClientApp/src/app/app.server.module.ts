@@ -6,6 +6,7 @@ import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader'
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { AlertModule, BsDropdownModule, ModalModule } from 'ngx-bootstrap';
+import { PipesModule } from 'src/pipes/pipes.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,7 @@ import { AppModule } from './app.module';
 @NgModule({
   imports: [
     AppModule,
+    PipesModule,
     ServerModule,
     ModuleMapLoaderModule,
     AppRoutingModule,

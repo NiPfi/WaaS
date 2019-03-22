@@ -8,6 +8,7 @@ import { BsDropdownModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { environment } from 'src/environments/environment';
+import { PipesModule } from 'src/pipes/pipes.module';
 
 import { AboutComponent } from './about/about.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +41,7 @@ import { TestComponent } from './test/test.component';
     ReactiveFormsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
+    PipesModule,
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot()
