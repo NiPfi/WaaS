@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RecaptchaComponent } from 'ng-recaptcha';
 import { first } from 'rxjs/operators';
+
 import { AuthService } from '../auth.service';
 import { User } from '../user';
-import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-register',
@@ -56,7 +57,7 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    var userDto = new User(this.form.email.value, this.form.password.value);
+    const userDto = new User(this.form.email.value, this.form.password.value);
     this.authService.register(userDto, captchaResponse)
       .pipe(first())
       .subscribe(

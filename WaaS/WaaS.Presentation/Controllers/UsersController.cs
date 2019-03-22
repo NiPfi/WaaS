@@ -8,6 +8,7 @@ using WaaS.Business;
 using WaaS.Business.Dtos;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Exceptions;
+using WaaS.Presentation.Errors;
 
 namespace WaaS.Presentation.Controllers
 {
@@ -41,8 +42,12 @@ namespace WaaS.Presentation.Controllers
         {
           return Ok(createdUser);
         }
+        else
+        {
+          return BadRequest(new BadRequestError("Something about this Email Password combination was incorrect"));
+        }
       }
-      return BadRequest();
+      return BadRequest(new BadRequestError("Captcha was invalid"));
     }
 
     [AllowAnonymous]
@@ -56,13 +61,13 @@ namespace WaaS.Presentation.Controllers
 
         if (user == null)
         {
-          return Unauthorized();
+          return BadRequest(new BadRequestError("Something about this Email Password combination was incorrect"));
         }
 
         return Ok(user);
       }
 
-      return Unauthorized();
+      return BadRequest(new BadRequestError("Captcha was invalid"));
 
     }
 

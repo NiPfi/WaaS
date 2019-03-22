@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RecaptchaComponent } from 'ng-recaptcha';
 import { first } from 'rxjs/operators';
+
 import { AuthService } from '../auth.service';
 import { User } from '../user';
-import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
     });
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
   }
 
   // convenience getter for easy access to form fields
