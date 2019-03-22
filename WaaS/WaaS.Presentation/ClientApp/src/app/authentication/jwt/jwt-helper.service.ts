@@ -43,8 +43,8 @@ export class JwtHelperService {
     const parts = token.split('.');
 
     if (parts.length !== 3) {
-      throw new Error('The inspected token doesn\'t appear to be a JWT. \
-      Check to make sure it has three parts and see https://jwt.io for more.');
+      throw new Error('The inspected token doesn\'t appear to be a JWT. ' +
+      'Check to make sure it has three parts and see https://jwt.io for more.');
     }
 
     const decoded = this.urlBase64Decode(parts[1]);

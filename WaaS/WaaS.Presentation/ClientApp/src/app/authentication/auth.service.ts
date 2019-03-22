@@ -4,8 +4,8 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 
+import { environment } from '../../environments/environment';
 import { ApiError } from './api-error';
 import { JwtHelperService } from './jwt/jwt-helper.service';
 import { User } from './user';
@@ -16,17 +16,17 @@ import { User } from './user';
 export class AuthService {
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
-    private jwtHelper: JwtHelperService,
-    @Inject(PLATFORM_ID) private platformId: object
+    private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly jwtHelper: JwtHelperService,
+    @Inject(PLATFORM_ID) private readonly platformId: object
   ) {
     if (isPlatformBrowser(this.platformId)) {
       this.localStorage = window.localStorage;
     }
   }
 
-  private localStorage: any;
+  private readonly localStorage: any;
 
   public isAuthenticated(): boolean {
     return (this.parseUser() != null);
@@ -75,7 +75,6 @@ export class AuthService {
   }
 
   private parseUser(): User {
-
     if (this.localStorage) {
       const userString = JSON.parse(this.localStorage.getItem('currentUser'));
       const user = userString as User;
@@ -83,8 +82,8 @@ export class AuthService {
         const expired = this.jwtHelper.isTokenExpired(user.token);
         return (expired) ? null : user;
       }
-      return null;
     }
+    return null;
 
   }
 

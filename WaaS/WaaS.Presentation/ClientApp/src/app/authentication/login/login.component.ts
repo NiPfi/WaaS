@@ -22,10 +22,10 @@ export class LoginComponent implements OnInit {
   @ViewChild('captchaRef') reCaptcha: RecaptchaComponent;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService
+    private readonly formBuilder: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly authService: AuthService
   ) { }
 
   ngOnInit() {
