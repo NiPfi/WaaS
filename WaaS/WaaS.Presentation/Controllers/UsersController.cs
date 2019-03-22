@@ -142,12 +142,7 @@ namespace WaaS.Presentation.Controllers
           $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={captchaResponse}");
       }
 
-      if (!string.IsNullOrWhiteSpace(googleReply))
-      {
-        return JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
-      }
-
-      return false;
+      return !string.IsNullOrWhiteSpace(googleReply) && JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
     }
 
     #endregion
