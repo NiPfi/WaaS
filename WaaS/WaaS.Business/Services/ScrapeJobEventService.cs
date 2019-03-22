@@ -1,22 +1,58 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
+using WaaS.Business.Entities;
+using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Business.Services
 {
   public class ScrapeJobEventService : IScrapeJobEventService
   {
-    public Task<ScrapeJobEventDto> Create(ScrapeJobEventDto scrapeJobEvent)
+
+    private readonly IScrapeJobEventRepository _scrapeJobEventRepository;
+    private readonly IMapper _mapper;
+    private readonly UserManager<IdentityUser> _userManager;
+
+    public ScrapeJobEventService
+      (
+      IMapper mapper,
+      IScrapeJobEventRepository scrapeJobEventRepository,
+      UserManager<IdentityUser> userManager
+      )
     {
-      throw new NotImplementedException();
+      _mapper = mapper;
+      _scrapeJobEventRepository = scrapeJobEventRepository;
+      _userManager = userManager;
     }
 
-    public Task<bool> Delete(uint id)
+
+    public async Task<ScrapeJobEventDto> Create(ScrapeJobEventDto scrapeJobEvent)
     {
-      throw new NotImplementedException();
+      if (!string.IsNullOrEmpty(scrapeJobEvent.Message) && scrapeJobEvent.TimeStamp != null)
+      {
+
+        var entity = _mapper.Map<ScrapeJobEvent>(scrapeJobEvent);
+
+        var success = await _scrapeJobEventRepository.Add(entity);
+
+        if (success)
+        {
+          return _mapper.Map<ScrapeJobEventDto>(entity);
+        }
+
+      }
+
+      return null;
+    }
+
+    public async Task<bool> Delete(uint id)
+    {
+      return await _scrapeJobEventRepository.Delete(id);
     }
 
     public Task<ScrapeJobEventDto> Read(uint id)
