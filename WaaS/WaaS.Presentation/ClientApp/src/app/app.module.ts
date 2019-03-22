@@ -20,14 +20,12 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    TestComponent,
     LoginComponent,
     HomeComponent,
     RegisterComponent,
