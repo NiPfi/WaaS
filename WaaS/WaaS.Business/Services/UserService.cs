@@ -101,6 +101,8 @@ namespace WaaS.Business.Services
           };
           return userDto;
         }
+
+        throw new IdentityUserServiceException(result.Errors);
       }
 
       return null;
@@ -111,6 +113,11 @@ namespace WaaS.Business.Services
     {
       IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
       IdentityResult result = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword).ConfigureAwait(false);
+
+      if (!result.Succeeded)
+      {
+        throw new IdentityUserServiceException(result.Errors);
+      }
 
       return result.Succeeded;
     }

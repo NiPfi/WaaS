@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using Microsoft.AspNetCore.Identity;
+using System.Text;
 
 namespace WaaS.Business.Exceptions.UserService
 {
@@ -10,7 +11,7 @@ namespace WaaS.Business.Exceptions.UserService
   /// Is thrown when a method generating <see cref="IdentityResult"/> was unsuccessful
   /// </summary>
   [Serializable]
-  public class IdentityUserServiceException: UserServiceException
+  public class IdentityUserServiceException : UserServiceException
   {
 
     /// <summary>
@@ -22,7 +23,7 @@ namespace WaaS.Business.Exceptions.UserService
     {
     }
 
-    public IdentityUserServiceException(IEnumerable<IdentityError> identityErrors) 
+    public IdentityUserServiceException(IEnumerable<IdentityError> identityErrors)
     {
       IdentityErrors = identityErrors;
     }
@@ -37,6 +38,29 @@ namespace WaaS.Business.Exceptions.UserService
 
     public IdentityUserServiceException()
     {
+    }
+
+    public override string ToString()
+    {
+      if (IdentityErrors == null || !IdentityErrors.Any())
+      {
+        return base.ToString();
+      }
+
+      var builder = new StringBuilder();
+
+      var i = 0;
+      foreach (IdentityError identityError in IdentityErrors)
+      {
+        builder.Append(identityError.Description);
+        i++;
+        if (i < IdentityErrors.Count())
+        {
+          builder.Append("\n");
+        }
+      }
+
+      return builder.ToString();
     }
   }
 }

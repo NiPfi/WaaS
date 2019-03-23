@@ -2,18 +2,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using WaaS.Business;
 using WaaS.Business.Dtos;
 using WaaS.Business.Dtos.User;
-using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Exceptions;
 using WaaS.Business.Exceptions.UserService;
+using WaaS.Business.Interfaces.Services;
 using WaaS.Presentation.Errors;
 
 namespace WaaS.Presentation.Controllers
@@ -54,22 +49,9 @@ namespace WaaS.Presentation.Controllers
           return Ok(createdUser);
         }
       }
-      catch(IdentityUserServiceException exception)
+      catch (IdentityUserServiceException exception)
       {
-        var builder = new StringBuilder();
-
-        var i = 0;
-        foreach (IdentityError identityError in exception.IdentityErrors)
-        {
-          builder.Append(identityError.Description);
-          i++;
-          if (i < exception.IdentityErrors.Count())
-          {
-            builder.Append("\n");
-          }
-        }
-
-        return BadRequest(new BadRequestError(builder.ToString()));
+        return BadRequest(new BadRequestError(exception.ToString()));
       }
 
       return BadRequest(new BadRequestError("Something went wrong processing this registration"));
@@ -123,19 +105,34 @@ namespace WaaS.Presentation.Controllers
           return BadRequest(new BadRequestError("Either a new E-Mail or the current and new password have to be set"));
         }
 
-        var pwChangeSuccessful = await _userService.UpdatePasswordAsync(User, userEditDto.CurrentPassword, userEditDto.NewPassword);
-        if (pwChangeSuccessful)
+        try
         {
-          return Ok();
+          var pwChangeSuccessful = await _userService.UpdatePasswordAsync(User, userEditDto.CurrentPassword, userEditDto.NewPassword);
+          if (pwChangeSuccessful)
+          {
+            return Ok();
+          }
         }
+        catch (IdentityUserServiceException exception)
+        {
+          return BadRequest(new BadRequestError(exception.ToString()));
+        }
+
 
         return BadRequest(new BadRequestError("There was an error updating your password."));
       }
 
-      var result = await _userService.UpdateEmailAsync(User, userEditDto.NewEmail);
-      if (result != null)
+      try
       {
-        return Ok(result);
+        var result = await _userService.UpdateEmailAsync(User, userEditDto.NewEmail);
+        if (result != null)
+        {
+          return Ok(result);
+        }
+      }
+      catch (IdentityUserServiceException exception)
+      {
+        return BadRequest(new BadRequestError(exception.ToString()));
       }
 
       return BadRequest(new BadRequestError("There was an error updating your E-Mail"));
