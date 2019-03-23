@@ -65,10 +65,11 @@ namespace WaaS.Business.Services
 
       if (result.Succeeded)
       {
-        var user = _userManager.Users.SingleOrDefault(u => u.Email == userEmail);
+        var user = await _userManager.FindByEmailAsync(userEmail).ConfigureAwait(false);
         var token = GenerateJwtToken(user);
 
         var userDto = _mapper.Map<UserDto>(user);
+        userDto.Password = null;
         userDto.Token = token;
 
         return userDto;
