@@ -1,4 +1,4 @@
-namespace WaaS.Business.Dtos
+namespace WaaS.Business.Dtos.User
 {
   /// <summary>
   /// Represents a user in transmission over the JSON REST API

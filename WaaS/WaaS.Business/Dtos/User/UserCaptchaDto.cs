@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WaaS.Business.Dtos
+namespace WaaS.Business.Dtos.User
 {
   /// <summary>
   /// Represents a user dto transmission protected by a captcha

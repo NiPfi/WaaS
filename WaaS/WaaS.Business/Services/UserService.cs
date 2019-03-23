@@ -4,11 +4,11 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.User;
 using WaaS.Business.Exceptions.UserService;
 using WaaS.Business.Interfaces.Services;
 
@@ -80,30 +80,36 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<UserDto> UpdateAsync(ClaimsPrincipal principal, UserDto userDto)
+    public async Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      IdentityResult result;
-      if (userDto.Password != null)
+      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      if (newEmail != null)
       {
-        var token = await _userManager.GeneratePasswordResetTokenAsync(idUser).ConfigureAwait(false);
-        result = await _userManager.ResetPasswordAsync(idUser, token, userDto.Password).ConfigureAwait(false);
-      }
-      else
-      {
-        idUser.UserName = userDto.Email;
-        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, userDto.Email).ConfigureAwait(false);
-        result = await _userManager.ChangeEmailAsync(idUser, userDto.Email, token).ConfigureAwait(false);
-      }
+        idUser.UserName = newEmail;
+        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail).ConfigureAwait(false);
+        IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token).ConfigureAwait(false);
 
-      if (result.Succeeded)
-      {
-        userDto.Password = null;
-        userDto.Token = GenerateJwtToken(idUser);
-        return userDto;
+        if (result.Succeeded)
+        {
+          var userDto = new UserDto
+          {
+            Email = newEmail,
+            Token = GenerateJwtToken(idUser)
+          };
+          return userDto;
+        }
       }
 
       return null;
+    }
+
+    public async Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword,
+      string newPassword)
+    {
+      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      IdentityResult result = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword).ConfigureAwait(false);
+
+      return result.Succeeded;
     }
 
     public async Task<UserDto> DeleteAsync(ClaimsPrincipal principal)

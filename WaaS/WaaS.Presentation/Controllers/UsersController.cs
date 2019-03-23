@@ -4,11 +4,13 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WaaS.Business;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.User;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Exceptions;
 using WaaS.Business.Exceptions.UserService;
@@ -95,15 +97,33 @@ namespace WaaS.Presentation.Controllers
 
     // PUT: api/Users
     [HttpPut, Authorize]
-    public async Task<IActionResult> PutUser(UserDto userDto)
+    public async Task<IActionResult> PutUser(UserEditDto userEditDto)
     {
-      var user = await _userService.UpdateAsync(User, userDto);
-      if (user != null)
+      if (string.IsNullOrWhiteSpace(userEditDto.NewEmail))
       {
-        return Ok(user);
+        if (string.IsNullOrWhiteSpace(userEditDto.CurrentPassword) ||
+            string.IsNullOrWhiteSpace(userEditDto.NewPassword))
+        {
+          return BadRequest(new BadRequestError("Either a new E-Mail or the current and new password have to be set"));
+        }
+
+        var pwChangeSuccessful = await _userService.UpdatePasswordAsync(User, userEditDto.CurrentPassword, userEditDto.NewPassword);
+        if (pwChangeSuccessful)
+        {
+          return Ok();
+        }
+
+        return BadRequest("There was an error updating your password.");
       }
 
-      return BadRequest();
+      var result = await _userService.UpdateEmailAsync(User, userEditDto.NewEmail);
+      if (result != null)
+      {
+        return Ok(result);
+      }
+
+      return BadRequest("There was an error updating your E-Mail");
+
     }
 
     // DELETE: api/Users

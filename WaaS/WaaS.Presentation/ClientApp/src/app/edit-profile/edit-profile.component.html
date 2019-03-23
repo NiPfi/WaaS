@@ -1,17 +1,29 @@
 <div class="container">
   <h1>Edit Profile</h1>
+
   <h2>Change your E-Mail Address</h2>
   <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmitEmail()">
-    <input type="email" formControlName="email" class="form-control" />
+    <div class="form-group">
+      <input type="email" formControlName="email" class="form-control" />
+    </div>
     <button type="submit" class="btn btn-primary">Change E-Mail</button>
   </form>
+
   <h2>Change your Password</h2>
   <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmitPassword()">
-    <input type="password" formControlName="password" class="form-control" />
+    <div class="form-group">
+      <label for="currentPassword">Current Password</label>
+      <input type="password" id="currentPassword" formControlName="currentPassword" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="newPassword">New Password</label>
+      <input type="password" id="newPassword" formControlName="newPassword" class="form-control" />
+    </div>
     <button type="submit" class="btn btn-primary">Change Password</button>
   </form>
   <h2>Your account</h2>
-  <button type="button" class="btn btn-danger" (click)="openDeleteModal(confirmAccountDeletionModal)">Delete account</button>
+  <button type="button" class="btn btn-danger" (click)="openDeleteModal(confirmAccountDeletionModal)">Delete
+    account</button>
 
   <ng-template #confirmAccountDeletionModal>
     <div class="modal-header">
@@ -25,8 +37,10 @@
         Are you sure you want to delete your Account?
         This will delete all associated information and cannot be undone!
       </p>
-      <button type="button" class="btn btn-default" (click)="confirmDelete()">Yes, delete my Account</button>
-      <button type="button" class="btn btn-primary" (click)="deleteModalRef.hide()">No, cancel</button>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="confirmDelete()">Yes, delete my Account</button>
+      <button type="button" class="btn btn-outline-primary" (click)="deleteModalRef.hide()">No, cancel</button>
     </div>
   </ng-template>
 

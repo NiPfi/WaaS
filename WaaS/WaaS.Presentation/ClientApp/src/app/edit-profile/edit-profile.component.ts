@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+
 import { AuthService } from '../authentication/auth.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { EditProfileService } from './edit-profile.service';
-import { User } from '../authentication/user';
 
 @Component({
   selector: 'app-edit-profile',
@@ -21,7 +21,7 @@ export class EditProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
     private editProfileService: EditProfileService
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.changeEmailForm = this.formBuilder.group({
@@ -29,7 +29,8 @@ export class EditProfileComponent implements OnInit {
     });
 
     this.changePasswordForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      currentPassword: ['', [Validators.required, Validators.minLength(8)]],
+      newPassword: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
@@ -38,9 +39,7 @@ export class EditProfileComponent implements OnInit {
       return;
     }
 
-    const userDto = new User(this.changeEmailForm.controls.email.value, null);
-
-    return this.editProfileService.update(userDto);
+    return this.editProfileService.updateEmail(this.changeEmailForm.controls.email.value);
   }
 
   onSubmitPassword() {
@@ -48,13 +47,12 @@ export class EditProfileComponent implements OnInit {
       return;
     }
 
-    const userDto = new User(this.authService.getUserEmail(), this.changePasswordForm.controls.password.value);
-
-    return this.editProfileService.update(userDto);
+    return this.editProfileService.updatePassword(this.changePasswordForm.controls.currentPassword.value,
+      this.changePasswordForm.controls.newPassword.value);
   }
 
   openDeleteModal(template: TemplateRef<any>) {
-    this.deleteModalRef = this.modalService.show(template, {class: 'modal-sm'});
+    this.deleteModalRef = this.modalService.show(template, { });
   }
 
   confirmDelete() {

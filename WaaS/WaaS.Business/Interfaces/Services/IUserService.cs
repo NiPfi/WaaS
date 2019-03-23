@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.User;
 
 namespace WaaS.Business.Interfaces.Services
 {
@@ -9,7 +10,8 @@ namespace WaaS.Business.Interfaces.Services
   {
     Task<UserDto> CreateAsync(UserDto user);
     Task<UserDto> AuthenticateAsync(string userEmail, string password);
-    Task<UserDto> UpdateAsync(ClaimsPrincipal principal, UserDto userDto);
+    Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail);
+    Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword, string newPassword);
     Task<UserDto> DeleteAsync(ClaimsPrincipal principal);
   }
 }
