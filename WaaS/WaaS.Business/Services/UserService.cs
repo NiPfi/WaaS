@@ -35,12 +35,15 @@ namespace WaaS.Business.Services
       _mapper = mapper;
       _signInManager = signInManager;
       _userManager = userManager;
-      _applicationSettings = applicationSettings.Value;
+      if (applicationSettings != null)
+      {
+        _applicationSettings = applicationSettings.Value;
+      }
     }
 
     public async Task<UserDto> CreateAsync(UserDto user)
     {
-      if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
+      if (user != null && (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password)))
       {
         var userEntity = _mapper.Map<IdentityUser>(user);
         var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
