@@ -12,6 +12,7 @@ using NSubstitute;
 using NSubstitute.Extensions;
 using WaaS.Business.Dtos;
 using WaaS.Business.Dtos.User;
+using WaaS.Business.Exceptions.UserService;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Services;
 using WaaS.Business.Tests.Mocks;
@@ -96,6 +97,26 @@ namespace WaaS.Business.Tests.Services
       Assert.Equal(TestUserEmail, result.Email);
       Assert.Null(result.Password);
       Assert.False(string.IsNullOrWhiteSpace(result.Token));
+    }
+
+    [Fact]
+    public async Task CreateWithoutUsernameFails()
+    {
+      // Arrange
+      _testUserDto.Email = null;
+
+      // Act
+      await Assert.ThrowsAsync<UserServiceException>(() => _userService.CreateAsync(_testUserDto));
+    }
+
+    [Fact]
+    public async Task CreateWithoutPasswordFails()
+    {
+      // Arrange
+      _testUserDto.Password = null;
+
+      // Act
+      await Assert.ThrowsAsync<UserServiceException>(() => _userService.CreateAsync(_testUserDto));
     }
 
     [Fact]
