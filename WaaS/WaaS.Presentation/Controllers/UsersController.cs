@@ -29,7 +29,10 @@ namespace WaaS.Presentation.Controllers
     public UsersController(IUserService userService, IOptions<ApplicationSettings> applicationSettings)
     {
       _userService = userService;
-      _applicationSettings = applicationSettings.Value;
+      if (applicationSettings != null)
+      {
+        _applicationSettings = applicationSettings.Value;
+      }
     }
 
     // POST: api/Users
@@ -37,11 +40,14 @@ namespace WaaS.Presentation.Controllers
     [HttpPost]
     public async Task<IActionResult> Register(UserCaptchaDto userCaptchaDto)
     {
-      if (!CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      if (userCaptchaDto != null && !CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      {
         return BadRequest(new BadRequestError("Captcha was invalid"));
+      }
+
       try
       {
-        var createdUser = await _userService.CreateAsync(userCaptchaDto.User);
+        var createdUser = await _userService.CreateAsync(userCaptchaDto?.User);
 
         if (createdUser != null)
         {
@@ -57,7 +63,10 @@ namespace WaaS.Presentation.Controllers
         {
           builder.Append(identityError.Description);
           i++;
-          if (i < exception.IdentityErrors.Count()) builder.Append("\n");
+          if (i < exception.IdentityErrors.Count())
+          {
+            builder.Append("\n");
+          }
         }
 
         return BadRequest(new BadRequestError(builder.ToString()));
@@ -70,7 +79,7 @@ namespace WaaS.Presentation.Controllers
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(UserCaptchaDto userCaptchaDto)
     {
-      if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      if (userCaptchaDto != null && CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
       {
         var userDto = userCaptchaDto.User;
         try
@@ -84,7 +93,7 @@ namespace WaaS.Presentation.Controllers
 
           return Ok(user);
         }
-        catch (SignInUserServiceException exception)
+        catch (SignInUserServiceException)
         {
           return BadRequest(new BadRequestError("Login failed. Please verify your E-Mail and Password and try again!"));
         }
@@ -99,6 +108,13 @@ namespace WaaS.Presentation.Controllers
     [HttpPut, Authorize]
     public async Task<IActionResult> PutUser(UserEditDto userEditDto)
     {
+      if (
+        userEditDto == null ||
+        !string.IsNullOrWhiteSpace(userEditDto.NewEmail) && !string.IsNullOrWhiteSpace(userEditDto.NewPassword))
+      {
+        return BadRequest(new BadRequestError("Either a new E-Mail or the current and new password have to be set"));
+      }
+
       if (string.IsNullOrWhiteSpace(userEditDto.NewEmail))
       {
         if (string.IsNullOrWhiteSpace(userEditDto.CurrentPassword) ||
