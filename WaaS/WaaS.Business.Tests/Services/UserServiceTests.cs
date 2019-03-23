@@ -26,8 +26,9 @@ namespace WaaS.Business.Tests.Services
     private readonly SignInManager<IdentityUser> _mockSignInManager;
     private readonly UserManager<IdentityUser> _mockUserManager;
     private readonly IUserService _userService;
-    private readonly IdentityUser _testIdentityUser;
+    private readonly IdentityUser _mockIdentityUser;
     private readonly UserDto _testUserDto;
+    private readonly ClaimsPrincipal _mockClaimsPrincipal;
 
 
     public UserServiceTests()
@@ -41,9 +42,9 @@ namespace WaaS.Business.Tests.Services
 
       IOptions<ApplicationSettings> mockApplicationSettings = Options.Create(testApplicationSettings);
 
-      _testIdentityUser = Substitute.For<IdentityUser>();
-      _testIdentityUser.Email.Returns(TestUserEmail);
-      _testIdentityUser.PasswordHash.Returns(TestUserPassword);
+      _mockIdentityUser = Substitute.For<IdentityUser>();
+      _mockIdentityUser.Email.Returns(TestUserEmail);
+      _mockIdentityUser.PasswordHash.Returns(TestUserPassword);
 
       _testUserDto = new UserDto
       {
@@ -52,11 +53,15 @@ namespace WaaS.Business.Tests.Services
       };
 
       var mockMapper = Substitute.For<IMapper>();
-      mockMapper.Map<IdentityUser>(_testUserDto).Returns(_testIdentityUser);
-      mockMapper.Map<UserDto>(_testIdentityUser).Returns(_testUserDto);
+      mockMapper.Map<IdentityUser>(_testUserDto).Returns(_mockIdentityUser);
+      mockMapper.Map<UserDto>(_mockIdentityUser).Returns(_testUserDto);
 
+      _mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
       _mockSignInManager = Substitute.For<MockSignInManager>();
+
       _mockUserManager = Substitute.For<MockUserManager>();
+      _mockUserManager.GetUserAsync(_mockClaimsPrincipal).Returns(_mockIdentityUser);
+
       _userService = new UserService(mockApplicationSettings, mockMapper, _mockSignInManager, _mockUserManager);
     }
 
@@ -70,7 +75,7 @@ namespace WaaS.Business.Tests.Services
       var result = await _userService.CreateAsync(_testUserDto);
 
       // Assert
-      await _mockUserManager.Received().CreateAsync(_testIdentityUser, TestUserPassword);
+      await _mockUserManager.Received().CreateAsync(_mockIdentityUser, TestUserPassword);
       Assert.Equal(_testUserDto, result);
     }
 
@@ -80,7 +85,7 @@ namespace WaaS.Business.Tests.Services
       // Arrange
       _mockSignInManager.PasswordSignInAsync(TestUserEmail, TestUserPassword, Arg.Any<bool>(), Arg.Any<bool>())
         .Returns(SignInResult.Success);
-      _mockUserManager.FindByEmailAsync(TestUserEmail).Returns(_testIdentityUser);
+      _mockUserManager.FindByEmailAsync(TestUserEmail).Returns(_mockIdentityUser);
 
       // Act
       var result = await _userService.AuthenticateAsync(TestUserEmail, TestUserPassword);
@@ -100,18 +105,16 @@ namespace WaaS.Business.Tests.Services
       const string newEmail = "new-mail@test.com";
       const string testEmailResetToken = "testEmailResetToken";
 
-      var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
-      _mockUserManager.GetUserAsync(mockClaimsPrincipal).Returns(_testIdentityUser);
-      _mockUserManager.GenerateChangeEmailTokenAsync(_testIdentityUser, newEmail)
+      _mockUserManager.GenerateChangeEmailTokenAsync(_mockIdentityUser, newEmail)
         .Returns(testEmailResetToken);
-      _mockUserManager.ChangeEmailAsync(_testIdentityUser, newEmail, testEmailResetToken)
+      _mockUserManager.ChangeEmailAsync(_mockIdentityUser, newEmail, testEmailResetToken)
         .Returns(IdentityResult.Success);
 
       // Act
-      var result = await _userService.UpdateEmailAsync(mockClaimsPrincipal, newEmail);
+      var result = await _userService.UpdateEmailAsync(_mockClaimsPrincipal, newEmail);
 
       // Assert
-      await _mockUserManager.Received().ChangeEmailAsync(_testIdentityUser, newEmail, testEmailResetToken);
+      await _mockUserManager.Received().ChangeEmailAsync(_mockIdentityUser, newEmail, testEmailResetToken);
       Assert.Equal(newEmail, result.Email);
       Assert.Null(result.Password);
       Assert.False(string.IsNullOrWhiteSpace(result.Token));
@@ -124,17 +127,29 @@ namespace WaaS.Business.Tests.Services
       const string currentPassword = "testCurrentPassword";
       const string newPassword = "testNewPassword";
 
-      var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
-      _mockUserManager.GetUserAsync(mockClaimsPrincipal).Returns(_testIdentityUser);
-      _mockUserManager.ChangePasswordAsync(_testIdentityUser, currentPassword, newPassword)
+      _mockUserManager.ChangePasswordAsync(_mockIdentityUser, currentPassword, newPassword)
         .Returns(IdentityResult.Success);
 
       // Act
-      var successful = await _userService.UpdatePasswordAsync(mockClaimsPrincipal, currentPassword, newPassword);
+      var successful = await _userService.UpdatePasswordAsync(_mockClaimsPrincipal, currentPassword, newPassword);
 
       // Assert
-      await _mockUserManager.Received().ChangePasswordAsync(_testIdentityUser, currentPassword, newPassword);
+      await _mockUserManager.Received().ChangePasswordAsync(_mockIdentityUser, currentPassword, newPassword);
       Assert.True(successful);
+    }
+
+    [Fact]
+    public async Task DeleteSucceeds()
+    {
+      // Arrange
+      _mockUserManager.DeleteAsync(_mockIdentityUser).Returns(IdentityResult.Success);
+
+      // Act
+      UserDto result = await _userService.DeleteAsync(_mockClaimsPrincipal);
+
+      // Assert
+      await _mockUserManager.Received().DeleteAsync(_mockIdentityUser);
+      Assert.Equal(TestUserEmail, result.Email);
     }
   }
 }
