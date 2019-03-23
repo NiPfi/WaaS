@@ -39,7 +39,7 @@ namespace WaaS.Presentation.Controllers
         return BadRequest(new BadRequestError("Captcha was invalid"));
       try
       {
-        var createdUser = await _userService.Create(userCaptchaDto.User);
+        var createdUser = await _userService.CreateAsync(userCaptchaDto.User);
 
         if (createdUser != null)
         {
@@ -73,7 +73,7 @@ namespace WaaS.Presentation.Controllers
         var userDto = userCaptchaDto.User;
         try
         {
-          var user = await _userService.Authenticate(userDto.Email, userDto.Password);
+          var user = await _userService.AuthenticateAsync(userDto.Email, userDto.Password);
 
           if (user == null)
           {
@@ -97,7 +97,7 @@ namespace WaaS.Presentation.Controllers
     [HttpPut, Authorize]
     public async Task<IActionResult> PutUser(UserDto userDto)
     {
-      var user = await _userService.Update(User, userDto);
+      var user = await _userService.UpdateAsync(User, userDto);
       if (user != null)
       {
         return Ok(user);
@@ -110,7 +110,7 @@ namespace WaaS.Presentation.Controllers
     [HttpDelete, Authorize]
     public async Task<IActionResult> DeleteUser()
     {
-      var user = await _userService.Delete(User);
+      var user = await _userService.DeleteAsync(User);
       if (user != null)
       {
         return Ok(user);

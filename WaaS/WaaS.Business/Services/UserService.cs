@@ -38,12 +38,12 @@ namespace WaaS.Business.Services
       _applicationSettings = applicationSettings.Value;
     }
 
-    public async Task<UserDto> Create(UserDto user)
+    public async Task<UserDto> CreateAsync(UserDto user)
     {
       if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
       {
         var userEntity = _mapper.Map<IdentityUser>(user);
-        var result = await _userManager.CreateAsync(userEntity, user.Password);
+        var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
 
         if (result.Succeeded)
         {
@@ -59,9 +59,9 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<UserDto> Authenticate(string userEmail, string password)
+    public async Task<UserDto> AuthenticateAsync(string userEmail, string password)
     {
-      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false);
+      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false).ConfigureAwait(false);
 
       if (result.Succeeded)
       {
@@ -79,20 +79,20 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<UserDto> Update(ClaimsPrincipal principal, UserDto userDto)
+    public async Task<UserDto> UpdateAsync(ClaimsPrincipal principal, UserDto userDto)
     {
-      var idUser = await _userManager.GetUserAsync(principal);
+      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
       IdentityResult result;
       if (userDto.Password != null)
       {
-        var token = await _userManager.GeneratePasswordResetTokenAsync(idUser);
-        result = await _userManager.ResetPasswordAsync(idUser, token, userDto.Password);
+        var token = await _userManager.GeneratePasswordResetTokenAsync(idUser).ConfigureAwait(false);
+        result = await _userManager.ResetPasswordAsync(idUser, token, userDto.Password).ConfigureAwait(false);
       }
       else
       {
         idUser.UserName = userDto.Email;
-        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, userDto.Email);
-        result = await _userManager.ChangeEmailAsync(idUser, userDto.Email, token);
+        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, userDto.Email).ConfigureAwait(false);
+        result = await _userManager.ChangeEmailAsync(idUser, userDto.Email, token).ConfigureAwait(false);
       }
 
       if (result.Succeeded)
@@ -105,11 +105,11 @@ namespace WaaS.Business.Services
       return null;
     }
 
-    public async Task<UserDto> Delete(ClaimsPrincipal principal)
+    public async Task<UserDto> DeleteAsync(ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal);
+      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
 
-      var result = await _userManager.DeleteAsync(idUser);
+      var result = await _userManager.DeleteAsync(idUser).ConfigureAwait(false);
 
       if (result.Succeeded)
       {
