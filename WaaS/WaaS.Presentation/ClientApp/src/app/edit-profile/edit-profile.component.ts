@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { first } from 'rxjs/internal/operators/first';
 
 import { AuthService } from '../authentication/auth.service';
 import { EditProfileService } from './edit-profile.service';
@@ -15,6 +16,9 @@ export class EditProfileComponent implements OnInit {
   changeEmailForm: FormGroup;
   changePasswordForm: FormGroup;
   deleteModalRef: BsModalRef;
+
+  successMessage = '';
+  errorMessage = '';
 
   constructor(
     private authService: AuthService,
@@ -39,7 +43,17 @@ export class EditProfileComponent implements OnInit {
       return;
     }
 
-    return this.editProfileService.updateEmail(this.changeEmailForm.controls.email.value);
+    this.editProfileService.updateEmail(this.changeEmailForm.controls.email.value)
+    .pipe(first())
+    .subscribe(
+      data => {
+        this.successMessage = `Your E-Mail has been changed to ${data.email}`;
+      },
+      error => {
+        this.errorMessage = error;
+      }
+    )
+    ;
   }
 
   onSubmitPassword() {
@@ -47,17 +61,35 @@ export class EditProfileComponent implements OnInit {
       return;
     }
 
-    return this.editProfileService.updatePassword(this.changePasswordForm.controls.currentPassword.value,
-      this.changePasswordForm.controls.newPassword.value);
+    return this.editProfileService.updatePassword(
+      this.changePasswordForm.controls.currentPassword.value,
+      this.changePasswordForm.controls.newPassword.value)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.successMessage = 'Your password has been updated';
+        },
+        error => {
+          this.errorMessage = error;
+        }
+      );
   }
 
   openDeleteModal(template: TemplateRef<any>) {
-    this.deleteModalRef = this.modalService.show(template, { });
+    this.deleteModalRef = this.modalService.show(template, {});
   }
 
   confirmDelete() {
     this.deleteModalRef.hide();
     this.editProfileService.deleteAccount();
+  }
+
+  onSuccessAlertClosed() {
+    this.successMessage = '';
+  }
+
+  onErrorAlertClosed() {
+    this.errorMessage = '';
   }
 
 }

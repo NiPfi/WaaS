@@ -1,12 +1,12 @@
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
-import { ApiError } from './api-error';
+import { HttpErrorHandlerService } from '../error-handling/http-error-handler.service';
 import { JwtHelperService } from './jwt/jwt-helper.service';
 import { User } from './user';
 
@@ -19,6 +19,7 @@ export class AuthService {
     private readonly http: HttpClient,
     private readonly router: Router,
     private readonly jwtHelper: JwtHelperService,
+    private readonly handler: HttpErrorHandlerService,
     @Inject(PLATFORM_ID) private readonly platformId: object
   ) {
     if (isPlatformBrowser(this.platformId)) {
@@ -44,7 +45,7 @@ export class AuthService {
     return this.http.post<User>(`${environment.apiUrl}/users`, {
       user: registerUser,
       captchaResponse
-    }).pipe(catchError(this.handleError));
+    }).pipe(catchError(this.handler.handleError));
   }
 
   login(loginUser: User, captchaResponse: string): Observable<User> {
@@ -58,7 +59,7 @@ export class AuthService {
       }
       return user;
     }))
-      .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handler.handleError));
   }
 
   updateUser(user: User) {
@@ -85,28 +86,6 @@ export class AuthService {
     }
     return null;
 
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-      return throwError(`There was an error sending your request: ${error.error.message}`);
-    } else {
-      const apiError = error.error as ApiError;
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${apiError.statusCode}: ${apiError.statusDescription}, ` +
-        `Message: ${apiError.message}`);
-
-      if (error.message) {
-        return throwError(apiError.message);
-      } else {
-        return throwError(`An error has occurred. Details have been logged to the console.`);
-      }
-    }
-    // return an observable with a user-facing error message
   }
 
 }

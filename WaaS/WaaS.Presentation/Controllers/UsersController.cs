@@ -129,7 +129,7 @@ namespace WaaS.Presentation.Controllers
           return Ok();
         }
 
-        return BadRequest("There was an error updating your password.");
+        return BadRequest(new BadRequestError("There was an error updating your password."));
       }
 
       var result = await _userService.UpdateEmailAsync(User, userEditDto.NewEmail);
@@ -138,7 +138,7 @@ namespace WaaS.Presentation.Controllers
         return Ok(result);
       }
 
-      return BadRequest("There was an error updating your E-Mail");
+      return BadRequest(new BadRequestError("There was an error updating your E-Mail"));
 
     }
 

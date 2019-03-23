@@ -1,6 +1,12 @@
 <div class="container">
   <h1>Edit Profile</h1>
 
+  <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true" (onClosed)="onSuccessAlertClosed()">{{successMessage}}
+    </alert>
+
+  <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true" (onClosed)="onErrorAlertClosed()">{{errorMessage}}
+    </alert>
+
   <h2>Change your E-Mail Address</h2>
   <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmitEmail()">
     <div class="form-group">
