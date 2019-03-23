@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using WaaS.Business.Dtos;
 using WaaS.Business.Dtos.User;
 using WaaS.Business.Exceptions.UserService;
 using WaaS.Business.Interfaces.Services;
@@ -139,7 +139,7 @@ namespace WaaS.Business.Services
           new Claim(JwtRegisteredClaimNames.Sub, user.Id),
           new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
           new Claim(JwtRegisteredClaimNames.Email, user.Email),
-          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("D", CultureInfo.InvariantCulture))
         }),
         Expires = _tokenExpirationDate,
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
