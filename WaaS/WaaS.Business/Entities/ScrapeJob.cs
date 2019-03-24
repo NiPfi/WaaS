@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,5 +20,18 @@ namespace WaaS.Business.Entities
     [ForeignKey("IdentityUserForeignKey")]
     public virtual IdentityUser IdentityUser { get; set; }
     public virtual ICollection<ScrapeJobEvent> Events { get; set; }
+
+    public override bool Equals(object obj)
+    {
+      if(obj is IEntity<uint> other)
+      {
+        return Id == other.Id;
+      }
+
+      return false;
+    }
+
+    public override int GetHashCode() => HashCode.Combine(Id);
+
   }
 }
