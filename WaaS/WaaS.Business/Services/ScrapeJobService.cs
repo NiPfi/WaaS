@@ -55,7 +55,7 @@ namespace WaaS.Business.Services
     public async Task<bool> Delete(uint id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
+      if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
         return await _scrapeJobRepository.Delete(id);
       }
@@ -67,7 +67,7 @@ namespace WaaS.Business.Services
     public async Task<ScrapeJobDto> Read(uint id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
+      if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
         var entity = await _scrapeJobRepository.Get(id);
 
@@ -113,7 +113,7 @@ namespace WaaS.Business.Services
     public async Task<ScrapeJobDto> ToggleEnabled(uint id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfCurrentUser(idUser.Id, id))
+      if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
         var success = await _scrapeJobRepository.Update(id, e => e.Enabled = !e.Enabled);
 
@@ -131,7 +131,7 @@ namespace WaaS.Business.Services
     public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfCurrentUser(idUser.Id, scrapeJob.Id))
+      if (await ScrapeJobIsOfUser(scrapeJob.Id, idUser.Id))
       {
         var success = await _scrapeJobRepository.Update(scrapeJob.Id, e => e = _mapper.Map(scrapeJob, e));
 
@@ -146,16 +146,13 @@ namespace WaaS.Business.Services
 
     }
 
-    #region private methods
-
-    private async Task<bool> ScrapeJobIsOfCurrentUser(string userId, uint scrapeJobId)
+    public async Task<bool> ScrapeJobIsOfUser(uint scrapeJobId, string userId)
     {
       var scrapeJobEntity = await _scrapeJobRepository.Get(scrapeJobId);
 
       return userId.Equals(scrapeJobEntity.IdentityUser.Id);
     }
 
-    #endregion
 
   }
 }
