@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
       recaptchaReactive: [null, Validators.required]
     });
 
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+    // get return url from route parameters or default to 'overview'
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || 'overview';
   }
 
   // convenience getter for easy access to form fields

@@ -8,7 +8,6 @@ import { BsDropdownModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { environment } from 'src/environments/environment';
-import { PipesModule } from 'src/pipes/pipes.module';
 
 import { AboutComponent } from './about/about.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -20,6 +19,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { PipesModule } from './pipes/pipes.module';
+import { OverviewComponent } from './overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { HomeComponent } from './home/home.component';
     HomeComponent,
     RegisterComponent,
     EditProfileComponent,
-    AboutComponent
+    AboutComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

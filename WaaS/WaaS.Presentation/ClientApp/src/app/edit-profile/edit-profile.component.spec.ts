@@ -3,9 +3,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AlertModule, ModalModule } from 'ngx-bootstrap';
-import { ConvertNewLinePipe } from 'src/pipes/new-line-pipe/convert-new-line.pipe';
 
 import { AuthService } from '../authentication/auth.service';
+import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
 import { EditProfileComponent } from './edit-profile.component';
 
 describe('EditProfileComponent', () => {
