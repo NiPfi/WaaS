@@ -20,6 +20,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { PipesModule } from './pipes/pipes.module';
+import { OverviewComponent } from './overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { PipesModule } from './pipes/pipes.module';
     HomeComponent,
     RegisterComponent,
     EditProfileComponent,
-    AboutComponent
+    AboutComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

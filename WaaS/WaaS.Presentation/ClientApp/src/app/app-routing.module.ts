@@ -7,6 +7,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomeComponent } from './home/home.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,11 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutComponent
+  },
+  {
+    path: 'overview',
+    component: OverviewComponent,
+    canActivate: [AuthGuard]
   },
 
   // otherwise redirect to home
