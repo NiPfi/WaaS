@@ -55,9 +55,18 @@ namespace WaaS.Business.Services
       return null;
     }
 
-    public async Task<bool> Delete(uint id)
+    public async Task<bool> Delete(uint id, ClaimsPrincipal principal)
     {
-      return await _scrapeJobEventRepository.DeleteAsync(id);
+      var idUser = await _userManager.GetUserAsync(principal);
+      var entity = await _scrapeJobEventRepository.GetAsync(id);
+
+      if (entity != null && await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
+      {
+        return await _scrapeJobEventRepository.DeleteAsync(id);
+      }
+
+      return false;
+
     }
 
     public async Task<ScrapeJobEventDto> Read(uint id, ClaimsPrincipal principal)
@@ -98,7 +107,7 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       var entity = await _scrapeJobEventRepository.GetAsync(scrapeJobEvent.Id);
 
-      if (await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
+      if (entity != null && await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
       {
         var success = await _scrapeJobEventRepository.UpdateAsync(scrapeJobEvent.Id, e => e = _mapper.Map(scrapeJobEvent, e));
 
