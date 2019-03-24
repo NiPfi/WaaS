@@ -1,3 +1,13 @@
-<p>
-  overview works!
-</p>
+<div class="container">
+  <h1>Overview</h1>
+  <ng-container *ngIf="jobs.length < 0; then jobsOverview; else jobsPlaceholder">
+  </ng-container>
+</div>
+
+<ng-template #jobsOverview>
+  Here are your Jobs
+</ng-template>
+
+<ng-template #jobsPlaceholder>
+  No Jobs yet... Why not create some?
+</ng-template>

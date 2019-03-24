@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { OverviewService } from './overview-service/overview.service';
+import { ScrapeJob } from './scrape-job';
+
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
 
-  constructor() { }
+  public jobs: ScrapeJob[];
+
+  constructor(
+    private readonly jobsService: OverviewService
+  ) { }
 
   ngOnInit() {
+    this.jobs = this.jobsService.getScrapeJobs();
   }
 
 }
