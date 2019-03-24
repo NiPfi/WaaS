@@ -63,7 +63,7 @@ namespace WaaS.Business.Services
     public async Task<ScrapeJobEventDto> Read(uint id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      var entity = await _scrapeJobEventRepository.Get(id);
+      var entity = await _scrapeJobEventRepository.GetAsync(id);
 
       if (entity != null && await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
       {
