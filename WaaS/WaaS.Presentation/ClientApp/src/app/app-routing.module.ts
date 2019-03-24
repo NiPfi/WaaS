@@ -11,7 +11,7 @@ import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'home',
     component: HomeComponent
   },
   {
@@ -38,7 +38,7 @@ const routes: Routes = [
   },
 
   // otherwise redirect to home
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
