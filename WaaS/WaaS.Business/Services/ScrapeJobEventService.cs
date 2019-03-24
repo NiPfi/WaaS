@@ -2,6 +2,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
@@ -17,17 +19,20 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobEventRepository _scrapeJobEventRepository;
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IScrapeJobService _scrapeJobService;
 
     public ScrapeJobEventService
       (
       IMapper mapper,
       IScrapeJobEventRepository scrapeJobEventRepository,
-      UserManager<IdentityUser> userManager
+      UserManager<IdentityUser> userManager,
+      IScrapeJobService scrapeJobService
       )
     {
       _mapper = mapper;
       _scrapeJobEventRepository = scrapeJobEventRepository;
       _userManager = userManager;
+      _scrapeJobService = scrapeJobService;
     }
 
 
@@ -55,19 +60,44 @@ namespace WaaS.Business.Services
       return await _scrapeJobEventRepository.Delete(id);
     }
 
-    public Task<ScrapeJobEventDto> Read(uint id)
+    public async Task<ScrapeJobEventDto> Read(uint id, ClaimsPrincipal principal)
     {
-      throw new NotImplementedException();
+      var idUser = await _userManager.GetUserAsync(principal);
+      var entity = await _scrapeJobEventRepository.Get(id);
+
+      if (entity != null && await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
+      {
+        return _mapper.Map<ScrapeJobEventDto>(entity);
+      }
+
+      return null;
     }
 
-    public Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobsEventsOfScrapeJob(uint scrapeJobId)
+    public async Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(uint scrapeJobId, ClaimsPrincipal principal)
     {
-      throw new NotImplementedException();
+
+      var idUser = await _userManager.GetUserAsync(principal);
+      var scrapeJob = await _scrapeJobService.Read(scrapeJobId, principal);
+
+      if(scrapeJob != null)
+      {
+        var entities = _scrapeJobEventRepository.ReadScrapeJobEventsOfScrapeJob(scrapeJob.Id);
+
+        if (entities.Any())
+        {
+          return _mapper.Map<IEnumerable<ScrapeJobEventDto>>(entities);
+        }
+
+      }
+
+      return Enumerable.Empty<ScrapeJobEventDto>();
     }
 
     public Task<ScrapeJobEventDto> Update(ScrapeJobEventDto scrapeJobEvent)
     {
       throw new NotImplementedException();
     }
+
+
   }
 }
