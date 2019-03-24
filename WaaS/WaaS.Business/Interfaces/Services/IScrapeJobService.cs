@@ -17,5 +17,7 @@ namespace WaaS.Business.Interfaces.Services
     Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal);
     Task<bool> Delete(uint id, ClaimsPrincipal principal);
     Task<ScrapeJobDto> ToggleEnabled(uint id, ClaimsPrincipal principal);
+    Task<bool> ScrapeJobIsOfUser(uint scrapeJobId, string userId);
+
   }
 }
