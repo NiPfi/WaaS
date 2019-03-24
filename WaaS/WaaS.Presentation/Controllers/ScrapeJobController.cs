@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WaaS.Business.Dtos;
 using WaaS.Business.Interfaces.Services;
+using WaaS.Presentation.Errors;
 
 namespace WaaS.Presentation.Controllers
 {
@@ -31,7 +32,7 @@ namespace WaaS.Presentation.Controllers
         return Ok(scrapeJob);
       }
 
-      return BadRequest();
+      return BadRequest(new BadRequestError("Could not create ScrapeJob"));
     }
 
     [HttpGet ,Authorize]
@@ -43,7 +44,7 @@ namespace WaaS.Presentation.Controllers
         return Ok(scrapeJobs);
       }
 
-      return BadRequest();
+      return BadRequest(new BadRequestError("Could not get the users ScrapeJobs"));
     }
 
     [HttpPut, Authorize]
@@ -55,7 +56,7 @@ namespace WaaS.Presentation.Controllers
         return Ok(scrapeJob);
       }
 
-      return BadRequest();
+      return BadRequest(new BadRequestError("Could not update ScrapeJob"));
     }
 
     [HttpDelete, Authorize]
@@ -67,7 +68,7 @@ namespace WaaS.Presentation.Controllers
         return Ok();
       }
 
-      return BadRequest();
+      return BadRequest(new BadRequestError("Could not delete Scrape Job"));
     }
 
   }
