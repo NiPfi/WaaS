@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
 using WaaS.Business;
 using WaaS.Business.Dtos;
-using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Dtos.User;
 using WaaS.Business.Exceptions;
+using WaaS.Business.Exceptions.UserService;
+using WaaS.Business.Interfaces.Services;
+using WaaS.Presentation.Errors;
 
 namespace WaaS.Presentation.Controllers
 {
@@ -22,7 +24,10 @@ namespace WaaS.Presentation.Controllers
     public UsersController(IUserService userService, IOptions<ApplicationSettings> applicationSettings)
     {
       _userService = userService;
-      _applicationSettings = applicationSettings.Value;
+      if (applicationSettings != null)
+      {
+        _applicationSettings = applicationSettings.Value;
+      }
     }
 
     // POST: api/Users
@@ -30,60 +35,115 @@ namespace WaaS.Presentation.Controllers
     [HttpPost]
     public async Task<IActionResult> Register(UserCaptchaDto userCaptchaDto)
     {
-
-      if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      if (userCaptchaDto != null && !CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
       {
+        return BadRequest(new BadRequestError("Captcha was invalid"));
+      }
 
-        var createdUser = await _userService.Create(userCaptchaDto.User);
-
+      try
+      {
+        var createdUser = await _userService.CreateAsync(userCaptchaDto?.User);
 
         if (createdUser != null)
         {
           return Ok(createdUser);
         }
       }
-      return BadRequest();
+      catch (IdentityUserServiceException exception)
+      {
+        return BadRequest(new BadRequestError(exception.ToString()));
+      }
+
+      return BadRequest(new BadRequestError("Something went wrong processing this registration"));
     }
 
     [AllowAnonymous]
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(UserCaptchaDto userCaptchaDto)
     {
-      if (CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      if (userCaptchaDto != null && CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
       {
         var userDto = userCaptchaDto.User;
-        var user = await _userService.Authenticate(userDto.Email, userDto.Password);
-
-        if (user == null)
+        try
         {
-          return Unauthorized();
+          var user = await _userService.AuthenticateAsync(userDto.Email, userDto.Password);
+
+          if (user == null)
+          {
+            return BadRequest(new BadRequestError("Something about this Email Password combination was incorrect"));
+          }
+
+          return Ok(user);
+        }
+        catch (SignInUserServiceException)
+        {
+          return BadRequest(new BadRequestError("Login failed. Please verify your E-Mail and Password and try again!"));
         }
 
-        return Ok(user);
       }
 
-      return Unauthorized();
+      return BadRequest(new BadRequestError("Captcha was invalid"));
 
     }
 
     // PUT: api/Users
     [HttpPut, Authorize]
-    public async Task<IActionResult> PutUser(UserDto userDto)
+    public async Task<IActionResult> PutUser(UserEditDto userEditDto)
     {
-      var user = await _userService.Update(User, userDto);
-      if (user != null)
+      if (
+        userEditDto == null ||
+        !string.IsNullOrWhiteSpace(userEditDto.NewEmail) && !string.IsNullOrWhiteSpace(userEditDto.NewPassword))
       {
-        return Ok(user);
+        return BadRequest(new BadRequestError("Either a new E-Mail or the current and new password have to be set"));
       }
 
-      return BadRequest();
+      if (string.IsNullOrWhiteSpace(userEditDto.NewEmail))
+      {
+        if (string.IsNullOrWhiteSpace(userEditDto.CurrentPassword) ||
+            string.IsNullOrWhiteSpace(userEditDto.NewPassword))
+        {
+          return BadRequest(new BadRequestError("Either a new E-Mail or the current and new password have to be set"));
+        }
+
+        try
+        {
+          var pwChangeSuccessful = await _userService.UpdatePasswordAsync(User, userEditDto.CurrentPassword, userEditDto.NewPassword);
+          if (pwChangeSuccessful)
+          {
+            return Ok();
+          }
+        }
+        catch (IdentityUserServiceException exception)
+        {
+          return BadRequest(new BadRequestError(exception.ToString()));
+        }
+
+
+        return BadRequest(new BadRequestError("There was an error updating your password."));
+      }
+
+      try
+      {
+        var result = await _userService.UpdateEmailAsync(User, userEditDto.NewEmail);
+        if (result != null)
+        {
+          return Ok(result);
+        }
+      }
+      catch (IdentityUserServiceException exception)
+      {
+        return BadRequest(new BadRequestError(exception.ToString()));
+      }
+
+      return BadRequest(new BadRequestError("There was an error updating your E-Mail"));
+
     }
 
     // DELETE: api/Users
     [HttpDelete, Authorize]
     public async Task<IActionResult> DeleteUser()
     {
-      var user = await _userService.Delete(User);
+      var user = await _userService.DeleteAsync(User);
       if (user != null)
       {
         return Ok(user);
@@ -115,12 +175,7 @@ namespace WaaS.Presentation.Controllers
           $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={captchaResponse}");
       }
 
-      if (!string.IsNullOrWhiteSpace(googleReply))
-      {
-        return JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
-      }
-
-      return false;
+      return !string.IsNullOrWhiteSpace(googleReply) && JsonConvert.DeserializeObject<RecaptchaResponseDto>(googleReply).Success;
     }
 
     #endregion

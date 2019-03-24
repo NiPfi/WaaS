@@ -2,7 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ModalModule } from 'ngx-bootstrap';
+import { AlertModule, ModalModule } from 'ngx-bootstrap';
+import { ConvertNewLinePipe } from 'src/pipes/new-line-pipe/convert-new-line.pipe';
 
 import { AuthService } from '../authentication/auth.service';
 import { EditProfileComponent } from './edit-profile.component';
@@ -15,12 +16,16 @@ describe('EditProfileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EditProfileComponent],
+      declarations: [
+        EditProfileComponent,
+        ConvertNewLinePipe
+      ],
       imports: [
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule,
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        AlertModule.forRoot()
       ],
       providers: [
         AuthService

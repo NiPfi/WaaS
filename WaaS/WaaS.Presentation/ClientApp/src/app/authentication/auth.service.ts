@@ -2,9 +2,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
+import { environment } from '../../environments/environment';
+import { HttpErrorHandlerService } from '../error-handling/http-error-handler.service';
 import { JwtHelperService } from './jwt/jwt-helper.service';
 import { User } from './user';
 
@@ -14,17 +16,18 @@ import { User } from './user';
 export class AuthService {
 
   constructor(
-    private http: HttpClient,
-    private router: Router,
-    private jwtHelper: JwtHelperService,
-    @Inject(PLATFORM_ID) private platformId: object
+    private readonly http: HttpClient,
+    private readonly router: Router,
+    private readonly jwtHelper: JwtHelperService,
+    private readonly handler: HttpErrorHandlerService,
+    @Inject(PLATFORM_ID) private readonly platformId: object
   ) {
     if (isPlatformBrowser(this.platformId)) {
       this.localStorage = window.localStorage;
     }
   }
 
-  private localStorage: any;
+  private readonly localStorage: any;
 
   public isAuthenticated(): boolean {
     return (this.parseUser() != null);
@@ -38,7 +41,14 @@ export class AuthService {
     return this.parseUser().email;
   }
 
-  login(loginUser: User, captchaResponse: string) {
+  register(registerUser: User, captchaResponse: string): Observable<{} | User> {
+    return this.http.post<User>(`${environment.apiUrl}/users`, {
+      user: registerUser,
+      captchaResponse
+    }).pipe(catchError(this.handler.handleError));
+  }
+
+  login(loginUser: User, captchaResponse: string): Observable<User> {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {
       user: loginUser,
       captchaResponse
@@ -47,20 +57,15 @@ export class AuthService {
       if (user && user.token) {
         this.updateUser(user);
       }
-    }));
+      return user;
+    }))
+      .pipe(catchError(this.handler.handleError));
   }
 
   updateUser(user: User) {
     if (this.localStorage) {
       this.localStorage.setItem('currentUser', JSON.stringify(user));
     }
-  }
-
-  register(registerUser: User, captchaResponse: string) {
-    return this.http.post<User>(`${environment.apiUrl}/users`, {
-      user: registerUser,
-      captchaResponse
-    });
   }
 
   logout() {
@@ -71,7 +76,6 @@ export class AuthService {
   }
 
   private parseUser(): User {
-
     if (this.localStorage) {
       const userString = JSON.parse(this.localStorage.getItem('currentUser'));
       const user = userString as User;
@@ -79,8 +83,8 @@ export class AuthService {
         const expired = this.jwtHelper.isTokenExpired(user.token);
         return (expired) ? null : user;
       }
-      return null;
     }
+    return null;
 
   }
 

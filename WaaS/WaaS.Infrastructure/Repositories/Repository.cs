@@ -9,16 +9,16 @@ namespace WaaS.Infrastructure.Repositories
 {
   public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey> where TKey : IEquatable<TKey>
   {
-    protected readonly WaasDbContext _context;
+    protected readonly WaasDbContext Context;
 
     public Repository(WaasDbContext context)
     {
-      _context = context;
+      Context = context;
     }
 
-    protected DbSet<TEntity> DbSet => _context.Set<TEntity>();
+    protected DbSet<TEntity> DbSet => Context.Set<TEntity>();
 
-    public Task<TEntity> Get(TKey id)
+    public Task<TEntity> GetAsync(TKey id)
     {
       return DbSet.FindAsync(id);
     }
@@ -28,26 +28,26 @@ namespace WaaS.Infrastructure.Repositories
       return DbSet.AsNoTracking().AsQueryable();
     }
 
-    public async Task<bool> Add(TEntity entity)
+    public async Task<bool> AddAsync(TEntity entity)
     {
-      await DbSet.AddAsync(entity);
-      return 1 == await _context.SaveChangesAsync();
+      await DbSet.AddAsync(entity).ConfigureAwait(false);
+      return 1 == await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task<bool> Delete(TKey id)
+    public async Task<bool> DeleteAsync(TKey id)
     {
-      var entity = await DbSet.FindAsync(id);
+      var entity = await DbSet.FindAsync(id).ConfigureAwait(false);
       DbSet.Remove(entity);
 
-      return 1 == await _context.SaveChangesAsync();
+      return 1 == await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 
-    public async Task<bool> Update(TKey id, Action<TEntity> changeAction)
+    public async Task<bool> UpdateAsync(TKey id, Action<TEntity> changeAction)
     {
-      var entity = await DbSet.FindAsync(id);
+      var entity = await DbSet.FindAsync(id).ConfigureAwait(false);
       changeAction(entity);
 
-      return 1 == await _context.SaveChangesAsync();
+      return 1 == await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 
     public void Dispose()
@@ -60,7 +60,7 @@ namespace WaaS.Infrastructure.Repositories
     {
       if (disposing)
       {
-        _context.Dispose();
+        Context.Dispose();
       }
     }
   }

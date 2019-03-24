@@ -6,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { AlertModule } from 'ngx-bootstrap';
 
+import { PipesModule } from '../../../pipes/pipes.module';
 import { RegisterComponent } from './register.component';
 
 describe('RegisterComponent', () => {
@@ -22,7 +23,8 @@ describe('RegisterComponent', () => {
         AlertModule.forRoot(),
         ReactiveFormsModule,
         RouterTestingModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        PipesModule
       ]
     })
       .compileComponents();

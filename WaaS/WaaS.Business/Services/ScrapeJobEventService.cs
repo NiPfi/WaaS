@@ -43,7 +43,7 @@ namespace WaaS.Business.Services
 
         var entity = _mapper.Map<ScrapeJobEvent>(scrapeJobEvent);
 
-        var success = await _scrapeJobEventRepository.Add(entity);
+        var success = await _scrapeJobEventRepository.AddAsync(entity);
 
         if (success)
         {
@@ -57,7 +57,7 @@ namespace WaaS.Business.Services
 
     public async Task<bool> Delete(uint id)
     {
-      return await _scrapeJobEventRepository.Delete(id);
+      return await _scrapeJobEventRepository.DeleteAsync(id);
     }
 
     public async Task<ScrapeJobEventDto> Read(uint id, ClaimsPrincipal principal)

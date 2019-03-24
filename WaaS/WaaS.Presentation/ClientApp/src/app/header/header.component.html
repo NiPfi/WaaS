@@ -2,7 +2,6 @@
   <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" routerLink="">WaaS</a>
     <div *ngIf="authService.isAuthenticated()">
-      <a class="btn btn-link navbar-text" routerLink="test">Test</a>
       <div class="btn-group" dropdown>
         <button id="user-menu-button" dropdownToggle type="button" class="btn btn-outline-light dropdown-toggle" aria-controls="user-menu-dropdown">{{authService.getUserEmail()}} <span class="caret"></span></button>
         <ul id="user-menu-dropdown" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">

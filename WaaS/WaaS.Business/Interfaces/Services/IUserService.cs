@@ -2,14 +2,16 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.User;
 
 namespace WaaS.Business.Interfaces.Services
 {
   public interface IUserService
   {
-    Task<UserDto> Create(UserDto user);
-    Task<UserDto> Authenticate(string userEmail, string password);
-    Task<UserDto> Update(ClaimsPrincipal principal, UserDto userDto);
-    Task<UserDto> Delete(ClaimsPrincipal principal);
+    Task<UserDto> CreateAsync(UserDto user);
+    Task<UserDto> AuthenticateAsync(string userEmail, string password);
+    Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail);
+    Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword, string newPassword);
+    Task<UserDto> DeleteAsync(ClaimsPrincipal principal);
   }
 }

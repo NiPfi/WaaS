@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.User;
+using WaaS.Business.Exceptions.UserService;
 using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Business.Services
@@ -34,15 +35,18 @@ namespace WaaS.Business.Services
       _mapper = mapper;
       _signInManager = signInManager;
       _userManager = userManager;
-      _applicationSettings = applicationSettings.Value;
+      if (applicationSettings != null)
+      {
+        _applicationSettings = applicationSettings.Value;
+      }
     }
 
-    public async Task<UserDto> Create(UserDto user)
+    public async Task<UserDto> CreateAsync(UserDto user)
     {
-      if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password))
+      if (user != null && (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password)))
       {
         var userEntity = _mapper.Map<IdentityUser>(user);
-        var result = await _userManager.CreateAsync(userEntity, user.Password);
+        var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
 
         if (result.Succeeded)
         {
@@ -50,62 +54,79 @@ namespace WaaS.Business.Services
           return _mapper.Map<UserDto>(userEntity);
         }
 
+        throw new IdentityUserServiceException(result.Errors);
+
       }
 
-      return null;
+      throw new UserServiceException("Both E-Mail and Password are required");
 
     }
 
-    public async Task<UserDto> Authenticate(string userEmail, string password)
+    public async Task<UserDto> AuthenticateAsync(string userEmail, string password)
     {
-      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false);
+      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false).ConfigureAwait(false);
 
       if (result.Succeeded)
       {
-        var user = _userManager.Users.SingleOrDefault(u => u.Email == userEmail);
+        var user = await _userManager.FindByEmailAsync(userEmail).ConfigureAwait(false);
         var token = GenerateJwtToken(user);
 
         var userDto = _mapper.Map<UserDto>(user);
+        userDto.Password = null;
         userDto.Token = token;
 
         return userDto;
 
       }
 
+      throw new SignInUserServiceException(result);
+
+    }
+
+    public async Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail)
+    {
+      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      if (newEmail != null)
+      {
+        idUser.UserName = newEmail;
+        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail).ConfigureAwait(false);
+        IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token).ConfigureAwait(false);
+
+        if (result.Succeeded)
+        {
+          var userDto = new UserDto
+          {
+            Email = newEmail,
+            Token = GenerateJwtToken(idUser)
+          };
+          return userDto;
+        }
+
+        throw new IdentityUserServiceException(result.Errors);
+      }
+
       return null;
     }
 
-    public async Task<UserDto> Update(ClaimsPrincipal principal, UserDto userDto)
+    public async Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword,
+      string newPassword)
     {
-      var idUser = await _userManager.GetUserAsync(principal);
-      IdentityResult result;
-      if (userDto.Password != null)
+      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      IdentityResult result = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword).ConfigureAwait(false);
+
+      if (!result.Succeeded)
       {
-        var token = await _userManager.GeneratePasswordResetTokenAsync(idUser);
-        result = await _userManager.ResetPasswordAsync(idUser, token, userDto.Password);
-      }
-      else
-      {
-        idUser.UserName = userDto.Email;
-        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, userDto.Email);
-        result = await _userManager.ChangeEmailAsync(idUser, userDto.Email, token);
+        throw new IdentityUserServiceException(result.Errors);
       }
 
-      if (result.Succeeded)
-      {
-        userDto.Password = null;
-        userDto.Token = GenerateJwtToken(idUser);
-        return userDto;
-      }
-
-      return null;
+      return result.Succeeded;
     }
 
-    public async Task<UserDto> Delete(ClaimsPrincipal principal)
+    public async Task<UserDto> DeleteAsync(ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal);
+      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
 
-      var result = await _userManager.DeleteAsync(idUser);
+      var result = await _userManager.DeleteAsync(idUser).ConfigureAwait(false);
 
       if (result.Succeeded)
       {
@@ -128,7 +149,7 @@ namespace WaaS.Business.Services
           new Claim(JwtRegisteredClaimNames.Sub, user.Id),
           new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
           new Claim(JwtRegisteredClaimNames.Email, user.Email),
-          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("D", CultureInfo.InvariantCulture))
         }),
         Expires = _tokenExpirationDate,
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),

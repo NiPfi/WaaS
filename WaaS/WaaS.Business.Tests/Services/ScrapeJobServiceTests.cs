@@ -38,7 +38,7 @@ namespace WaaS.Business.Tests.Services
       mockMapper.Map<ScrapeJob>(testScrapeJobDto).Returns(testScrapeJob);
       mockMapper.Map<ScrapeJobDto>(testScrapeJob).Returns(testScrapeJobDto);
 
-      mockScrapeJobRepository.Add(Arg.Any<ScrapeJob>()).ReturnsForAnyArgs(Task.FromResult(true));
+      mockScrapeJobRepository.AddAsync(Arg.Any<ScrapeJob>()).ReturnsForAnyArgs(Task.FromResult(true));
 
       IScrapeJobService scrapeJobService = new ScrapeJobService(mockMapper, mockScrapeJobRepository, mockUserManager);
 
