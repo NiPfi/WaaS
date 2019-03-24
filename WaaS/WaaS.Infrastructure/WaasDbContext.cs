@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WaaS.Business.Entities;
@@ -12,7 +13,10 @@ namespace WaaS.Infrastructure
 
     public WaasDbContext(DbContextOptions options) : base(options)
     {
-      Database.Migrate();
+      if (Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+      {
+        Database.Migrate();
+      }
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
