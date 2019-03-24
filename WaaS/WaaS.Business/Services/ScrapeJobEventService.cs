@@ -93,9 +93,23 @@ namespace WaaS.Business.Services
       return Enumerable.Empty<ScrapeJobEventDto>();
     }
 
-    public Task<ScrapeJobEventDto> Update(ScrapeJobEventDto scrapeJobEvent)
+    public async Task<ScrapeJobEventDto> Update(ScrapeJobEventDto scrapeJobEvent, ClaimsPrincipal principal)
     {
-      throw new NotImplementedException();
+      var idUser = await _userManager.GetUserAsync(principal);
+      var entity = await _scrapeJobEventRepository.GetAsync(scrapeJobEvent.Id);
+
+      if (await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
+      {
+        var success = await _scrapeJobEventRepository.UpdateAsync(scrapeJobEvent.Id, e => e = _mapper.Map(scrapeJobEvent, e));
+
+        if (success)
+        {
+          var updatedEntity = await _scrapeJobEventRepository.GetAsync(scrapeJobEvent.Id);
+          return _mapper.Map<ScrapeJobEventDto>(updatedEntity);
+        }
+      }
+
+      return null;
     }
 
 

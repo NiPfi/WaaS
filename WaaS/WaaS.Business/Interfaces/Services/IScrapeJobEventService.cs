@@ -12,7 +12,7 @@ namespace WaaS.Business.Interfaces.Services
     Task<ScrapeJobEventDto> Create(ScrapeJobEventDto scrapeJobEvent);
     Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(uint scrapeJobId, ClaimsPrincipal principal);
     Task<ScrapeJobEventDto> Read(uint id, ClaimsPrincipal principal);
-    Task<ScrapeJobEventDto> Update(ScrapeJobEventDto scrapeJobEvent);
+    Task<ScrapeJobEventDto> Update(ScrapeJobEventDto scrapeJobEvent, ClaimsPrincipal principal);
     Task<bool> Delete(uint id);
   }
 }
