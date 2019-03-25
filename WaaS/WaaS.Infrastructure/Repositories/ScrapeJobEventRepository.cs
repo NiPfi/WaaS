@@ -7,13 +7,13 @@ using WaaS.Business.Interfaces.Repositories;
 
 namespace WaaS.Infrastructure.Repositories
 {
-  public class ScrapeJobEventRepository : Repository<ScrapeJobEvent, uint>, IScrapeJobEventRepository
+  public class ScrapeJobEventRepository : Repository<ScrapeJobEvent, long>, IScrapeJobEventRepository
   {
     public ScrapeJobEventRepository(WaasDbContext context) : base(context)
     {
     }
 
-    public IQueryable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(uint scrapeJobId)
+    public IQueryable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId)
     {
       return GetAll().Where(x => x.ScrapeJob.Id.Equals(scrapeJobId));
     }

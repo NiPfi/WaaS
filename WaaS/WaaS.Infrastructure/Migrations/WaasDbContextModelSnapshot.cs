@@ -187,7 +187,8 @@ namespace WaaS.Infrastructure.Migrations
             modelBuilder.Entity("WaaS.Business.Entities.ScrapeJob", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AlternativeEmail");
 
@@ -200,7 +201,7 @@ namespace WaaS.Infrastructure.Migrations
 
                     b.Property<string>("Url");
 
-                    b.Property<long>("UserSpecificId");
+                    b.Property<int>("UserSpecificId");
 
                     b.HasKey("Id");
 
@@ -214,7 +215,8 @@ namespace WaaS.Infrastructure.Migrations
             modelBuilder.Entity("WaaS.Business.Entities.ScrapeJobEvent", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("HTTPResponseCode");
 

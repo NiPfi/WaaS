@@ -52,7 +52,7 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<bool> Delete(uint id, ClaimsPrincipal principal)
+    public async Task<bool> Delete(long id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(id, idUser.Id))
@@ -64,7 +64,7 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<ScrapeJobDto> Read(uint id, ClaimsPrincipal principal)
+    public async Task<ScrapeJobDto> Read(long id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(id, idUser.Id))
@@ -110,7 +110,7 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<ScrapeJobDto> ToggleEnabled(uint id, ClaimsPrincipal principal)
+    public async Task<ScrapeJobDto> ToggleEnabled(long id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(id, idUser.Id))
@@ -146,7 +146,7 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<bool> ScrapeJobIsOfUser(uint scrapeJobId, string userId)
+    public async Task<bool> ScrapeJobIsOfUser(long scrapeJobId, string userId)
     {
       var scrapeJobEntity = await _scrapeJobRepository.GetAsync(scrapeJobId);
 

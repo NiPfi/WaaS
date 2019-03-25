@@ -55,7 +55,7 @@ namespace WaaS.Business.Services
       return null;
     }
 
-    public async Task<bool> Delete(uint id, ClaimsPrincipal principal)
+    public async Task<bool> Delete(long id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
       var entity = await _scrapeJobEventRepository.GetAsync(id);
@@ -69,7 +69,7 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<ScrapeJobEventDto> Read(uint id, ClaimsPrincipal principal)
+    public async Task<ScrapeJobEventDto> Read(long id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
       var entity = await _scrapeJobEventRepository.GetAsync(id);
@@ -82,7 +82,7 @@ namespace WaaS.Business.Services
       return null;
     }
 
-    public async Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(uint scrapeJobId, ClaimsPrincipal principal)
+    public async Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId, ClaimsPrincipal principal)
     {
 
       var idUser = await _userManager.GetUserAsync(principal);

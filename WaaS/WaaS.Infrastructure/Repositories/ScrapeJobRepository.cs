@@ -8,7 +8,7 @@ using WaaS.Business.Interfaces.Repositories;
 
 namespace WaaS.Infrastructure.Repositories
 {
-  public class ScrapeJobRepository : Repository<ScrapeJob, uint>, IScrapeJobRepository
+  public class ScrapeJobRepository : Repository<ScrapeJob, long>, IScrapeJobRepository
   {
     public ScrapeJobRepository(WaasDbContext context) : base(context)
     {

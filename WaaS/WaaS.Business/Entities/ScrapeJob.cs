@@ -6,10 +6,10 @@ using WaaS.Business.Interfaces.Entities;
 
 namespace WaaS.Business.Entities
 {
-  public class ScrapeJob: IEntity<uint>
+  public class ScrapeJob: IEntity<long>
   {
-    public uint Id { get; set; }
-    public uint UserSpecificId { get; set; }
+    public long Id { get; set; }
+    public int UserSpecificId { get; set; }
     public bool Enabled { get; set; }
     public string Url { get; set; }
     public string Pattern { get; set; }
@@ -23,7 +23,7 @@ namespace WaaS.Business.Entities
 
     public override bool Equals(object obj)
     {
-      if(obj is IEntity<uint> other)
+      if(obj is IEntity<long> other)
       {
         return Id == other.Id;
       }

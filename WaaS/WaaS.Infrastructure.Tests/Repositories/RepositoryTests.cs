@@ -26,7 +26,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       // Act
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, uint>(context);
+        var testRepository = new Repository<ScrapeJob, long>(context);
         var result = await testRepository.GetAsync(testEntity.Id);
 
         // Assert
@@ -41,7 +41,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       var options = GetTestDbContextOptions("GetAll_ScrapeJob_Database");
 
       const int count = 100;
-      var testScrapeJobs = Enumerable.Range(1, count).Select(e => GenerateTestEntity((uint)e)).ToArray();
+      var testScrapeJobs = Enumerable.Range(1, count).Select(e => GenerateTestEntity(e)).ToArray();
       using (var context = new WaasDbContext(options))
       {
         foreach (ScrapeJob scrapeJob in testScrapeJobs)
@@ -54,7 +54,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       // Act
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, uint>(context);
+        var testRepository = new Repository<ScrapeJob, long>(context);
         var result = testRepository.GetAll();
 
         Assert.Equal(count, await result.CountAsync());
@@ -74,7 +74,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       bool result;
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, uint>(context);
+        var testRepository = new Repository<ScrapeJob, long>(context);
         result = await testRepository.AddAsync(testEntity);
       }
 
@@ -105,7 +105,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       bool result;
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, uint>(context);
+        var testRepository = new Repository<ScrapeJob, long>(context);
         result = await testRepository.DeleteAsync(testEntity.Id);
       }
 
@@ -134,7 +134,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       bool result;
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, uint>(context);
+        var testRepository = new Repository<ScrapeJob, long>(context);
         result = await testRepository.UpdateAsync(testEntity.Id, job =>
         {
           job.Pattern = "updatedPattern";
@@ -162,7 +162,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
         .Options;
     }
 
-    private static ScrapeJob GenerateTestEntity(uint id = 123)
+    private static ScrapeJob GenerateTestEntity(int id = 123)
     {
       return new ScrapeJob
       {

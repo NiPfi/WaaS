@@ -13,11 +13,11 @@ namespace WaaS.Business.Interfaces.Services
     Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob);
     IEnumerable<ScrapeJobDto> ReadAll();
     Task<IEnumerable<ScrapeJobDto>> ReadUsersScrapeJobs(ClaimsPrincipal principal);
-    Task<ScrapeJobDto> Read(uint id, ClaimsPrincipal principal);
+    Task<ScrapeJobDto> Read(long id, ClaimsPrincipal principal);
     Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal);
-    Task<bool> Delete(uint id, ClaimsPrincipal principal);
-    Task<ScrapeJobDto> ToggleEnabled(uint id, ClaimsPrincipal principal);
-    Task<bool> ScrapeJobIsOfUser(uint scrapeJobId, string userId);
+    Task<bool> Delete(long id, ClaimsPrincipal principal);
+    Task<ScrapeJobDto> ToggleEnabled(long id, ClaimsPrincipal principal);
+    Task<bool> ScrapeJobIsOfUser(long scrapeJobId, string userId);
 
   }
 }

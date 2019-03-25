@@ -6,10 +6,10 @@ using WaaS.Business.Entities;
 
 namespace WaaS.Business.Interfaces.Repositories
 {
-  public interface IScrapeJobEventRepository : IRepository<ScrapeJobEvent, uint>
+  public interface IScrapeJobEventRepository : IRepository<ScrapeJobEvent, long>
   {
 
-    IQueryable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(uint scrapeJobId);
+    IQueryable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId);
 
   }
 }
