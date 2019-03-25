@@ -92,6 +92,9 @@ namespace WaaS.Presentation
 
       services.AddScoped<IUserService, UserService>();
       services.AddScoped<IScrapeJobRepository, ScrapeJobRepository>();
+      services.AddScoped<IScrapeJobService, ScrapeJobService>();
+      services.AddScoped<IScrapeJobEventRepository, ScrapeJobEventRepository>();
+      services.AddScoped<IScrapeJobEventService, ScrapeJobEventService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
