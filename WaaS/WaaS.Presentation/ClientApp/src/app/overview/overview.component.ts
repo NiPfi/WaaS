@@ -17,7 +17,11 @@ export class OverviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.jobs = this.jobsService.getScrapeJobs();
+    this.jobsService.getScrapeJobs().subscribe(
+      jobs => {
+        this.jobs = jobs
+      }
+    );
   }
 
 }
