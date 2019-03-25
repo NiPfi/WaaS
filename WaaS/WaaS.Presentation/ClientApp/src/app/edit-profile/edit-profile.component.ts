@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { first } from 'rxjs/internal/operators/first';
 
 import { AuthService } from '../authentication/auth.service';
@@ -25,8 +24,7 @@ export class EditProfileComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly formBuilder: FormBuilder,
     private readonly modalService: BsModalService,
-    private readonly editProfileService: EditProfileService,
-    private readonly spinner: NgxSpinnerService
+    private readonly editProfileService: EditProfileService
   ) { }
 
   ngOnInit() {
@@ -45,8 +43,6 @@ export class EditProfileComponent implements OnInit {
       return;
     }
 
-    this.spinner.show();
-
     this.editProfileService.updateEmail(this.changeEmailForm.controls.email.value)
       .pipe(first())
       .subscribe(
@@ -55,10 +51,6 @@ export class EditProfileComponent implements OnInit {
         },
         error => {
           this.errorMessage = error;
-          this.spinner.hide();
-        },
-        () => {
-          this.spinner.hide();
         }
       )
       ;
@@ -68,8 +60,6 @@ export class EditProfileComponent implements OnInit {
     if (this.changePasswordForm.invalid) {
       return;
     }
-
-    this.spinner.show();
 
     return this.editProfileService.updatePassword(
       this.changePasswordForm.controls.currentPassword.value,
@@ -81,9 +71,7 @@ export class EditProfileComponent implements OnInit {
         },
         error => {
           this.errorMessage = error;
-          this.spinner.hide();
-        },
-        () => this.spinner.hide()
+        }
       );
   }
 

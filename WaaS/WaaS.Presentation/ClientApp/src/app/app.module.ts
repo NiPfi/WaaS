@@ -21,6 +21,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { HttpSpinnerInterceptor } from './http-spinner/http-spinner.interceptor';
 import { AddJobComponent } from './overview/add-job/add-job.component';
 import { OverviewComponent } from './overview/overview.component';
 import { PipesModule } from './pipes/pipes.module';
@@ -54,6 +55,7 @@ import { PipesModule } from './pipes/pipes.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpSpinnerInterceptor, multi: true },
     {
       provide: RECAPTCHA_SETTINGS, useValue: {
         siteKey: environment.reCaptchaSiteKey,
