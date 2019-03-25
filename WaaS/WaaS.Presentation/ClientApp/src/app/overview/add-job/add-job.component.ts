@@ -25,8 +25,10 @@ export class AddJobComponent implements OnInit {
     const tempJob = new ScrapeJob();
     tempJob.name = 'testJob';
     tempJob.pattern = new RegExp('Pattern');
-    tempJob.url = new URL('www.test.com');
-    this.jobsService.addScrapeJob(tempJob);
+    tempJob.url = new URL('http://www.test.com');
+    this.jobsService.addScrapeJob(tempJob).subscribe(
+      () => {}
+    );
   }
 
 }
