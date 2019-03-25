@@ -21,6 +21,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { PipesModule } from './pipes/pipes.module';
 import { OverviewComponent } from './overview/overview.component';
+import { AddJobComponent } from './overview/add-job/add-job.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { OverviewComponent } from './overview/overview.component';
     RegisterComponent,
     EditProfileComponent,
     AboutComponent,
-    OverviewComponent
+    OverviewComponent,
+    AddJobComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
