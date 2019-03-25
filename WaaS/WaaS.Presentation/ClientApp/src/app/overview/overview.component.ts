@@ -10,7 +10,7 @@ import { ScrapeJob } from './scrape-job';
 })
 export class OverviewComponent implements OnInit {
 
-  public jobs: ScrapeJob[];
+  public jobs: ScrapeJob[] = [];
 
   constructor(
     private readonly jobsService: OverviewService
