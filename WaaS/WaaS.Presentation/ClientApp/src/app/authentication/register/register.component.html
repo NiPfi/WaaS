@@ -1,5 +1,10 @@
 <div class="container">
   <h2>Register</h2>
+
+  <ngx-spinner type="ball-atom" size="medium">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
   <alert type="danger" *ngIf="error && error != ''" [dismissible]="true" (onClosed)="onErrorAlertClosed()">
     <span [innerHtml]="error | convertNewLine: true"></span>
   </alert>

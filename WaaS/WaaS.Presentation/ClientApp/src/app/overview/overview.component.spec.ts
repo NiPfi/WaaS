@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AddJobComponent } from './add-job/add-job.component';
 import { OverviewComponent } from './overview.component';
@@ -12,7 +13,8 @@ describe('OverviewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        NgxSpinnerModule
       ],
       declarations: [
         OverviewComponent,

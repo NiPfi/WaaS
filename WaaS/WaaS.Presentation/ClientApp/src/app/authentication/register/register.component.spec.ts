@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { AlertModule } from 'ngx-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { PipesModule } from '../../pipes/pipes.module';
 import { RegisterComponent } from './register.component';
@@ -24,7 +25,8 @@ describe('RegisterComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        PipesModule
+        PipesModule,
+        NgxSpinnerModule
       ]
     })
       .compileComponents();
