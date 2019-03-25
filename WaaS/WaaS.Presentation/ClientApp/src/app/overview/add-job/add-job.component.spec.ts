@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AddJobComponent } from './add-job.component';
 
@@ -8,6 +10,10 @@ describe('AddJobComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FontAwesomeModule,
+        HttpClientTestingModule
+      ],
       declarations: [ AddJobComponent ]
     })
     .compileComponents();
