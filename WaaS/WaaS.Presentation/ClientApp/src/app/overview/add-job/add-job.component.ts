@@ -24,8 +24,8 @@ export class AddJobComponent implements OnInit {
     // TODO Modal
     const tempJob = new ScrapeJob();
     tempJob.name = 'testJob';
-    tempJob.pattern = new RegExp('Pattern');
-    tempJob.url = new URL('http://www.test.com');
+    tempJob.pattern = 'Pattern';
+    tempJob.url = 'http://www.test.com';
     this.jobsService.addScrapeJob(tempJob).subscribe(
       () => {}
     );
