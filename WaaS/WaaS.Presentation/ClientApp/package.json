@@ -34,6 +34,7 @@
     "ng-mocks": "^7.7.0",
     "ng-recaptcha": "^4.2.1",
     "ngx-bootstrap": "^3.2.0",
+    "ngx-spinner": "^7.0.0",
     "rxjs": "~6.4.0",
     "ts-loader": "^5.3.3",
     "tslib": "^1.9.0",
