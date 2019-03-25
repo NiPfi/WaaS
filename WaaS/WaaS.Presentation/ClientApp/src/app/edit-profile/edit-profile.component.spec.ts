@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AlertModule, ModalModule } from 'ngx-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AuthService } from '../authentication/auth.service';
 import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
@@ -24,6 +25,7 @@ describe('EditProfileComponent', () => {
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule,
+        NgxSpinnerModule,
         ModalModule.forRoot(),
         AlertModule.forRoot()
       ],

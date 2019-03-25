@@ -8,6 +8,7 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 
 import { AboutComponent } from './about/about.component';
@@ -46,6 +47,7 @@ import { PipesModule } from './pipes/pipes.module';
     RecaptchaFormsModule,
     PipesModule,
     FontAwesomeModule,
+    NgxSpinnerModule,
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot()

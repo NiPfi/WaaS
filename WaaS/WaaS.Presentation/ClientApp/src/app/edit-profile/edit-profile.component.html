@@ -1,6 +1,10 @@
 <div class="container">
   <h1>Edit Profile</h1>
 
+  <ngx-spinner type="ball-atom" size="medium">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
   <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
     (onClosed)="onSuccessAlertClosed()">
     <span [innerHtml]="successMessage | convertNewLine: true"></span>

@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { first } from 'rxjs/internal/operators/first';
 
 import { AuthService } from '../authentication/auth.service';
@@ -21,10 +22,11 @@ export class EditProfileComponent implements OnInit {
   errorMessage = '';
 
   constructor(
-    private authService: AuthService,
-    private formBuilder: FormBuilder,
-    private modalService: BsModalService,
-    private editProfileService: EditProfileService
+    private readonly authService: AuthService,
+    private readonly formBuilder: FormBuilder,
+    private readonly modalService: BsModalService,
+    private readonly editProfileService: EditProfileService,
+    private readonly spinner: NgxSpinnerService
   ) { }
 
   ngOnInit() {
@@ -43,23 +45,31 @@ export class EditProfileComponent implements OnInit {
       return;
     }
 
+    this.spinner.show();
+
     this.editProfileService.updateEmail(this.changeEmailForm.controls.email.value)
-    .pipe(first())
-    .subscribe(
-      data => {
-        this.successMessage = `Your E-Mail has been changed to ${data.email}`;
-      },
-      error => {
-        this.errorMessage = error;
-      }
-    )
-    ;
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.successMessage = `Your E-Mail has been changed to ${data.email}`;
+        },
+        error => {
+          this.errorMessage = error;
+          this.spinner.hide();
+        },
+        () => {
+          this.spinner.hide();
+        }
+      )
+      ;
   }
 
   onSubmitPassword() {
     if (this.changePasswordForm.invalid) {
       return;
     }
+
+    this.spinner.show();
 
     return this.editProfileService.updatePassword(
       this.changePasswordForm.controls.currentPassword.value,
@@ -71,7 +81,9 @@ export class EditProfileComponent implements OnInit {
         },
         error => {
           this.errorMessage = error;
-        }
+          this.spinner.hide();
+        },
+        () => this.spinner.hide()
       );
   }
 
