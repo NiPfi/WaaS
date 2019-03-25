@@ -1,9 +1,9 @@
-import { Url } from 'url';
+import { UrlObject } from 'url';
 
 export class ScrapeJob {
   id: number;
   name: string;
-  url: Url;
+  url: UrlObject;
   pattern: RegExp;
   enabled: boolean;
 }

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+import { OverviewService } from '../overview-service/overview.service';
+import { ScrapeJob } from '../scrape-job';
 
 @Component({
   selector: 'app-add-job',
@@ -7,9 +11,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddJobComponent implements OnInit {
 
-  constructor() { }
+  faPlus = faPlus;
+
+  constructor(
+    private readonly jobsService: OverviewService
+  ) { }
 
   ngOnInit() {
+  }
+
+  onAddButtonClick() {
+    // TODO Modal
+    const tempJob = new ScrapeJob();
+    tempJob.name = 'testJob';
+    tempJob.pattern = new RegExp('Pattern');
+    tempJob.url = new URL('www.test.com');
+    this.jobsService.addScrapeJob(tempJob);
   }
 
 }

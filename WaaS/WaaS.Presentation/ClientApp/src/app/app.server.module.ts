@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ServerModule } from '@angular/platform-server';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
@@ -23,6 +24,7 @@ import { PipesModule } from './pipes/pipes.module';
     ReactiveFormsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
+    FontAwesomeModule,
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot()
