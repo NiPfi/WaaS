@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { OverviewService } from '../overview-service/overview.service';
@@ -10,6 +10,8 @@ import { ScrapeJob } from '../scrape-job';
   styleUrls: ['./add-job.component.scss']
 })
 export class AddJobComponent implements OnInit {
+
+  @Output() jobAdded = new EventEmitter();
 
   faPlus = faPlus;
 
@@ -27,7 +29,9 @@ export class AddJobComponent implements OnInit {
     tempJob.pattern = 'Pattern';
     tempJob.url = 'http://www.test.com';
     this.jobsService.addScrapeJob(tempJob).subscribe(
-      () => {}
+      () => {
+        this.jobAdded.emit();
+      }
     );
   }
 
