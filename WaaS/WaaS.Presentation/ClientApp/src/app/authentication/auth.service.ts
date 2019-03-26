@@ -21,12 +21,8 @@ export class AuthService {
     private readonly jwtHelper: JwtHelperService,
     private readonly handler: HttpErrorHandlerService,
     private readonly cookies: CookieService,
-    // @Inject(PLATFORM_ID) private readonly platformId: object,
-    // @Optional() @Inject('COOKIES') private readonly cookiesSSR: any
   ) {
-    // this.isBrowser = isPlatformBrowser(platformId);
   }
-  // private readonly isBrowser: boolean;
   private readonly userKey = 'currentUser';
   private readonly cookieOptions: CookieOptions = {
     domain: environment.apiUrl,
@@ -68,9 +64,7 @@ export class AuthService {
   }
 
   updateUser(user: User) {
-    // if (this.isBrowser) {
-      this.cookies.putObject(this.userKey, user);
-    // }
+    this.cookies.putObject(this.userKey, user);
   }
 
   logout() {
@@ -79,14 +73,6 @@ export class AuthService {
   }
 
   private parseUser(): User {
-    // let user: User;
-
-    // if (this.isBrowser) {
-      // user = this.cookies.getObject(this.userKey) as User;
-    // } else {
-      // user = JSON.parse(this.cookiesSSR[this.userKey]) as User;
-    // }
-
     const user = this.cookies.getObject(this.userKey) as User;
 
     if (user) {
