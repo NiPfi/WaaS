@@ -9,7 +9,7 @@ describe('CookieBackendService', () => {
       CookieModule.forRoot()
     ],
     providers: [
-      { provide: 'COOKIES', useValue: '' }
+      { provide: 'COOKIE', useValue: '' }
     ]
   }));
 

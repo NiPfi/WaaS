@@ -6,18 +6,21 @@ import { CookieOptionsProvider, CookieService } from 'ngx-cookie';
 })
 export class CookieBackendService extends CookieService {
 
+  private cookie: string;
+
   constructor(
-    @Inject('COOKIES') private cookies: any,
+    @Inject('COOKIE') private cookieHeader: any,
     optionsProvider: CookieOptionsProvider
   ) {
     super(optionsProvider);
+    this.cookie = JSON.stringify(this.cookieHeader);
   }
 
   protected get cookieString(): string {
-    return this.cookies || '';
+    return this.cookie;
   }
 
   protected set cookieString(val: string) {
-    this.cookies = val;
+    this.cookie = val;
   }
 }

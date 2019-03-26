@@ -20,10 +20,10 @@ export class AuthService {
     private readonly router: Router,
     private readonly jwtHelper: JwtHelperService,
     private readonly handler: HttpErrorHandlerService,
-    private readonly cookies: CookieService,
+    private readonly cookies: CookieService
   ) {
   }
-  private readonly userKey = 'currentUser';
+  private readonly userKey = 'currentUserToken';
   private readonly cookieOptions: CookieOptions = {
     domain: environment.apiUrl,
     httpOnly: true,
@@ -31,15 +31,15 @@ export class AuthService {
   };
 
   public isAuthenticated(): boolean {
-    return (this.parseUser() != null);
-  }
-
-  public getToken(): string {
-    return this.parseUser().token;
+    var token = this.getUserToken();
+    if (token !== '') {
+      return !this.jwtHelper.isTokenExpired(token);
+    }
+    return false;
   }
 
   public getUserEmail(): string {
-    return this.parseUser().email;
+    return this.jwtHelper.getTokenEmail(this.getUserToken());
   }
 
   register(registerUser: User, captchaResponse: string): Observable<{} | User> {
@@ -63,21 +63,19 @@ export class AuthService {
       .pipe(catchError(this.handler.handleError));
   }
 
-  updateUser(user: User) {
-    this.cookies.putObject(this.userKey, user);
-  }
-
   logout() {
     this.cookies.removeAll();
     this.router.navigate(['']);
   }
 
-  private parseUser(): User {
-    const user = this.cookies.getObject(this.userKey) as User;
+  updateUser(user: User) {
+    this.cookies.put(this.userKey, user.token);
+  }
 
-    if (user) {
-      const expired = this.jwtHelper.isTokenExpired(user.token);
-      return (expired) ? null : user;
+  public getUserToken(): string {
+    const token = this.cookies.get(this.userKey);
+    if (token) {
+      return this.jwtHelper.isTokenExpired(token) ? '' : token;
     }
   }
 

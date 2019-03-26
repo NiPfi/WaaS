@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
@@ -140,12 +141,16 @@ namespace WaaS.Presentation
 
         spa.UseSpaPrerendering(options =>
         {
+          
           options.BootModulePath = $"{spa.Options.SourcePath}/dist-server/main.js";
           options.BootModuleBuilder = env.IsDevelopment()
               ? new AngularCliBuilder(npmScript: "build:ssr")
               : null;
           options.ExcludeUrls = new[] { "/sockjs-node" };
-          options.SupplyData = (context, data) => { data["cookies"] = context.Request.Cookies; };
+          options.SupplyData = (context, data) =>
+          {
+            data["cookie"] = context.Request.Cookies;
+          };
         });
 
         if (env.IsDevelopment())
