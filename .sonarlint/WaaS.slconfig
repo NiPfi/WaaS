@@ -1,11 +1,14 @@
 {
-  "ServerUri": "https://loeustation.synology.me:9000",
-  "Organization": null,
+  "ServerUri": "https://sonarcloud.io/",
+  "Organization": {
+    "Key": "nipfi-github",
+    "Name": "Nicola Pfister"
+  },
   "ProjectKey": "webe-waas",
   "Profiles": {
     "CSharp": {
-      "ProfileKey": "AWmQPgBqpj7kNRnh4vUE",
-      "ProfileTimestamp": "2019-03-22T16:56:23+01:00"
+      "ProfileKey": "AWm5VhiSHcDGtXNl5-wL",
+      "ProfileTimestamp": "2019-03-26T10:44:24+01:00"
     }
   }
 }
