@@ -24,10 +24,11 @@ export class AuthService {
   ) {
     if (isPlatformBrowser(this.platformId)) {
       this.localStorage = window.localStorage;
+      this.localStorageUserKey = 'currentUser';
     }
   }
-
   private readonly localStorage: any;
+  private readonly localStorageUserKey: string;
 
   public isAuthenticated(): boolean {
     return (this.parseUser() != null);
@@ -64,20 +65,20 @@ export class AuthService {
 
   updateUser(user: User) {
     if (this.localStorage) {
-      this.localStorage.setItem('currentUser', JSON.stringify(user));
+      this.localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
     }
   }
 
   logout() {
     if (this.localStorage) {
-      this.localStorage.removeItem('currentUser');
+      this.localStorage.removeItem(this.localStorageUserKey);
     }
     this.router.navigate(['']);
   }
 
   private parseUser(): User {
     if (this.localStorage) {
-      const userString = JSON.parse(this.localStorage.getItem('currentUser'));
+      const userString = JSON.parse(this.localStorage.getItem(this.localStorageUserKey));
       const user = userString as User;
       if (user) {
         const expired = this.jwtHelper.isTokenExpired(user.token);
