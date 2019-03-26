@@ -2,6 +2,7 @@ using AutoMapper;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
@@ -25,6 +26,7 @@ namespace WaaS.Business.Tests.Services
       var mockScrapeJobRepository = Substitute.For<IScrapeJobRepository>();
       var mockMapper = Substitute.For<IMapper>();
       var mockUserManager = Substitute.For<MockUserManager>();
+      var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
 
       ScrapeJobDto testScrapeJobDto = new ScrapeJobDto()
       {
@@ -43,7 +45,7 @@ namespace WaaS.Business.Tests.Services
       IScrapeJobService scrapeJobService = new ScrapeJobService(mockMapper, mockScrapeJobRepository, mockUserManager);
 
       // Act
-      var result = await scrapeJobService.Create(testScrapeJobDto);
+      var result = await scrapeJobService.Create(testScrapeJobDto, mockClaimsPrincipal);
 
       // Assert
       Assert.Equal(testScrapeJobDto, result);
