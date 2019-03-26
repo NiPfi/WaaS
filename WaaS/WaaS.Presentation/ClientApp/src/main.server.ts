@@ -7,9 +7,14 @@ import { renderModule, renderModuleFactory } from '@angular/platform-server';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import { createServerRenderer } from 'aspnet-prerendering';
 
+import { environment } from './environments/environment';
+
 export { AppServerModule } from './app/app.server.module';
 
 enableProdMode();
+if (!environment.production) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
 export default createServerRenderer(params => {
   const { AppServerModule, AppServerModuleNgFactory, LAZY_MODULE_MAP } = (module as any).exports;

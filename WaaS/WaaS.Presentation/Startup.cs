@@ -55,7 +55,7 @@ namespace WaaS.Presentation
 
       JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>  
+        .AddJwtBearer(options =>
         {
           options.SaveToken = true;
           options.TokenValidationParameters = new TokenValidationParameters
@@ -64,6 +64,7 @@ namespace WaaS.Presentation
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            ValidateTokenReplay = true,
 
             ValidIssuer = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
             ValidAudience = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
