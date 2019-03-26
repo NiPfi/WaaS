@@ -10,7 +10,7 @@ using WaaS.Infrastructure;
 namespace WaaS.Infrastructure.Migrations
 {
     [DbContext(typeof(WaasDbContext))]
-    [Migration("20190325183623_InitialCreate")]
+    [Migration("20190326122656_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,9 +220,9 @@ namespace WaaS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("HTTPResponseCode");
+                    b.Property<int>("HttpResponseCode");
 
-                    b.Property<int>("HTTPResponseTimeInMS");
+                    b.Property<int>("HttpResponseTimeInMs");
 
                     b.Property<string>("Message");
 

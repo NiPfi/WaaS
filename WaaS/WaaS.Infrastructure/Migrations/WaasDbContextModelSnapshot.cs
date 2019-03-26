@@ -218,9 +218,9 @@ namespace WaaS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("HTTPResponseCode");
+                    b.Property<int>("HttpResponseCode");
 
-                    b.Property<int>("HTTPResponseTimeInMS");
+                    b.Property<int>("HttpResponseTimeInMs");
 
                     b.Property<string>("Message");
 

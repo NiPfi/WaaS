@@ -184,8 +184,8 @@ namespace WaaS.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    HTTPResponseCode = table.Column<int>(nullable: false),
-                    HTTPResponseTimeInMS = table.Column<int>(nullable: false),
+                    HttpResponseCode = table.Column<int>(nullable: false),
+                    HttpResponseTimeInMs = table.Column<int>(nullable: false),
                     Message = table.Column<string>(nullable: true),
                     TimeStamp = table.Column<DateTime>(nullable: false),
                     ScrapeJobForeignKey = table.Column<long>(nullable: false)
