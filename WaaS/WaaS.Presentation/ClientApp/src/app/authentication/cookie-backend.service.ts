@@ -9,11 +9,13 @@ export class CookieBackendService extends CookieService {
   private cookie: string;
 
   constructor(
-    @Inject('COOKIE') private cookieHeader: any,
+    @Inject('COOKIE') private cookieHeader: object,
     optionsProvider: CookieOptionsProvider
   ) {
     super(optionsProvider);
-    this.cookie = JSON.stringify(this.cookieHeader);
+    for (const key of Object.keys(cookieHeader)) {
+      this.put(cookieHeader[key].key, cookieHeader[key].value);
+    }
   }
 
   protected get cookieString(): string {
