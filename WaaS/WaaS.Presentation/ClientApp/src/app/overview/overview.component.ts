@@ -10,7 +10,7 @@ import { ScrapeJob } from './scrape-job';
 })
 export class OverviewComponent implements OnInit {
 
-  public jobs: ScrapeJob[] = [];
+  public jobs: ScrapeJob[];
 
   constructor(
     private readonly jobsService: OverviewService
@@ -19,7 +19,7 @@ export class OverviewComponent implements OnInit {
   ngOnInit() {
     this.jobsService.getScrapeJobs().subscribe(
       jobs => {
-        this.jobs = jobs
+        this.jobs = jobs;
       }
     );
   }

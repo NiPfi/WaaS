@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="jobs.length < 0; then jobsOverview; else jobsPlaceholder">
+  <ng-container *ngIf="jobs && jobs.length > 0; then jobsOverview; else jobsPlaceholder">
   </ng-container>
 </div>
 
