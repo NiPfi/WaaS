@@ -17,7 +17,14 @@
 </div>
 
 <ng-template #jobsOverview>
-  Here are your Jobs
+  <div class="row">
+    <div class="card" *ngFor="let job of jobs">
+      <div class="card-body">
+        <h2>{{job.name}}</h2>
+        <p class="small text-muted">{{job.url}}</p>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #jobsPlaceholder>
