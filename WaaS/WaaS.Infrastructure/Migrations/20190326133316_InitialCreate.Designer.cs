@@ -10,7 +10,7 @@ using WaaS.Infrastructure;
 namespace WaaS.Infrastructure.Migrations
 {
     [DbContext(typeof(WaasDbContext))]
-    [Migration("20190326122656_InitialCreate")]
+    [Migration("20190326133316_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -198,6 +198,8 @@ namespace WaaS.Infrastructure.Migrations
 
                     b.Property<string>("IdentityUserForeignKey")
                         .IsRequired();
+
+                    b.Property<string>("Name");
 
                     b.Property<string>("Pattern");
 

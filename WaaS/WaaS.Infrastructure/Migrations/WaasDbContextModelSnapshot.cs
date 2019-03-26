@@ -197,6 +197,8 @@ namespace WaaS.Infrastructure.Migrations
                     b.Property<string>("IdentityUserForeignKey")
                         .IsRequired();
 
+                    b.Property<string>("Name");
+
                     b.Property<string>("Pattern");
 
                     b.Property<string>("Url");

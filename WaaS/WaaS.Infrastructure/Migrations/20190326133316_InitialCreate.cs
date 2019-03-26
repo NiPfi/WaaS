@@ -160,6 +160,7 @@ namespace WaaS.Infrastructure.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserSpecificId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     Enabled = table.Column<bool>(nullable: false),
                     Url = table.Column<string>(nullable: true),
                     Pattern = table.Column<string>(nullable: true),
