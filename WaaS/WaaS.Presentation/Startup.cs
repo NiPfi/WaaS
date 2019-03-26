@@ -145,6 +145,7 @@ namespace WaaS.Presentation
               ? new AngularCliBuilder(npmScript: "build:ssr")
               : null;
           options.ExcludeUrls = new[] { "/sockjs-node" };
+          options.SupplyData = (context, data) => { data["cookies"] = context.Request.Cookies; };
         });
 
         if (env.IsDevelopment())

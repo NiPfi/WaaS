@@ -1,7 +1,7 @@
-import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieOptions, CookieService } from 'ngx-cookie';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -20,15 +20,19 @@ export class AuthService {
     private readonly router: Router,
     private readonly jwtHelper: JwtHelperService,
     private readonly handler: HttpErrorHandlerService,
-    @Inject(PLATFORM_ID) private readonly platformId: object
+    private readonly cookies: CookieService,
+    // @Inject(PLATFORM_ID) private readonly platformId: object,
+    // @Optional() @Inject('COOKIES') private readonly cookiesSSR: any
   ) {
-    if (isPlatformBrowser(this.platformId)) {
-      this.localStorage = window.localStorage;
-      this.localStorageUserKey = 'currentUser';
-    }
+    // this.isBrowser = isPlatformBrowser(platformId);
   }
-  private readonly localStorage: any;
-  private readonly localStorageUserKey: string;
+  // private readonly isBrowser: boolean;
+  private readonly userKey = 'currentUser';
+  private readonly cookieOptions: CookieOptions = {
+    domain: environment.apiUrl,
+    httpOnly: true,
+    secure: true
+  };
 
   public isAuthenticated(): boolean {
     return (this.parseUser() != null);
@@ -64,29 +68,31 @@ export class AuthService {
   }
 
   updateUser(user: User) {
-    if (this.localStorage) {
-      this.localStorage.setItem(this.localStorageUserKey, JSON.stringify(user));
-    }
+    // if (this.isBrowser) {
+      this.cookies.putObject(this.userKey, user);
+    // }
   }
 
   logout() {
-    if (this.localStorage) {
-      this.localStorage.removeItem(this.localStorageUserKey);
-    }
+    this.cookies.removeAll();
     this.router.navigate(['']);
   }
 
   private parseUser(): User {
-    if (this.localStorage) {
-      const userString = JSON.parse(this.localStorage.getItem(this.localStorageUserKey));
-      const user = userString as User;
-      if (user) {
-        const expired = this.jwtHelper.isTokenExpired(user.token);
-        return (expired) ? null : user;
-      }
-    }
-    return null;
+    // let user: User;
 
+    // if (this.isBrowser) {
+      // user = this.cookies.getObject(this.userKey) as User;
+    // } else {
+      // user = JSON.parse(this.cookiesSSR[this.userKey]) as User;
+    // }
+
+    const user = this.cookies.getObject(this.userKey) as User;
+
+    if (user) {
+      const expired = this.jwtHelper.isTokenExpired(user.token);
+      return (expired) ? null : user;
+    }
   }
 
 }
