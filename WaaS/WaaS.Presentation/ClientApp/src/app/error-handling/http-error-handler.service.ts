@@ -4,12 +4,11 @@ import { throwError } from 'rxjs';
 
 import { ApiError } from '../authentication/api-error';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorHandlerService {
-
-  constructor() { }
 
   public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

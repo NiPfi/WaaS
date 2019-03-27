@@ -6,15 +6,15 @@ using WaaS.Business.Interfaces.Entities;
 
 namespace WaaS.Business.Entities
 {
-  public class ScrapeJobEvent : IEntity<uint>
+  public class ScrapeJobEvent : IEntity<long>
   {
-    public uint Id { get; set; }
-    public int HTTPResponseCode { get; set; }
-    public int HTTPResponseTimeInMS { get; set; }
+    public long Id { get; set; }
+    public int HttpResponseCode { get; set; }
+    public int HttpResponseTimeInMs { get; set; }
     public string Message { get; set; }
     public DateTime TimeStamp { get; set; }
 
-    public uint ScrapeJobForeignKey { get; set; }
+    public long ScrapeJobForeignKey { get; set; }
 
     [ForeignKey("ScrapeJobForeignKey")]
     public virtual ScrapeJob ScrapeJob { get; set; }

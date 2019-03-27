@@ -1,6 +1,6 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { OverviewService } from '../overview-service/overview.service';
@@ -15,6 +15,8 @@ export class AddJobComponent implements OnInit {
 
   addScrapeJobForm: FormGroup;
   addScrapeJobModalRef: BsModalRef;
+
+  @Output() jobAdded = new EventEmitter();
 
   faPlus = faPlus;
 
@@ -45,10 +47,12 @@ export class AddJobComponent implements OnInit {
     // TODO Modal
     const tempJob = new ScrapeJob();
     tempJob.name = 'testJob';
-    tempJob.pattern = 'pattern';
-    tempJob.url = new URL('http://www.test.com');
+    tempJob.pattern = 'Pattern';
+    tempJob.url = 'http://www.test.com';
     this.jobsService.addScrapeJob(tempJob).subscribe(
-      () => {}
+      () => {
+        this.jobAdded.emit();
+      }
     );
   }
 

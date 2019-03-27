@@ -157,8 +157,10 @@ namespace WaaS.Infrastructure.Migrations
                 name: "ScrapeJob",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
-                    UserSpecificId = table.Column<long>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserSpecificId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     Enabled = table.Column<bool>(nullable: false),
                     Url = table.Column<string>(nullable: true),
                     Pattern = table.Column<string>(nullable: true),
@@ -181,9 +183,10 @@ namespace WaaS.Infrastructure.Migrations
                 name: "ScrapeJobEvent",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
-                    HTTPResponseCode = table.Column<int>(nullable: false),
-                    HTTPResponseTimeInMS = table.Column<int>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    HttpResponseCode = table.Column<int>(nullable: false),
+                    HttpResponseTimeInMs = table.Column<int>(nullable: false),
                     Message = table.Column<string>(nullable: true),
                     TimeStamp = table.Column<DateTime>(nullable: false),
                     ScrapeJobForeignKey = table.Column<long>(nullable: false)

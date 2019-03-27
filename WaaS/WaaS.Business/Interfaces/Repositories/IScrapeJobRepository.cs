@@ -7,7 +7,7 @@ using WaaS.Business.Entities;
 
 namespace WaaS.Business.Interfaces.Repositories
 {
-  public interface IScrapeJobRepository : IRepository<ScrapeJob, uint>
+  public interface IScrapeJobRepository : IRepository<ScrapeJob, long>
   {
 
     IQueryable<ScrapeJob> ReadUsersScrapeJobs(string userId);

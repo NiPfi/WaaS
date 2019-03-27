@@ -26,7 +26,7 @@ namespace WaaS.Presentation.Controllers
     [HttpPost, Authorize]
     public async Task<IActionResult> CreateScrapeJob(ScrapeJobDto scrapeJobDto)
     {
-      var scrapeJob = await _scrapeJobService.Create(scrapeJobDto);
+      var scrapeJob = await _scrapeJobService.Create(scrapeJobDto, User);
       if (scrapeJob != null)
       {
         return Ok(scrapeJob);

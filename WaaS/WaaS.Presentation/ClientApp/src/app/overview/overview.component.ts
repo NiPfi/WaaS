@@ -10,18 +10,25 @@ import { ScrapeJob } from './scrape-job';
 })
 export class OverviewComponent implements OnInit {
 
-  public jobs: ScrapeJob[] = [];
+  public jobs: ScrapeJob[];
 
   constructor(
     private readonly jobsService: OverviewService
   ) { }
 
   ngOnInit() {
+    this.loadJobs();
+  }
+
+  onJobAdded() {
+    this.loadJobs();
+  }
+
+  loadJobs() {
     this.jobsService.getScrapeJobs().subscribe(
       jobs => {
-        this.jobs = jobs
+        this.jobs = jobs;
       }
     );
   }
-
 }

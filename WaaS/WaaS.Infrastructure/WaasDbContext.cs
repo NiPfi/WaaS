@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WaaS.Business.Entities;
@@ -6,7 +7,7 @@ using WaaS.Business.Interfaces;
 
 namespace WaaS.Infrastructure
 {
-  public sealed class WaasDbContext : IdentityDbContext
+  public sealed class WaasDbContext : IdentityDbContext<IdentityUser>
   {
     public DbSet<ScrapeJob> ScrapeJobs { get; set; }
     public DbSet<ScrapeJobEvent> ScrapeJobEvents { get; set; }

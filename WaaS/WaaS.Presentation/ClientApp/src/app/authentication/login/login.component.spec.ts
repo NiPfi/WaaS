@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { AlertModule } from 'ngx-bootstrap';
+import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { LoginComponent } from './login.component';
@@ -20,11 +21,12 @@ describe('LoginComponent', () => {
         MockComponent(RecaptchaComponent)
       ],
       imports: [
-        AlertModule.forRoot(),
+        AlertModule,
         ReactiveFormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        CookieModule.forRoot()
       ]
     })
       .compileComponents();

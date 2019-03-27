@@ -7,10 +7,24 @@ export class JwtHelperService {
 
   constructor() { }
 
+  getTokenEmail(token: string): string {
+    if ( !token || token.length === 0) {
+      return '';
+    }
+
+    const decoded = this.decodeToken(token);
+    if (!decoded.hasOwnProperty('email')) {
+      return '';
+    }
+
+    return decoded.email;
+  }
+
   isTokenExpired(token: string, offsetSeconds?: number): boolean {
-    if (token === null || token === '') {
+    if ( !token || token.length === 0) {
       return true;
     }
+
     const date = this.getTokenExpirationDate(token);
     offsetSeconds = offsetSeconds || 0;
 
@@ -21,11 +35,11 @@ export class JwtHelperService {
     return !(date.valueOf() > new Date().valueOf() + offsetSeconds * 1000);
   }
 
-  getTokenExpirationDate(token: string): Date | null {
+  private getTokenExpirationDate(token: string): Date | null {
     let decoded: any;
     decoded = this.decodeToken(token);
 
-    if (!decoded.hasOwnProperty('exp')) {
+    if (!decoded && !decoded.hasOwnProperty('exp')) {
       return null;
     }
 
@@ -35,8 +49,8 @@ export class JwtHelperService {
     return date;
   }
 
-  decodeToken(token: string): any {
-    if (token === null) {
+  private decodeToken(token: string): any {
+    if (!token) {
       return null;
     }
 
@@ -55,7 +69,7 @@ export class JwtHelperService {
     return JSON.parse(decoded);
   }
 
-  urlBase64Decode(str: string): string {
+  private urlBase64Decode(str: string): string {
     let output = str.replace(/-/g, '+').replace(/_/g, '/');
     switch (output.length % 4) {
       case 0: {

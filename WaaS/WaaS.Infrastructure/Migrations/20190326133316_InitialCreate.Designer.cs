@@ -10,7 +10,7 @@ using WaaS.Infrastructure;
 namespace WaaS.Infrastructure.Migrations
 {
     [DbContext(typeof(WaasDbContext))]
-    [Migration("20190318133935_InitialCreate")]
+    [Migration("20190326133316_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -189,7 +189,8 @@ namespace WaaS.Infrastructure.Migrations
             modelBuilder.Entity("WaaS.Business.Entities.ScrapeJob", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AlternativeEmail");
 
@@ -198,11 +199,13 @@ namespace WaaS.Infrastructure.Migrations
                     b.Property<string>("IdentityUserForeignKey")
                         .IsRequired();
 
+                    b.Property<string>("Name");
+
                     b.Property<string>("Pattern");
 
                     b.Property<string>("Url");
 
-                    b.Property<long>("UserSpecificId");
+                    b.Property<int>("UserSpecificId");
 
                     b.HasKey("Id");
 
@@ -216,11 +219,12 @@ namespace WaaS.Infrastructure.Migrations
             modelBuilder.Entity("WaaS.Business.Entities.ScrapeJobEvent", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("HTTPResponseCode");
+                    b.Property<int>("HttpResponseCode");
 
-                    b.Property<int>("HTTPResponseTimeInMS");
+                    b.Property<int>("HttpResponseTimeInMs");
 
                     b.Property<string>("Message");
 

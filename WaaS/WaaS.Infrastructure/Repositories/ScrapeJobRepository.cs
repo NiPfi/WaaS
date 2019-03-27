@@ -8,7 +8,7 @@ using WaaS.Business.Interfaces.Repositories;
 
 namespace WaaS.Infrastructure.Repositories
 {
-  public class ScrapeJobRepository : Repository<ScrapeJob, uint>, IScrapeJobRepository
+  public class ScrapeJobRepository : Repository<ScrapeJob, long>, IScrapeJobRepository
   {
     public ScrapeJobRepository(WaasDbContext context) : base(context)
     {
@@ -16,9 +16,7 @@ namespace WaaS.Infrastructure.Repositories
 
     public IQueryable<ScrapeJob> ReadUsersScrapeJobs(string userId)
     {
-
-      return GetAll().Where(x => x.IdentityUser.Id.Equals(userId));
-
+      return GetAll().Where(x => x.IdentityUser.Id.Equals(userId, StringComparison.InvariantCulture));
     }
   }
 }

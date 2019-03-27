@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
@@ -54,7 +55,7 @@ namespace WaaS.Presentation
 
       JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>  
+        .AddJwtBearer(options =>
         {
           options.SaveToken = true;
           options.TokenValidationParameters = new TokenValidationParameters
@@ -63,6 +64,7 @@ namespace WaaS.Presentation
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            ValidateTokenReplay = true,
 
             ValidIssuer = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
             ValidAudience = applicationSettings.Get<ApplicationSettings>().JwtIssuer,
@@ -140,11 +142,16 @@ namespace WaaS.Presentation
 
         spa.UseSpaPrerendering(options =>
         {
+          
           options.BootModulePath = $"{spa.Options.SourcePath}/dist-server/main.js";
           options.BootModuleBuilder = env.IsDevelopment()
               ? new AngularCliBuilder(npmScript: "build:ssr")
               : null;
           options.ExcludeUrls = new[] { "/sockjs-node" };
+          options.SupplyData = (context, data) =>
+          {
+            data["cookie"] = context.Request.Cookies;
+          };
         });
 
         if (env.IsDevelopment())
