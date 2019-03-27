@@ -1,5 +1,5 @@
 <div class="text-center">
-  <button type="button" class="btn btn-outline-primary" (click)="onAddButtonClick()">
+  <button type="button" class="btn btn-outline-primary" (click)="openAddScrapeJobModal(addScrapeJobModal)">
     <fa-icon [icon]="faPlus"></fa-icon>
   </button>
 </div>
@@ -11,12 +11,15 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    
     <form [formGroup]="addScrapeJobForm" (ngSubmit)="createScrapeJob()">
       <div class="modal-body">
+
         <div class="form-group">
+          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name">
           <input class="form-control" formControlName="url" type="url" placeholder="URL">
           <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern">
-          <input class="form-control" formControlName="alternateEmail" type="text" placeholder="Alternate email">
+          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email">
         </div>
       </div>
         <div class="modal-footer">

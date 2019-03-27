@@ -13,10 +13,10 @@ import { ScrapeJob } from '../scrape-job';
 })
 export class AddJobComponent implements OnInit {
 
+  @Output() jobAdded = new EventEmitter();
+
   addScrapeJobForm: FormGroup;
   addScrapeJobModalRef: BsModalRef;
-
-  @Output() jobAdded = new EventEmitter();
 
   faPlus = faPlus;
 
@@ -28,15 +28,34 @@ export class AddJobComponent implements OnInit {
 
   ngOnInit() {
     this.addScrapeJobForm = this.formBuilder.group({
+      scrapeJobName: ['', [Validators.required]],
       url: ['', [Validators.required]],
       regexPattern: ['', [Validators.required]],
-      alternateEmail: ['']
+      alternativeEmail: ['']
     });
   }
 
   createScrapeJob(){
-    // TODO implement
-    console.log("it works");
+    if (this.addScrapeJobForm.invalid) {
+      return;
+    }
+
+    var job = new ScrapeJob();
+    job.name = this.addScrapeJobForm.controls.scrapeJobName.value;
+    job.url = this.addScrapeJobForm.controls.url.value;
+    job.pattern = this.addScrapeJobForm.controls.regexPattern.value;
+    job.alternativeEmail = this.addScrapeJobForm.controls.alternativeEmail.value;
+
+    this.jobsService.addScrapeJob(job)
+      .subscribe(
+        data => {
+          //Todo handle
+        },
+        error => {
+          //TODO handle
+        }
+      )
+      ;
   }
 
   openAddScrapeJobModal(template: TemplateRef<any>) {
