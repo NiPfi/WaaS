@@ -3,3 +3,28 @@
     <fa-icon [icon]="faPlus"></fa-icon>
   </button>
 </div>
+
+<ng-template #addScrapeJobModal>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Create ScrapeJob</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="addScrapeJobModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="addScrapeJobForm" (ngSubmit)="createScrapeJob()">
+      <div class="modal-body">
+        <div class="form-group">
+          <input class="form-control" formControlName="url" type="url" placeholder="URL">
+          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern">
+          <input class="form-control" formControlName="alternateEmail" type="text" placeholder="Alternate email">
+        </div>
+      </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            <button type="button" class="btn btn-secondary" (click)="addScrapeJobModalRef.hide()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+    </form>
+    
+</ng-template>

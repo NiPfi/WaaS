@@ -4,6 +4,7 @@ export class ScrapeJob {
   id: number;
   name: string;
   url: UrlObject;
-  pattern: RegExp;
+  pattern: string;
   enabled: boolean;
+  alternativeEmail: string;
 }
