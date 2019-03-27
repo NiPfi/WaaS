@@ -40,6 +40,7 @@ export class AddJobComponent implements OnInit {
       return;
     }
 
+    //TODO add better validation
     var job = new ScrapeJob();
     job.name = this.addScrapeJobForm.controls.scrapeJobName.value;
     job.url = this.addScrapeJobForm.controls.url.value;
