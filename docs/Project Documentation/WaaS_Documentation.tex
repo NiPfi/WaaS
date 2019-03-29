@@ -4,6 +4,8 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+\usepackage{xcolor}
+
 \usepackage{graphicx}
 
 \usepackage{float}
@@ -445,11 +447,15 @@ Through its architecture it promotes a clean style of coding and its reliance on
 Furthermore, it has a great spread in enterprise applications and because of this also a healthy developer community. \\
 Angular offers most features needed for WaaS by itself, therefore no further frameworks are required. Some components and functionality may be added through 3rd party dependencies though.
 
+We chose this technology for the front end because angular is a popular framework that we are keen on learning and using. An alternative to Angular which is also widely used is called React. We decided to go with Angular instead of React mainly because we know it better. Furthermore Angular has dependency injection and uses typescript by default, which are two aspects we like about Angular.
+
 \subsection{Back End}
 
 \paragraph{.NET Core}
 As a relatively young part of the .NET landscape .NET Core improves on many shortcomings of .NET Framework. Not only is it open-source, it also runs cross-platform and is generally less demanding in resources,
 which makes it more suited for deployments in cloud services, containerized or not.
+
+The reason we chose the .NET environment for our Backend is that we are used to working with it and want to get to know it better. It is commonly used by many developers and counts as one of the top technologies looked for in the industry of software development.
 
 \subparagraph{ASP.NET Core}
 ASP.NET Core is the .NET Core equivalent of the ASP.NET web application framework and provides powerful yet simple to use methods for implementing REST APIs. It practically is built-in to any
@@ -464,12 +470,17 @@ WaaS uses ASP.NET Core Identity because in many cases it's a better choice for s
 since it's quite a basic requirement for many web applications, we believe it to be a better approach to consolidate efforts to promote web application security. ASP.NET Core Identity integrates very well with the other
 frameworks used in this back end dependency constellation.
 
+Nowadays it often is a wise idea to use an existing framework to handle identity management. Implementing this by yourself can lead to security flaws and one has to put a lot of work in it to achieve a secure system. That is why we decided to use ASP.NET Core Identity as our technology for identity management. An example for an alternative would be firebase auth. We did not further research alternatives since .NET Core Identity is well integrated to the .NET environment and works very well along with a ASP.NET Web API.
+
 \subsection{Deployment}
 
 \paragraph{Docker}
 By using Docker, WaaS can be deployed in virtually any environment from a simple docker host to a more complex orchestrated container platform with relative ease.
 The complexity of managing software dependencies in a restricted server environment is completely eliminated which is advantageous
 even though the build process for a docker image can be tedious to maintain.
+
+\textcolor{red}{TODO add reference to deployment diagram}
+
 
 \section {Usability testing methodology}
 Even though there is no formal usability testing planned at the moment, WaaS should offer a good amount of user-friendliness.

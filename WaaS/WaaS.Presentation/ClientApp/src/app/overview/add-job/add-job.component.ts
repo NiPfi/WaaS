@@ -2,6 +2,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { first } from 'rxjs/internal/operators/first';
+
 
 import { OverviewService } from '../overview-service/overview.service';
 import { ScrapeJob } from '../scrape-job';
@@ -48,6 +50,7 @@ export class AddJobComponent implements OnInit {
     job.alternativeEmail = this.addScrapeJobForm.controls.alternativeEmail.value;
 
     this.jobsService.addScrapeJob(job)
+    .pipe(first())
       .subscribe(
         data => {
           //Todo handle
