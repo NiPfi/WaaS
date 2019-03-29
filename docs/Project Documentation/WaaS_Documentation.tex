@@ -363,17 +363,20 @@ The target group of WaaS are mainly people that are regularly checking websites 
   \item \textbf{Performance}
         \begin{enumerate}
           \item For user interactions, the application should respond 99\% of the requests in 2 seconds.
-          \item The application should score at least 40 points of performance in Google Chromes inbuilt Lighthouse audit.
+          \item The application should score at least 40 points of performance in Google Chromes inbuilt Lighthouse audit up to a number of 500 users.
         \end{enumerate}
+        Those performance related requirements will be evaluated using Performance Testing and Monitoring of the application.
   \item \textbf{Usability}
         \begin{enumerate}
           \item If the application experiences any kind of error or delay, users should be made aware of this.
           \item When a website that is subject to a Scrape changes to contain the looked for pattern, users should receive a notification within an hour.
         \end{enumerate}
+        The usability requirements will be evaluated using automated Testing.
   \item \textbf{Other non-functional requirements}
         \begin{enumerate}
           \item The application should be implemented according to best practices and should therefore score 100 points in the best practices section of the Lighthouse audit.
           \item Due to the use of relational database technology, horizontal scalability is too big of a task to be realized in the given time frame and is therefore outside of the scope of this project.
+          \item The application should have a responsive design, so it will be easy to use on a variety of devices with different screen sizes.
         \end{enumerate}
 \end{enumerate}
 
@@ -428,6 +431,9 @@ The following diagram shows the procedure of a login sequence for WaaS.
   \caption{Sequence Diagram}
   \label{fig:sequenceDiagram}
 \end{figure}
+
+\subsection{Deployment Diagram}
+The deployment diagram shows the environment of the Deployment process for the application WaaS.
 
 \section{Used technologies and frameworks}
 
