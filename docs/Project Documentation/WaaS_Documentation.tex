@@ -499,6 +499,21 @@ There is also the possibility to use an Automated Expert Review for the purpose 
 Lastly, A/B tests could be used to evaluate specific changes in the application which is possible due to the containerized deployment strategy allowing to have two slightly different
 instances of an application up and running or to replace one version with another in a relatively easy way.
 
+\section{Development strategy}
+
+As model for the development process we used a tailored version of scrum. The tailored version of scrum defines an iterative and agile approach for software development.
+
+Due to the two week submission cycle of the project we used a duration of two weeks for each sprint. The sprint backlog of each cycle consists of the tasks that were predefined by the submissions. To track those backlog workitems we used Github issues and defined milestones for the sprints. We further separated User Stories into small packages and used a Kanban board (figure \ref{fig:kanbanBoard}) in Azure DevOps to be able to work together more efficiently. The kanban board consists of the rows "Todo", "In progress", "Testing" and "Done". Once one of us implemented a task and had moved it to Testing the other one reviewed it and did some manual testing. Through the kanban board we always had a good overview of the development progress. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\linewidth]{KanbanBoard.png}
+  \caption{Kanban Board}
+  \label{fig:kanbanBoard}
+\end{figure}
+
+Since we used a tailored version of scrum we did not do any daily scrum meetings and had no sprint retrospective. This would not have been easily achievable due to different work times and work locations. Also we did not have a traditional scrum management hierarchy with scrum master and product manager due to our team size being limited to two people.
+
 \pagebreak
 
 \listoftables
