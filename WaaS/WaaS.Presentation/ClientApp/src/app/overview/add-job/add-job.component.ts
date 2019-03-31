@@ -1,12 +1,12 @@
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { first } from 'rxjs/internal/operators/first';
 
-
 import { OverviewService } from '../overview-service/overview.service';
 import { ScrapeJob } from '../scrape-job';
+import { ValidationService } from 'src/app/error-handling/form-validation/validation-service/validation.service'
 
 @Component({
   selector: 'app-add-job',
@@ -35,9 +35,10 @@ export class AddJobComponent implements OnInit {
       scrapeJobName: ['', [Validators.required]],
       url: ['', [Validators.required]],
       regexPattern: ['', [Validators.required]],
-      alternativeEmail: ['', [Validators.email]]
+      alternativeEmail: ['', [ValidationService.emailValidator]]
     });
   }
+  
 
   // convenience getter for easy access to form fields
   get form() { return this.addScrapeJobForm.controls; }

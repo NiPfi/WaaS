@@ -43,11 +43,7 @@
           </div>
 
           <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email">
-          <div *ngIf="form.alternativeEmail.invalid && (form.alternativeEmail.dirty || form.alternativeEmail.touched)" class="alert alert-danger">
-            <div *ngIf="form.alternativeEmail.errors.email">
-              Invalid email format.
-            </div>
-          </div>
+          <app-control-messages [control]="form.alternativeEmail"></app-control-messages>
 
         </div>
 
