@@ -15,6 +15,11 @@
     <form [formGroup]="addScrapeJobForm" (ngSubmit)="createScrapeJob()">
       <div class="modal-body">
 
+        <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+          (onClosed)="onErrorAlertClosed()">
+          <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+        </alert>
+
         <div class="form-group">
           <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name">
           <input class="form-control" formControlName="url" type="url" placeholder="URL">

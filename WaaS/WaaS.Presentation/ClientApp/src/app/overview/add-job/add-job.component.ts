@@ -20,6 +20,8 @@ export class AddJobComponent implements OnInit {
   addScrapeJobForm: FormGroup;
   addScrapeJobModalRef: BsModalRef;
 
+  errorMessage = '';
+
   faPlus = faPlus;
 
   constructor(
@@ -42,7 +44,6 @@ export class AddJobComponent implements OnInit {
       return;
     }
 
-    //TODO add better validation
     var job = new ScrapeJob();
     job.name = this.addScrapeJobForm.controls.scrapeJobName.value;
     job.url = this.addScrapeJobForm.controls.url.value;
@@ -52,11 +53,12 @@ export class AddJobComponent implements OnInit {
     this.jobsService.addScrapeJob(job)
     .pipe(first())
       .subscribe(
-        data => {
-          //Todo handle
+        () => {
+          this.jobAdded.emit();
+          this.addScrapeJobModalRef.hide();
         },
         error => {
-          //TODO handle
+          this.errorMessage = error;
         }
       )
       ;
@@ -66,17 +68,8 @@ export class AddJobComponent implements OnInit {
     this.addScrapeJobModalRef = this.modalService.show(template, {});
   }
 
-  onAddButtonClick() {
-    // TODO Modal
-    const tempJob = new ScrapeJob();
-    tempJob.name = 'testJob';
-    tempJob.pattern = 'Pattern';
-    tempJob.url = 'http://www.test.com';
-    this.jobsService.addScrapeJob(tempJob).subscribe(
-      () => {
-        this.jobAdded.emit();
-      }
-    );
+  onErrorAlertClosed() {
+    this.errorMessage = '';
   }
 
 }
