@@ -21,18 +21,44 @@
         </alert>
 
         <div class="form-group">
-          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name">
-          <input class="form-control" formControlName="url" type="url" placeholder="URL">
-          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern">
+          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name" required>
+          <div *ngIf="form.scrapeJobName.invalid && (form.scrapeJobName.dirty || form.scrapeJobName.touched)" class="alert alert-danger">
+            <div *ngIf="form.scrapeJobName.errors.required">
+              Name is required.
+            </div>
+          </div>
+
+          <input class="form-control" formControlName="url" type="url" placeholder="URL" required>
+          <div *ngIf="form.url.invalid && (form.url.dirty || form.scrapeJobName.touched)" class="alert alert-danger">
+            <div *ngIf="form.url.errors.required">
+              Url is required.
+            </div>
+          </div>
+
+          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern" required>
+          <div *ngIf="form.regexPattern.invalid && (form.regexPattern.dirty || form.regexPattern.touched)" class="alert alert-danger">
+            <div *ngIf="form.regexPattern.errors.required">
+              Pattern is required.
+            </div>
+          </div>
+
           <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email">
+          <div *ngIf="form.alternativeEmail.invalid && (form.alternativeEmail.dirty || form.alternativeEmail.touched)" class="alert alert-danger">
+            <div *ngIf="form.alternativeEmail.errors.email">
+              Invalid email format.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <div class="form-group">
+          <button type="button" class="btn btn-secondary" (click)="addScrapeJobModalRef.hide()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
         </div>
       </div>
-        <div class="modal-footer">
-          <div class="form-group">
-            <button type="button" class="btn btn-secondary" (click)="addScrapeJobModalRef.hide()">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
-          </div>
-        </div>
     </form>
     
 </ng-template>

@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -38,6 +38,9 @@ export class AddJobComponent implements OnInit {
       alternativeEmail: ['', [Validators.email]]
     });
   }
+
+  // convenience getter for easy access to form fields
+  get form() { return this.addScrapeJobForm.controls; }
 
   createScrapeJob(){
     if (this.addScrapeJobForm.invalid) {
