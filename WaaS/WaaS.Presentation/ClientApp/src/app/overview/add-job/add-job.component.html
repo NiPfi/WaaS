@@ -21,28 +21,17 @@
         </alert>
 
         <div class="form-group">
-          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name" required>
-          <div *ngIf="form.scrapeJobName.invalid && (form.scrapeJobName.dirty || form.scrapeJobName.touched)" class="alert alert-danger">
-            <div *ngIf="form.scrapeJobName.errors.required">
-              Name is required.
-            </div>
-          </div>
 
-          <input class="form-control" formControlName="url" type="url" placeholder="URL" required>
-          <div *ngIf="form.url.invalid && (form.url.dirty || form.scrapeJobName.touched)" class="alert alert-danger">
-            <div *ngIf="form.url.errors.required">
-              Url is required.
-            </div>
-          </div>
+          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name" required />
+          <app-control-messages [control]="form.scrapeJobName"></app-control-messages>
 
-          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern" required>
-          <div *ngIf="form.regexPattern.invalid && (form.regexPattern.dirty || form.regexPattern.touched)" class="alert alert-danger">
-            <div *ngIf="form.regexPattern.errors.required">
-              Pattern is required.
-            </div>
-          </div>
+          <input class="form-control" formControlName="url" type="url" placeholder="URL" required />
+          <app-control-messages [control]="form.url"></app-control-messages>
 
-          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email">
+          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern" required />
+          <app-control-messages [control]="form.regexPattern"></app-control-messages>
+
+          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email" [ngClass]="{ 'is-invalid': form.alternativeEmail.errors }" />
           <app-control-messages [control]="form.alternativeEmail"></app-control-messages>
 
         </div>
