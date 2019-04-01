@@ -1,4 +1,10 @@
-# WaaS [![Build status](https://dev.azure.com/WebE-WaaS/WaaS/_apis/build/status/WebE-WaaS%20-%20CI)](https://dev.azure.com/WebE-WaaS/WaaS/_build/latest?definitionId=1)
+# WaaS 
+[![Build status](https://dev.azure.com/WebE-WaaS/WaaS/_apis/build/status/WebE-WaaS%20-%20CI)](https://dev.azure.com/WebE-WaaS/WaaS/_build/latest?definitionId=1)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=webe-waas&metric=alert_status)](https://sonarcloud.io/dashboard?id=webe-waas)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=webe-waas&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=webe-waas)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=webe-waas&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=webe-waas)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=webe-waas&metric=security_rating)](https://sonarcloud.io/dashboard?id=webe-waas)
 
 <!-- markdownlint-disable MD026 -->
 
