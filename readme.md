@@ -26,3 +26,8 @@ We're using Visual Studio to run and debug the back-end of the app but you can a
 5. Open the WaaS.sln in Visual Studio.
 6. Set WaaS.Presentation as the Startup project.
 7. Start the application.
+
+## Links
+* CI/CD Pipelines on Azure DevOps: <https://dev.azure.com/WebE-WaaS/WaaS/>
+* Static code analysis with SonarCloud: <https://sonarcloud.io/dashboard?id=webe-waas>
+* CI Deployment Environment: <https://webe-waas.azurewebsites.net>
