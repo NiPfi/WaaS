@@ -35,7 +35,7 @@ export class AddJobComponent implements OnInit {
       scrapeJobName: ['', [Validators.required]],
       url: ['', [Validators.required]],
       regexPattern: ['', [Validators.required]],
-      alternativeEmail: ['', [ValidationService.emailValidator]]
+      alternativeEmail: ['', [Validators.required]]
     });
   }
   
