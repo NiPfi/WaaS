@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ValidationService } from '../validation-service/validation.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
+import { ValidationService } from '../validation-service/validation.service';
 import { ControlMessagesComponent } from './control-messages.component';
 
 describe('ControlMessagesComponent', () => {
@@ -11,12 +10,10 @@ describe('ControlMessagesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ControlMessagesComponent ],
+      declarations: [
+        ControlMessagesComponent
+      ],
       imports: [
-        Component,
-        Input,
-        FormGroup,
-        FormControl,
         ReactiveFormsModule
       ],
       providers: [
@@ -29,6 +26,7 @@ describe('ControlMessagesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ControlMessagesComponent);
     component = fixture.componentInstance;
+    component.control = new FormControl();
     fixture.detectChanges();
   });
 
