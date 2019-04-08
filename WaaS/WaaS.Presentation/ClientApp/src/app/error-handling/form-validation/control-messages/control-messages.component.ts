@@ -11,13 +11,4 @@ export class ControlMessagesComponent {
   @Input() control: FormControl;
   constructor() { }
 
-  get errorMessage() {
-    for (let propertyName in this.control.errors) {
-      if (this.control.touched || (this.control.touched && this.control.dirty)) {
-        return ValidationService.getValidatorErrorMessage(propertyName, this.control.errors[propertyName]);
-      }
-    }
-    
-    return null;
-  }
 }

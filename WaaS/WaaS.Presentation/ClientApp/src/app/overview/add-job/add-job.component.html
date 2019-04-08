@@ -31,7 +31,7 @@
           <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern" required />
           <app-control-messages [control]="form.regexPattern"></app-control-messages>
 
-          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email" [ngClass]="{ 'is-invalid': form.alternativeEmail.errors }" />
+          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email" />
           <app-control-messages [control]="form.alternativeEmail"></app-control-messages>
 
         </div>

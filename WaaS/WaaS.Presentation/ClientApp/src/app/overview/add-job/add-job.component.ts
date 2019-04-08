@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -35,7 +35,7 @@ export class AddJobComponent implements OnInit {
       scrapeJobName: ['', [Validators.required]],
       url: ['', [Validators.required]],
       regexPattern: ['', [Validators.required]],
-      alternativeEmail: ['', [ValidationService.emailValidator]]
+      alternativeEmail: ['', [Validators.email]]
     });
   }
   
