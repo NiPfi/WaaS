@@ -45,6 +45,7 @@ export class AddJobComponent implements OnInit {
 
   createScrapeJob(){
     if (this.addScrapeJobForm.invalid) {
+      this.validateAllFormFields(this.addScrapeJobForm);
       return;
     }
 
@@ -66,6 +67,18 @@ export class AddJobComponent implements OnInit {
         }
       )
       ;
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+        control.markAsDirty({ onlySelf:	true});
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
   }
 
   openAddScrapeJobModal(template: TemplateRef<any>) {
