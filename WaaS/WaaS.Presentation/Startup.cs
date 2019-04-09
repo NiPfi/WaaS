@@ -30,9 +30,11 @@ namespace WaaS.Presentation
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
+      CanSendEmail = !string.IsNullOrWhiteSpace(Configuration.GetValue<string>("SendGridKey"));
     }
 
     public IConfiguration Configuration { get; }
+    public bool CanSendEmail {  get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -40,7 +42,13 @@ namespace WaaS.Presentation
       var applicationSettings = Configuration.GetSection("ApplicationSettings");
       services.Configure<ApplicationSettings>(applicationSettings);
 
-      services.AddDefaultIdentity<IdentityUser>()
+      services.AddDefaultIdentity<IdentityUser>(config =>
+      {
+        if (CanSendEmail)
+        {
+          config.SignIn.RequireConfirmedEmail = true;
+        }
+      })
         .AddEntityFrameworkStores<WaasDbContext>()
         .AddDefaultTokenProviders();
 
@@ -96,6 +104,7 @@ namespace WaaS.Presentation
 
       services.AddTransient<IEmailSender, EmailSender>();
 
+      services.AddScoped<IEmailService, EmailService>();
       services.AddScoped<IUserService, UserService>();
       services.AddScoped<IScrapeJobRepository, ScrapeJobRepository>();
       services.AddScoped<IScrapeJobService, ScrapeJobService>();
