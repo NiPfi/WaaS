@@ -33,10 +33,6 @@ export class EditProfileService {
 
   deleteAccount() {
     return this.http.delete(`${environment.apiUrl}/users`, {})
-      .pipe(catchError(this.errorHandler.handleError))
-      .pipe(map((data) => {
-        this.auth.logout();
-        return data;
-      }));
+      .pipe(catchError(this.errorHandler.handleError));
   }
 }

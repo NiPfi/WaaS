@@ -81,7 +81,16 @@ export class EditProfileComponent implements OnInit {
 
   confirmDelete() {
     this.deleteModalRef.hide();
-    this.editProfileService.deleteAccount();
+    this.editProfileService.deleteAccount()
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.authService.logout();
+        },
+        error => {
+          this.errorMessage = error;
+        }
+      );;
   }
 
   onSuccessAlertClosed() {
