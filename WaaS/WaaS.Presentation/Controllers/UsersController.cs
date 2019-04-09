@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 using WaaS.Business;
 using WaaS.Business.Dtos;
@@ -55,6 +56,13 @@ namespace WaaS.Presentation.Controllers
       }
 
       return BadRequest(new BadRequestError("Something went wrong processing this registration"));
+    }
+
+    [AllowAnonymous]
+    [HttpGet("verify")]
+    public async Task<IActionResult> Verify(string email, string code)
+    {
+      throw new NotImplementedException();
     }
 
     [AllowAnonymous]

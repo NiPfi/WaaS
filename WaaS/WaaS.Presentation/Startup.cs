@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ using WaaS.Business.Services;
 using WaaS.Infrastructure;
 using WaaS.Infrastructure.Repositories;
 using WaaS.Infrastructure.SendGridMail;
+using WaaS.Presentation.Middlewares.HttpContext;
 
 namespace WaaS.Presentation
 {
@@ -102,6 +104,8 @@ namespace WaaS.Presentation
 
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
 
+      services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
       services.AddTransient<IEmailSender, EmailSender>();
 
       services.AddScoped<IEmailService, EmailService>();
@@ -128,6 +132,8 @@ namespace WaaS.Presentation
 
         app.UseResponseCompression();
       }
+
+      app.UseHttpContext();
 
       app.UseAuthentication();
 
