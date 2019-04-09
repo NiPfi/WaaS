@@ -9,6 +9,7 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>true</BuildServerSideRenderer>
     <ProjectGuid>{3F41CB99-B797-4E88-93E2-799D89F76F7A}</ProjectGuid>
+    <UserSecretsId>4cb21f44-0c0b-49ad-a8c2-f9602ab0ffe9</UserSecretsId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <CodeAnalysisRuleSet>WaaS.Presentation.ruleset</CodeAnalysisRuleSet>
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WaaS.Business\WaaS.Business.csproj" />
+    <ProjectReference Include="..\WaaS.Infrastructure.SendGridMail\WaaS.Infrastructure.SendGridMail.csproj" />
     <ProjectReference Include="..\WaaS.Infrastructure\WaaS.Infrastructure.csproj" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

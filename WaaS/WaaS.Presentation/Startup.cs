@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Services;
 using WaaS.Infrastructure;
 using WaaS.Infrastructure.Repositories;
+using WaaS.Infrastructure.SendGridMail;
 
 namespace WaaS.Presentation
 {
@@ -91,6 +93,8 @@ namespace WaaS.Presentation
       services.AddAutoMapper();
 
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
+
+      services.AddTransient<IEmailSender, EmailSender>();
 
       services.AddScoped<IUserService, UserService>();
       services.AddScoped<IScrapeJobRepository, ScrapeJobRepository>();
