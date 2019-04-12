@@ -1,0 +1,27 @@
+<div *ngIf="control && control.invalid && (control.touched && control.dirty)">
+
+  <div class="has-error has-feedback label-text" *ngIf="control.errors && control.errors['required']">
+    <span class="error-feedback">
+      This field is required.
+    </span>
+  </div>
+
+  <div class="has-error has-feedback label-text" *ngIf="control.errors && control.errors['min']">
+    <span class="error-feedback">
+        This field has a min length of {{ control.errors['min'].min}}.
+    </span>
+  </div>
+
+  <div class="has-error has-feedback label-text" *ngIf="control.errors && control.errors['max']">
+    <span class="error-feedback">
+        This field has a max length of {{ control.errors['max'].max}}.
+    </span>
+  </div>
+
+  <div class="has-error has-feedback label-text" *ngIf="control.errors && control.errors['email']">
+    <span class="error-feedback">
+        Invalid email address.
+    </span>
+  </div>
+
+</div>

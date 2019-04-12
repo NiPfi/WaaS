@@ -18,7 +18,10 @@ import { AppComponent } from './app.component';
 import { JwtInterceptor } from './authentication/jwt/jwt.interceptor';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
+import { VerifyComponent } from './authentication/verify/verify.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ControlMessagesComponent } from './error-handling/form-validation/control-messages/control-messages.component';
+import { ValidationService } from './error-handling/form-validation/validation-service/validation.service';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
@@ -26,7 +29,6 @@ import { HttpSpinnerInterceptor } from './http-spinner/http-spinner.interceptor'
 import { AddJobComponent } from './overview/add-job/add-job.component';
 import { OverviewComponent } from './overview/overview.component';
 import { PipesModule } from './pipes/pipes.module';
-import { VerifyComponent } from './authentication/verify/verify.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { VerifyComponent } from './authentication/verify/verify.component';
     AboutComponent,
     OverviewComponent,
     AddJobComponent,
-    VerifyComponent
+    VerifyComponent,
+    ControlMessagesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,7 +68,8 @@ import { VerifyComponent } from './authentication/verify/verify.component';
         siteKey: environment.reCaptchaSiteKey,
         size: 'invisible'
       } as RecaptchaSettings
-    }
+    },
+    [ ValidationService ]
   ],
   bootstrap: [AppComponent]
 })

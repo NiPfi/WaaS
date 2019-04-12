@@ -1,12 +1,12 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { first } from 'rxjs/internal/operators/first';
 
-
 import { OverviewService } from '../overview-service/overview.service';
 import { ScrapeJob } from '../scrape-job';
+import { ValidationService } from 'src/app/error-handling/form-validation/validation-service/validation.service'
 
 @Component({
   selector: 'app-add-job',
@@ -19,6 +19,8 @@ export class AddJobComponent implements OnInit {
 
   addScrapeJobForm: FormGroup;
   addScrapeJobModalRef: BsModalRef;
+
+  errorMessage = '';
 
   faPlus = faPlus;
 
@@ -33,16 +35,20 @@ export class AddJobComponent implements OnInit {
       scrapeJobName: ['', [Validators.required]],
       url: ['', [Validators.required]],
       regexPattern: ['', [Validators.required]],
-      alternativeEmail: ['']
+      alternativeEmail: ['', [Validators.email]]
     });
   }
+  
+
+  // convenience getter for easy access to form fields
+  get form() { return this.addScrapeJobForm.controls; }
 
   createScrapeJob(){
     if (this.addScrapeJobForm.invalid) {
+      ValidationService.validateAllFormFields(this.addScrapeJobForm);
       return;
     }
 
-    //TODO add better validation
     var job = new ScrapeJob();
     job.name = this.addScrapeJobForm.controls.scrapeJobName.value;
     job.url = this.addScrapeJobForm.controls.url.value;
@@ -52,31 +58,25 @@ export class AddJobComponent implements OnInit {
     this.jobsService.addScrapeJob(job)
     .pipe(first())
       .subscribe(
-        data => {
-          //Todo handle
+        () => {
+          this.jobAdded.emit();
+          this.addScrapeJobModalRef.hide();
         },
         error => {
-          //TODO handle
+          this.errorMessage = error;
         }
       )
       ;
   }
 
+  
+
   openAddScrapeJobModal(template: TemplateRef<any>) {
     this.addScrapeJobModalRef = this.modalService.show(template, {});
   }
 
-  onAddButtonClick() {
-    // TODO Modal
-    const tempJob = new ScrapeJob();
-    tempJob.name = 'testJob';
-    tempJob.pattern = 'Pattern';
-    tempJob.url = 'http://www.test.com';
-    this.jobsService.addScrapeJob(tempJob).subscribe(
-      () => {
-        this.jobAdded.emit();
-      }
-    );
+  onErrorAlertClosed() {
+    this.errorMessage = '';
   }
 
 }
