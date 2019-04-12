@@ -15,19 +15,35 @@
     <form [formGroup]="addScrapeJobForm" (ngSubmit)="createScrapeJob()">
       <div class="modal-body">
 
+        <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+          (onClosed)="onErrorAlertClosed()">
+          <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+        </alert>
+
         <div class="form-group">
-          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name">
-          <input class="form-control" formControlName="url" type="url" placeholder="URL">
-          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern">
-          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email">
+
+          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name" required />
+          <app-control-messages [control]="form.scrapeJobName"></app-control-messages>
+
+          <input class="form-control" formControlName="url" type="url" placeholder="URL" required />
+          <app-control-messages [control]="form.url"></app-control-messages>
+
+          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern" required />
+          <app-control-messages [control]="form.regexPattern"></app-control-messages>
+
+          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email" />
+          <app-control-messages [control]="form.alternativeEmail"></app-control-messages>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <div class="form-group">
+          <button type="button" class="btn btn-secondary" (click)="addScrapeJobModalRef.hide()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
         </div>
       </div>
-        <div class="modal-footer">
-          <div class="form-group">
-            <button type="button" class="btn btn-secondary" (click)="addScrapeJobModalRef.hide()">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
-          </div>
-        </div>
     </form>
     
 </ng-template>

@@ -26,6 +26,8 @@ import { HttpSpinnerInterceptor } from './http-spinner/http-spinner.interceptor'
 import { AddJobComponent } from './overview/add-job/add-job.component';
 import { OverviewComponent } from './overview/overview.component';
 import { PipesModule } from './pipes/pipes.module';
+import { ControlMessagesComponent } from './error-handling/form-validation/control-messages/control-messages.component';
+import { ValidationService } from './error-handling/form-validation/validation-service/validation.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { PipesModule } from './pipes/pipes.module';
     EditProfileComponent,
     AboutComponent,
     OverviewComponent,
-    AddJobComponent
+    AddJobComponent,
+    ControlMessagesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -63,7 +66,8 @@ import { PipesModule } from './pipes/pipes.module';
         siteKey: environment.reCaptchaSiteKey,
         size: 'invisible'
       } as RecaptchaSettings
-    }
+    },
+    [ ValidationService ]
   ],
   bootstrap: [AppComponent]
 })
