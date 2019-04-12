@@ -115,6 +115,19 @@ namespace WaaS.Business.Services
       return null;
     }
 
+    public async Task<UserDto> VerifyEmailAsync(string email, string verificationToken)
+    {
+      IdentityUser idUser = await _userManager.FindByEmailAsync(email);
+      var result = await _userManager.ConfirmEmailAsync(idUser, verificationToken);
+
+      if (result.Succeeded)
+      {
+        return new UserDto{Email = email};
+      }
+
+      throw new IdentityUserServiceException(result.Errors);
+    }
+
     public async Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword,
       string newPassword)
     {

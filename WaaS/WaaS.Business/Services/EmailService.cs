@@ -21,7 +21,7 @@ namespace WaaS.Business.Services
 
     private readonly IEmailSender _emailSender;
 
-    public Task SendRegistrationConfirmation(string email, string code)
+    public Task SendRegistrationConfirmation(string email, string verificationToken)
     {
       const string EmailVerificationSubject = "Verify your email address";
 
@@ -29,7 +29,7 @@ namespace WaaS.Business.Services
       builder.Path = "/api/users/verify";
       var query = HttpUtility.ParseQueryString(builder.Query);
       query["email"] = email;
-      query["code"] = code;
+      query["verificationToken"] = verificationToken;
       builder.Query = query.ToString();
       var url = builder.ToString();
 

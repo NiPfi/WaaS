@@ -8,11 +8,11 @@ namespace WaaS.Business.Interfaces.Services
   public interface IEmailService
   {
     /// <summary>
-    /// Sends a confirmation mail to a registered user so his address can be confirmed
+    /// Sends a confirmation mail containing a confirmation token to a registered user so his address can be confirmed
     /// </summary>
     /// <param name="email">The recipient E-Mail address</param>
-    /// <param name="code">The confirmation code to verify the email address with</param>
+    /// <param name="verificationToken">The token to verify the email address with</param>
     /// <returns></returns>
-    Task SendRegistrationConfirmation(string email, string code);
+    Task SendRegistrationConfirmation(string email, string verificationToken);
   }
 }

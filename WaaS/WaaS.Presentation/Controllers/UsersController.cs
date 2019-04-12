@@ -60,9 +60,21 @@ namespace WaaS.Presentation.Controllers
 
     [AllowAnonymous]
     [HttpGet("verify")]
-    public async Task<IActionResult> Verify(string email, string code)
+    public async Task<IActionResult> Verify(string email, string verificationToken)
     {
-      throw new NotImplementedException();
+      if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(verificationToken))
+      {
+        return BadRequest(new BadRequestError("Email and a verificationToken have to be set to verify an email address"));
+      }
+
+      try
+      {
+        return Ok(await _userService.VerifyEmailAsync(email, verificationToken));
+      }
+      catch (IdentityUserServiceException exception)
+      {
+        return BadRequest(new BadRequestError(exception.ToString()));
+      }
     }
 
     [AllowAnonymous]
