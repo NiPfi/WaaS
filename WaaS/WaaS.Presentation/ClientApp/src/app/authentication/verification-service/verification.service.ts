@@ -26,4 +26,9 @@ export class VerificationService {
       return user as User;
     })).pipe(catchError(this.handler.handleError));
   }
+
+  resendConfirmationEmail(email: string, captchaResponse: string): Observable<object> {
+    return this.http.post(`${environment.apiUrl}/users/resend-confirmation-email`, { user: { email }, captchaResponse }
+    ).pipe(catchError(this.handler.handleError));
+  }
 }

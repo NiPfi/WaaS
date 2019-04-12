@@ -5,6 +5,9 @@ import { AboutComponent } from './about/about.component';
 import { AuthGuard } from './authentication/auth.guard';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
+import {
+  ResendConfirmationEmailComponent,
+} from './authentication/resend-confirmation-email/resend-confirmation-email.component';
 import { VerifyComponent } from './authentication/verify/verify.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomeComponent } from './home/home.component';
@@ -40,6 +43,10 @@ const routes: Routes = [
   {
     path: 'verify',
     component: VerifyComponent
+  },
+  {
+    path: 'resend-confirmation-email',
+    component: ResendConfirmationEmailComponent
   },
 
   // otherwise redirect to home

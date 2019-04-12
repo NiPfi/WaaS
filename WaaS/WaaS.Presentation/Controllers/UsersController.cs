@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using WaaS.Business;
 using WaaS.Business.Dtos;
 using WaaS.Business.Dtos.User;
@@ -21,10 +22,12 @@ namespace WaaS.Presentation.Controllers
   {
     private readonly IUserService _userService;
     private readonly ApplicationSettings _applicationSettings;
+    private readonly ILogger _logger;
 
-    public UsersController(IUserService userService, IOptions<ApplicationSettings> applicationSettings)
+    public UsersController(IUserService userService, IOptions<ApplicationSettings> applicationSettings, ILogger<UsersController> logger)
     {
       _userService = userService;
+      _logger = logger;
       if (applicationSettings != null)
       {
         _applicationSettings = applicationSettings.Value;
@@ -75,6 +78,31 @@ namespace WaaS.Presentation.Controllers
       {
         return BadRequest(new BadRequestError(exception.ToString()));
       }
+    }
+
+    [AllowAnonymous]
+    [HttpPost("resend-confirmation-email")]
+    public async Task<IActionResult> ResendConfirmationEmail(UserCaptchaDto userCaptchaDto)
+    {
+      if (userCaptchaDto != null && CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      {
+        if (userCaptchaDto.User == null || string.IsNullOrWhiteSpace(userCaptchaDto.User.Email))
+        {
+          return BadRequest(new BadRequestError("Email has to be set to resend a confirmation email"));
+        }
+
+        try
+        {
+          await _userService.ResendConfirmationMail(userCaptchaDto.User.Email);
+        }
+        catch (UserServiceException exception)
+        {
+          _logger.LogWarning(exception.Message);
+        }
+        return Ok();
+      }
+      return BadRequest(new BadRequestError("Captcha was invalid"));
+
     }
 
     [AllowAnonymous]

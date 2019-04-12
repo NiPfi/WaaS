@@ -9,6 +9,7 @@ namespace WaaS.Business.Interfaces.Services
   public interface IUserService
   {
     Task<UserDto> CreateAsync(UserDto user);
+    Task ResendConfirmationMail(string email);
     Task<UserDto> AuthenticateAsync(string userEmail, string password);
     Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail);
     Task<UserDto> VerifyEmailAsync(string email, string verificationToken);

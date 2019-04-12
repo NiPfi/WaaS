@@ -14,7 +14,6 @@ import { User } from '../user';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  loading = false;
   submitted = false;
   returnUrl: string;
   error = '';
@@ -56,7 +55,6 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
     const userDto = new User(this.form.email.value, this.form.password.value);
     this.authService.register(userDto, captchaResponse)
       .pipe(first())
@@ -67,7 +65,6 @@ export class RegisterComponent implements OnInit {
         },
         error => {
           this.error = error;
-          this.loading = false;
           this.reCaptcha.reset();
         });
   }

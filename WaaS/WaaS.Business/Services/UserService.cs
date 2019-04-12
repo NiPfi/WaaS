@@ -53,20 +53,33 @@ namespace WaaS.Business.Services
         userEntity.PasswordHash = null;
         var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
 
-        if (result.Succeeded)
-        {
-          var code = await _userManager.GenerateEmailConfirmationTokenAsync(userEntity);
-          await _emailService.SendRegistrationConfirmation(user.Email, code);
+        if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
 
-          return _mapper.Map<UserDto>(userEntity);
-        }
-
-        throw new IdentityUserServiceException(result.Errors);
+        await SendEmailConfirmationMailAsync(userEntity);
+        return _mapper.Map<UserDto>(userEntity);
 
       }
 
       throw new UserServiceException("Both E-Mail and Password are required");
 
+    }
+
+    public async Task ResendConfirmationMail(string email)
+    {
+      var userEntity = await _userManager.FindByEmailAsync(email);
+      if (userEntity == null || await _userManager.IsEmailConfirmedAsync(userEntity))
+      {
+        throw new UserServiceException($"Could not send verification E-Mail to '{email}' because the user either doesn't exist or his address was already verified");
+      }
+
+      await SendEmailConfirmationMailAsync(userEntity);
+
+    }
+
+    private async Task SendEmailConfirmationMailAsync(IdentityUser userEntity)
+    {
+      var code = await _userManager.GenerateEmailConfirmationTokenAsync(userEntity);
+      await _emailService.SendRegistrationConfirmation(userEntity.Email, code);
     }
 
     public async Task<UserDto> AuthenticateAsync(string userEmail, string password)
