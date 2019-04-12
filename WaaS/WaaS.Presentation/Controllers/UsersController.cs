@@ -60,16 +60,16 @@ namespace WaaS.Presentation.Controllers
 
     [AllowAnonymous]
     [HttpPost("verify")]
-    public async Task<IActionResult> Verify(string email, string verificationToken)
+    public async Task<IActionResult> Verify(EmailTokenDto dto)
     {
-      if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(verificationToken))
+      if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.VerificationToken))
       {
-        return BadRequest(new BadRequestError("Email and a verificationToken have to be set to verify an email address"));
+        return BadRequest(new BadRequestError("Email and a verification token have to be set to verify an email address"));
       }
 
       try
       {
-        return Ok(await _userService.VerifyEmailAsync(email, verificationToken));
+        return Ok(await _userService.VerifyEmailAsync(dto.Email, dto.VerificationToken));
       }
       catch (IdentityUserServiceException exception)
       {
@@ -95,8 +95,12 @@ namespace WaaS.Presentation.Controllers
 
           return Ok(user);
         }
-        catch (SignInUserServiceException)
+        catch (SignInUserServiceException exception)
         {
+          if (exception.SignInResult.IsNotAllowed)
+          {
+            return BadRequest(new BadRequestError("You need to confirm your E-Mail address before logging in!"));
+          }
           return BadRequest(new BadRequestError("Login failed. Please verify your E-Mail and Password and try again!"));
         }
 

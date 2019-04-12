@@ -32,11 +32,11 @@ namespace WaaS.Presentation
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
-      CanSendEmail = !string.IsNullOrWhiteSpace(Configuration.GetValue<string>("SendGridKey"));
+      CanSendEmail = !string.IsNullOrWhiteSpace(Configuration.GetValue<string>("ApplicationSettings:SendGridKey"));
     }
 
     public IConfiguration Configuration { get; }
-    public bool CanSendEmail {  get; }
+    public bool CanSendEmail { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)

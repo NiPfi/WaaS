@@ -1,13 +1,12 @@
 <div class="container">
-  <ng-container *ngIf="!email; then noMail">
-    <ng-container *ngIf="token; else noToken">
-      <h2>E-Mail confirmation unsuccessful</h2>
-      <alert type="danger">
-        <span [innerHtml]="errorMessage | convertNewLine: true"></span>
-      </alert>
-    </ng-container>
+  <ng-container *ngIf="!email; then noMail; else mail">
   </ng-container>
 </div>
+
+<ng-template #mail>
+  <ng-container *ngIf="!token; then noToken; else error">
+  </ng-container>
+</ng-template>
 
 <ng-template #noMail>
   <h2>E-Mail confirmation</h2>
@@ -21,8 +20,15 @@
 <ng-template #noToken>
   <h2>Registration successful</h2>
   <p>
-    We're sending a confirmation E-Mail to {{email}} which should momentarily arrive. Please click on the verification
+    We're sending a confirmation E-Mail to <em>{{email}}</em> which should momentarily arrive. Please click on the verification
     link in that mail to confirm your E-Mail address!
     If you're having trouble and need us to resend a confirmation E-Mail, you can request that <a href="#">here</a>.
   </p>
+</ng-template>
+
+<ng-template #error>
+  <h2>E-Mail confirmation unsuccessful</h2>
+  <alert type="danger">
+    <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+  </alert>
 </ng-template>
