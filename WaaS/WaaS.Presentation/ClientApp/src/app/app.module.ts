@@ -26,6 +26,7 @@ import { HttpSpinnerInterceptor } from './http-spinner/http-spinner.interceptor'
 import { AddJobComponent } from './overview/add-job/add-job.component';
 import { OverviewComponent } from './overview/overview.component';
 import { PipesModule } from './pipes/pipes.module';
+import { VerifyComponent } from './authentication/verify/verify.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { PipesModule } from './pipes/pipes.module';
     EditProfileComponent,
     AboutComponent,
     OverviewComponent,
-    AddJobComponent
+    AddJobComponent,
+    VerifyComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
