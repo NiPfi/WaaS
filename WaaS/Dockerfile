@@ -11,6 +11,7 @@ WORKDIR /src
 COPY ["WaaS.Presentation/WaaS.Presentation.csproj", "WaaS.Presentation/"]
 COPY ["WaaS.Business/WaaS.Business.csproj", "WaaS.Business/"]
 COPY ["WaaS.Infrastructure/WaaS.Infrastructure.csproj", "WaaS.Infrastructure/"]
+COPY ["WaaS.Infrastructure.SendGridMail/WaaS.Infrastructure.SendGridMail.csproj", "WaaS.Infrastructure.SendGridMail/"]
 RUN dotnet restore "WaaS.Presentation/WaaS.Presentation.csproj"
 COPY . .
 WORKDIR /src/WaaS.Presentation

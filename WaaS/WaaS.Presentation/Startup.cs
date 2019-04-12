@@ -5,7 +5,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,8 @@ using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Services;
 using WaaS.Infrastructure;
 using WaaS.Infrastructure.Repositories;
+using WaaS.Infrastructure.SendGridMail;
+using WaaS.Presentation.Middlewares.HttpContext;
 
 namespace WaaS.Presentation
 {
@@ -28,9 +32,11 @@ namespace WaaS.Presentation
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
+      CanSendEmail = !string.IsNullOrWhiteSpace(Configuration.GetValue<string>("ApplicationSettings:SendGridKey"));
     }
 
     public IConfiguration Configuration { get; }
+    public bool CanSendEmail { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -38,7 +44,13 @@ namespace WaaS.Presentation
       var applicationSettings = Configuration.GetSection("ApplicationSettings");
       services.Configure<ApplicationSettings>(applicationSettings);
 
-      services.AddDefaultIdentity<IdentityUser>()
+      services.AddDefaultIdentity<IdentityUser>(config =>
+      {
+        if (CanSendEmail)
+        {
+          config.SignIn.RequireConfirmedEmail = true;
+        }
+      })
         .AddEntityFrameworkStores<WaasDbContext>()
         .AddDefaultTokenProviders();
 
@@ -92,6 +104,11 @@ namespace WaaS.Presentation
 
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
 
+      services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+      services.AddTransient<IEmailSender, EmailSender>();
+
+      services.AddScoped<IEmailService, EmailService>();
       services.AddScoped<IUserService, UserService>();
       services.AddScoped<IScrapeJobRepository, ScrapeJobRepository>();
       services.AddScoped<IScrapeJobService, ScrapeJobService>();
@@ -115,6 +132,8 @@ namespace WaaS.Presentation
 
         app.UseResponseCompression();
       }
+
+      app.UseHttpContext();
 
       app.UseAuthentication();
 

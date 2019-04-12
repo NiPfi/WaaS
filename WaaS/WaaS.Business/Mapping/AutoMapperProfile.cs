@@ -14,7 +14,8 @@ namespace WaaS.Business.Mapping
         .ForMember(
           destination => destination.UserName,
           options => options.MapFrom(source => source.Email));
-      CreateMap<IdentityUser, UserDto>();
+      CreateMap<IdentityUser, UserDto>()
+        .ForMember(destination => destination.Password, options => options.Ignore());
 
       CreateMap<ScrapeJobDto, ScrapeJob>();
       CreateMap<ScrapeJob, ScrapeJobDto>();

@@ -1,0 +1,12 @@
+<div class="container">
+<h2>Resend confirmation email</h2>
+<form [formGroup]="resendConfirmationForm" (ngSubmit)="captchaRef.execute()">
+  <div class="form-group">
+    <label for="requestEmail">E-Mail</label>
+    <input type="email" formControlName="email" class="form-control" />
+  </div>
+  <re-captcha formControlName="recaptchaReactive" #captchaRef="reCaptcha" (resolved)="$event && onSubmit($event)">
+  </re-captcha>
+  <button type="submit" class="btn btn-primary">Request confirmation</button>
+</form>
+</div>

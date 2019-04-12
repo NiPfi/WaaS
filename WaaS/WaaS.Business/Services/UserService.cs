@@ -21,20 +21,24 @@ namespace WaaS.Business.Services
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
 
+    private readonly IEmailService _emailService;
     private readonly ApplicationSettings _applicationSettings;
     private readonly DateTime _tokenExpirationDate = DateTime.UtcNow.AddHours(12);
 
     public UserService
-    (
-      IOptions<ApplicationSettings> applicationSettings,
-      IMapper mapper,
-      SignInManager<IdentityUser> signInManager,
-      UserManager<IdentityUser> userManager
+      (
+        IOptions<ApplicationSettings> applicationSettings,
+        IMapper mapper,
+        SignInManager<IdentityUser> signInManager,
+        UserManager<IdentityUser> userManager,
+        IEmailService emailService
       )
     {
       _mapper = mapper;
       _signInManager = signInManager;
       _userManager = userManager;
+      _emailService = emailService;
+
       if (applicationSettings != null)
       {
         _applicationSettings = applicationSettings.Value;
@@ -46,20 +50,36 @@ namespace WaaS.Business.Services
       if (user != null && (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password)))
       {
         var userEntity = _mapper.Map<IdentityUser>(user);
+        userEntity.PasswordHash = null;
         var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
 
-        if (result.Succeeded)
-        {
-          userEntity.PasswordHash = null;
-          return _mapper.Map<UserDto>(userEntity);
-        }
+        if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
 
-        throw new IdentityUserServiceException(result.Errors);
+        await SendEmailConfirmationMailAsync(userEntity);
+        return _mapper.Map<UserDto>(userEntity);
 
       }
 
       throw new UserServiceException("Both E-Mail and Password are required");
 
+    }
+
+    public async Task ResendConfirmationMail(string email)
+    {
+      var userEntity = await _userManager.FindByEmailAsync(email);
+      if (userEntity == null || await _userManager.IsEmailConfirmedAsync(userEntity))
+      {
+        throw new UserServiceException($"Could not send verification E-Mail to '{email}' because the user either doesn't exist or his address was already verified");
+      }
+
+      await SendEmailConfirmationMailAsync(userEntity);
+
+    }
+
+    private async Task SendEmailConfirmationMailAsync(IdentityUser userEntity)
+    {
+      var code = await _userManager.GenerateEmailConfirmationTokenAsync(userEntity);
+      await _emailService.SendRegistrationConfirmation(userEntity.Email, code);
     }
 
     public async Task<UserDto> AuthenticateAsync(string userEmail, string password)
@@ -106,6 +126,19 @@ namespace WaaS.Business.Services
       }
 
       return null;
+    }
+
+    public async Task<UserDto> VerifyEmailAsync(string email, string verificationToken)
+    {
+      IdentityUser idUser = await _userManager.FindByEmailAsync(email);
+      var result = await _userManager.ConfirmEmailAsync(idUser, verificationToken);
+
+      if (result.Succeeded)
+      {
+        return new UserDto{Email = email};
+      }
+
+      throw new IdentityUserServiceException(result.Errors);
     }
 
     public async Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword,

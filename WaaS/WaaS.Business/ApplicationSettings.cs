@@ -19,5 +19,15 @@ namespace WaaS.Business
     /// The secret key for Google's ReCaptcha service.
     /// </summary>
     public string ReCaptchaSecretKey { get; set; }
+
+    /// <summary>
+    /// The username of the SendGrid account to send mails with
+    /// </summary>
+    public string SendGridUser { get; set; }
+
+    /// <summary>
+    /// The API Key for the SendGridUser
+    /// </summary>
+    public string SendGridKey { get; set; }
   }
 }

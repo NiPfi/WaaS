@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using WaaS.Business;
 using WaaS.Business.Dtos;
 using WaaS.Business.Dtos.User;
@@ -20,10 +22,12 @@ namespace WaaS.Presentation.Controllers
   {
     private readonly IUserService _userService;
     private readonly ApplicationSettings _applicationSettings;
+    private readonly ILogger _logger;
 
-    public UsersController(IUserService userService, IOptions<ApplicationSettings> applicationSettings)
+    public UsersController(IUserService userService, IOptions<ApplicationSettings> applicationSettings, ILogger<UsersController> logger)
     {
       _userService = userService;
+      _logger = logger;
       if (applicationSettings != null)
       {
         _applicationSettings = applicationSettings.Value;
@@ -58,6 +62,50 @@ namespace WaaS.Presentation.Controllers
     }
 
     [AllowAnonymous]
+    [HttpPost("verify")]
+    public async Task<IActionResult> Verify(EmailTokenDto dto)
+    {
+      if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.VerificationToken))
+      {
+        return BadRequest(new BadRequestError("Email and a verification token have to be set to verify an email address"));
+      }
+
+      try
+      {
+        return Ok(await _userService.VerifyEmailAsync(dto.Email, dto.VerificationToken));
+      }
+      catch (IdentityUserServiceException exception)
+      {
+        return BadRequest(new BadRequestError(exception.ToString()));
+      }
+    }
+
+    [AllowAnonymous]
+    [HttpPost("resend-confirmation-email")]
+    public async Task<IActionResult> ResendConfirmationEmail(UserCaptchaDto userCaptchaDto)
+    {
+      if (userCaptchaDto != null && CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      {
+        if (userCaptchaDto.User == null || string.IsNullOrWhiteSpace(userCaptchaDto.User.Email))
+        {
+          return BadRequest(new BadRequestError("Email has to be set to resend a confirmation email"));
+        }
+
+        try
+        {
+          await _userService.ResendConfirmationMail(userCaptchaDto.User.Email);
+        }
+        catch (UserServiceException exception)
+        {
+          _logger.LogWarning(exception.Message);
+        }
+        return Ok();
+      }
+      return BadRequest(new BadRequestError("Captcha was invalid"));
+
+    }
+
+    [AllowAnonymous]
     [HttpPost("authenticate")]
     public async Task<IActionResult> Authenticate(UserCaptchaDto userCaptchaDto)
     {
@@ -75,8 +123,12 @@ namespace WaaS.Presentation.Controllers
 
           return Ok(user);
         }
-        catch (SignInUserServiceException)
+        catch (SignInUserServiceException exception)
         {
+          if (exception.SignInResult.IsNotAllowed)
+          {
+            return BadRequest(new BadRequestError("You need to confirm your E-Mail address before logging in!"));
+          }
           return BadRequest(new BadRequestError("Login failed. Please verify your E-Mail and Password and try again!"));
         }
 

@@ -30,6 +30,7 @@ namespace WaaS.Business.Tests.Services
     private readonly IdentityUser _mockIdentityUser;
     private readonly UserDto _testUserDto;
     private readonly ClaimsPrincipal _mockClaimsPrincipal;
+    private IEmailService _mockEmailService;
 
 
     public UserServiceTests()
@@ -62,8 +63,12 @@ namespace WaaS.Business.Tests.Services
 
       _mockUserManager = Substitute.For<MockUserManager>();
       _mockUserManager.GetUserAsync(_mockClaimsPrincipal).Returns(_mockIdentityUser);
+      _mockUserManager.GenerateEmailConfirmationTokenAsync(Arg.Any<IdentityUser>()).Returns("testToken");
 
-      _userService = new UserService(mockApplicationSettings, mockMapper, _mockSignInManager, _mockUserManager);
+      _mockEmailService = Substitute.For<IEmailService>();
+      _mockEmailService.SendRegistrationConfirmation(Arg.Any<string>(), Arg.Any<string>());
+
+      _userService = new UserService(mockApplicationSettings, mockMapper, _mockSignInManager, _mockUserManager, _mockEmailService);
     }
 
     [Fact]
