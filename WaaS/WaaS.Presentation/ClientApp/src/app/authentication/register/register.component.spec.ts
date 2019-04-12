@@ -2,13 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { AlertModule } from 'ngx-bootstrap';
 import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
-import { PipesModule } from '../../pipes/pipes.module';
 import { RegisterComponent } from './register.component';
 
 describe('RegisterComponent', () => {
@@ -19,14 +19,14 @@ describe('RegisterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         RegisterComponent,
-        MockComponent(RecaptchaComponent)
+        MockComponent(RecaptchaComponent),
+        MockPipe(ConvertNewLinePipe)
       ],
       imports: [
         AlertModule,
         ReactiveFormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        PipesModule,
         NgxSpinnerModule,
         CookieModule.forRoot()
       ]

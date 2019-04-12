@@ -5,6 +5,7 @@ import { AboutComponent } from './about/about.component';
 import { AuthGuard } from './authentication/auth.guard';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
+import { VerifyComponent } from './authentication/verify/verify.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomeComponent } from './home/home.component';
 import { OverviewComponent } from './overview/overview.component';
@@ -35,6 +36,10 @@ const routes: Routes = [
     path: 'overview',
     component: OverviewComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'verify',
+    component: VerifyComponent
   },
 
   // otherwise redirect to home

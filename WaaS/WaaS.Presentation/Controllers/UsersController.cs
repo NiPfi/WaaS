@@ -59,7 +59,7 @@ namespace WaaS.Presentation.Controllers
     }
 
     [AllowAnonymous]
-    [HttpGet("verify")]
+    [HttpPost("verify")]
     public async Task<IActionResult> Verify(string email, string verificationToken)
     {
       if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(verificationToken))
