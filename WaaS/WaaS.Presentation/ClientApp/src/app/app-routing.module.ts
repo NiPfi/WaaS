@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
 import { AuthGuard } from './authentication/auth.guard';
 import { LoginComponent } from './authentication/login/login.component';
+import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
 import { RegisterComponent } from './authentication/register/register.component';
 import {
   ResendConfirmationEmailComponent,
@@ -53,6 +54,10 @@ const routes: Routes = [
   {
     path: 'resend-confirmation-email',
     component: ResendConfirmationEmailComponent
+  },
+  {
+    path: 'reset-password',
+    component: PasswordResetComponent
   },
 
   // otherwise redirect to home

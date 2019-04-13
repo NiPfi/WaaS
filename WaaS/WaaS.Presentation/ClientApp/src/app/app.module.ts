@@ -33,6 +33,7 @@ import { AddJobComponent } from './overview/add-job/add-job.component';
 import { OverviewComponent } from './overview/overview.component';
 import { PipesModule } from './pipes/pipes.module';
 import { VerifyMailChangeComponent } from './authentication/verify/mail-change/verify-mail-change.component';
+import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { VerifyMailChangeComponent } from './authentication/verify/mail-change/v
     VerifyRegistrationComponent,
     ControlMessagesComponent,
     ResendConfirmationEmailComponent,
-    VerifyMailChangeComponent
+    VerifyMailChangeComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
