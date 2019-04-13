@@ -30,24 +30,24 @@ namespace WaaS.Infrastructure.Repositories
 
     public async Task<bool> AddAsync(TEntity entity)
     {
-      await DbSet.AddAsync(entity).ConfigureAwait(false);
-      return 1 == await Context.SaveChangesAsync().ConfigureAwait(false);
+      await DbSet.AddAsync(entity);
+      return 1 == await Context.SaveChangesAsync();
     }
 
     public async Task<bool> DeleteAsync(TKey id)
     {
-      var entity = await DbSet.FindAsync(id).ConfigureAwait(false);
+      var entity = await DbSet.FindAsync(id);
       DbSet.Remove(entity);
 
-      return 1 == await Context.SaveChangesAsync().ConfigureAwait(false);
+      return 1 == await Context.SaveChangesAsync();
     }
 
     public async Task<bool> UpdateAsync(TKey id, Action<TEntity> changeAction)
     {
-      var entity = await DbSet.FindAsync(id).ConfigureAwait(false);
+      var entity = await DbSet.FindAsync(id);
       changeAction(entity);
 
-      return 1 == await Context.SaveChangesAsync().ConfigureAwait(false);
+      return 1 == await Context.SaveChangesAsync();
     }
 
     public void Dispose()

@@ -51,7 +51,7 @@ namespace WaaS.Business.Services
       {
         var userEntity = _mapper.Map<IdentityUser>(user);
         userEntity.PasswordHash = null;
-        var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
+        var result = await _userManager.CreateAsync(userEntity, user.Password);
 
         if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
 
@@ -84,11 +84,11 @@ namespace WaaS.Business.Services
 
     public async Task<UserDto> AuthenticateAsync(string userEmail, string password)
     {
-      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false).ConfigureAwait(false);
+      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false);
 
       if (result.Succeeded)
       {
-        var user = await _userManager.FindByEmailAsync(userEmail).ConfigureAwait(false);
+        var user = await _userManager.FindByEmailAsync(userEmail);
         var token = GenerateJwtToken(user);
 
         var userDto = _mapper.Map<UserDto>(user);
@@ -105,11 +105,11 @@ namespace WaaS.Business.Services
 
     public async Task RequestEmailChangeAsync(ClaimsPrincipal principal, string newEmail)
     {
-      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      IdentityUser idUser = await _userManager.GetUserAsync(principal);
       if (newEmail != null)
       {
         idUser.UserName = newEmail;
-        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail).ConfigureAwait(false);
+        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail);
         await _emailService.SendMailChangeConfirmation(newEmail, token);
       }
 
@@ -119,8 +119,8 @@ namespace WaaS.Business.Services
     {
       if (newEmail == null || token == null) return null;
 
-      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token).ConfigureAwait(false);
+      IdentityUser idUser = await _userManager.GetUserAsync(principal);
+      IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token);
 
       if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
 
@@ -149,8 +149,8 @@ namespace WaaS.Business.Services
     public async Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword,
       string newPassword)
     {
-      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      IdentityResult result = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword).ConfigureAwait(false);
+      IdentityUser idUser = await _userManager.GetUserAsync(principal);
+      IdentityResult result = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword);
 
       if (!result.Succeeded)
       {
@@ -162,9 +162,9 @@ namespace WaaS.Business.Services
 
     public async Task<UserDto> DeleteAsync(ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      var idUser = await _userManager.GetUserAsync(principal);
 
-      var result = await _userManager.DeleteAsync(idUser).ConfigureAwait(false);
+      var result = await _userManager.DeleteAsync(idUser);
 
       if (result.Succeeded)
       {
