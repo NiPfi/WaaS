@@ -149,7 +149,11 @@ namespace WaaS.Presentation.Controllers
         try
         {
           var result = await _userService.UpdateEmailAsync(User, dto.Email, dto.VerificationToken);
-          if (result == null) return BadRequest();
+          if (result == null)
+          {
+            return BadRequest();
+          }
+
           return Ok(result);
         }
         catch (IdentityUserServiceException exception)

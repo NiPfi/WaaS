@@ -21,7 +21,7 @@ namespace WaaS.Business.Services
 
     private readonly IEmailSender _emailSender;
 
-    public Task SendRegistrationConfirmation(string email, string verificationToken)
+    public Task SendRegistrationConfirmationAsync(string email, string verificationToken)
     {
       const string emailVerificationSubject = "Verify your email address";
 
@@ -37,7 +37,7 @@ namespace WaaS.Business.Services
       return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
     }
 
-    public Task SendMailChangeConfirmation(string email, string verificationToken)
+    public Task SendMailChangeConfirmationAsync(string email, string verificationToken)
     {
       const string emailVerificationSubject = "Confirm your new email address";
 

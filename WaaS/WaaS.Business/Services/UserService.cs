@@ -53,7 +53,10 @@ namespace WaaS.Business.Services
         userEntity.PasswordHash = null;
         var result = await _userManager.CreateAsync(userEntity, user.Password);
 
-        if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
+        if (!result.Succeeded)
+        {
+          throw new IdentityUserServiceException(result.Errors);
+        }
 
         await SendEmailConfirmationMailAsync(userEntity);
         return _mapper.Map<UserDto>(userEntity);
@@ -79,27 +82,26 @@ namespace WaaS.Business.Services
     private async Task SendEmailConfirmationMailAsync(IdentityUser userEntity)
     {
       var code = await _userManager.GenerateEmailConfirmationTokenAsync(userEntity);
-      await _emailService.SendRegistrationConfirmation(userEntity.Email, code);
+      await _emailService.SendRegistrationConfirmationAsync(userEntity.Email, code);
     }
 
     public async Task<UserDto> AuthenticateAsync(string userEmail, string password)
     {
       var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false);
 
-      if (result.Succeeded)
+      if (!result.Succeeded)
       {
-        var user = await _userManager.FindByEmailAsync(userEmail);
-        var token = GenerateJwtToken(user);
-
-        var userDto = _mapper.Map<UserDto>(user);
-        userDto.Password = null;
-        userDto.Token = token;
-
-        return userDto;
-
+        throw new SignInUserServiceException(result);
       }
 
-      throw new SignInUserServiceException(result);
+      var user = await _userManager.FindByEmailAsync(userEmail);
+      var token = GenerateJwtToken(user);
+
+      var userDto = _mapper.Map<UserDto>(user);
+      userDto.Password = null;
+      userDto.Token = token;
+
+      return userDto;
 
     }
 
@@ -110,19 +112,25 @@ namespace WaaS.Business.Services
       {
         idUser.UserName = newEmail;
         var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail);
-        await _emailService.SendMailChangeConfirmation(newEmail, token);
+        await _emailService.SendMailChangeConfirmationAsync(newEmail, token);
       }
 
     }
 
     public async Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail, string token)
     {
-      if (newEmail == null || token == null) return null;
+      if (newEmail == null || token == null)
+      {
+        return null;
+      }
 
       IdentityUser idUser = await _userManager.GetUserAsync(principal);
       IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token);
 
-      if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
+      if (!result.Succeeded)
+      {
+        throw new IdentityUserServiceException(result.Errors);
+      }
 
       var userDto = new UserDto
       {
@@ -166,12 +174,7 @@ namespace WaaS.Business.Services
 
       var result = await _userManager.DeleteAsync(idUser);
 
-      if (result.Succeeded)
-      {
-        return _mapper.Map<UserDto>(idUser);
-      }
-
-      return null;
+      return result.Succeeded ? _mapper.Map<UserDto>(idUser) : null;
     }
 
     #region private methods
