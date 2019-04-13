@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
 
@@ -24,7 +25,8 @@ export class EditProfileComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly formBuilder: FormBuilder,
     private readonly modalService: BsModalService,
-    private readonly editProfileService: EditProfileService
+    private readonly editProfileService: EditProfileService,
+    private readonly router: Router
   ) { }
 
   ngOnInit() {
@@ -43,11 +45,13 @@ export class EditProfileComponent implements OnInit {
       return;
     }
 
-    this.editProfileService.updateEmail(this.changeEmailForm.controls.email.value)
+    const email = this.changeEmailForm.controls.email.value;
+
+    this.editProfileService.updateEmail(email)
       .pipe(first())
       .subscribe(
-        data => {
-          this.successMessage = `Your E-Mail has been changed to ${data.email}`;
+        () => {
+          this.router.navigate(['verify-mail-change'], { queryParams: { email } });
         },
         error => {
           this.errorMessage = error;

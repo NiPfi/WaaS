@@ -2,37 +2,32 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockPipe } from 'ng-mocks';
 import { AlertModule, ModalModule } from 'ngx-bootstrap';
 import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-import { AuthService } from '../authentication/auth.service';
 import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
 import { EditProfileComponent } from './edit-profile.component';
 
 describe('EditProfileComponent', () => {
   let component: EditProfileComponent;
   let fixture: ComponentFixture<EditProfileComponent>;
-  let authService: AuthService;
-  let getUserEmailSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         EditProfileComponent,
-        ConvertNewLinePipe
+        MockPipe(ConvertNewLinePipe)
       ],
       imports: [
         ReactiveFormsModule,
         HttpClientTestingModule,
         RouterTestingModule,
         NgxSpinnerModule,
-        CookieModule.forRoot(),
         ModalModule.forRoot(),
+        CookieModule.forRoot(),
         AlertModule
-      ],
-      providers: [
-        AuthService
       ]
     })
       .compileComponents();
@@ -41,8 +36,6 @@ describe('EditProfileComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditProfileComponent);
     component = fixture.componentInstance;
-    authService = fixture.debugElement.injector.get(AuthService);
-    getUserEmailSpy = spyOn(authService, 'getUserEmail').and.returnValue(undefined);
     fixture.detectChanges();
   });
 

@@ -1,0 +1,37 @@
+<div class="container">
+  <ng-container *ngIf="!email; then noMail; else mail">
+  </ng-container>
+</div>
+
+<ng-template #mail>
+  <ng-container *ngIf="!token; then noToken; else error">
+  </ng-container>
+</ng-template>
+
+<ng-template #noMail>
+  <h2>E-Mail change confirmation</h2>
+  <p>
+    You should not have landed here. If you're trying to verify your email change, make sure you click the link in the
+    confirmation E-Mail we've sent you.
+    If you cannot find it, check your spam folder or request your email change again <a routerLink="/profile">here</a>.
+  </p>
+</ng-template>
+
+<ng-template #noToken>
+  <h2>Email change requested</h2>
+  <p>
+    We're sending a confirmation E-Mail to <em>{{email}}</em> which should momentarily arrive. Please click on the verification
+    link in that mail to confirm your E-Mail address!
+    If you cannot find it, check your spam folder or request your email change again <a routerLink="/profile">here</a>.
+  </p>
+</ng-template>
+
+<ng-template #error>
+  <h2>E-Mail change</h2>
+  <alert *ngIf="successMessage" type="success">
+    <span [innerHtml]="successMessage | convertNewLine: true"></span>
+  </alert>
+  <alert *ngIf="errorMessage" type="danger">
+    <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+  </alert>
+</ng-template>

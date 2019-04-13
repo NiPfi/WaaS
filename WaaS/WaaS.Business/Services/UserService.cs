@@ -110,7 +110,7 @@ namespace WaaS.Business.Services
       {
         idUser.UserName = newEmail;
         var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail).ConfigureAwait(false);
-        await _emailService.SendRegistrationConfirmation(newEmail, token);
+        await _emailService.SendMailChangeConfirmation(newEmail, token);
       }
 
     }

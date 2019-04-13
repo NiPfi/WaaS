@@ -4,13 +4,14 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPipe } from 'ng-mocks';
 import { AlertModule } from 'ngx-bootstrap';
+import { CookieModule } from 'ngx-cookie';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
-import { VerifyRegistrationComponent } from './registration/verify-registration.component';
+import { VerifyMailChangeComponent } from './verify-mail-change.component';
 
-describe('VerifyRegistrationComponent', () => {
-  let component: VerifyRegistrationComponent;
-  let fixture: ComponentFixture<VerifyRegistrationComponent>;
+describe('VerifyMailChangeComponent', () => {
+  let component: VerifyMailChangeComponent;
+  let fixture: ComponentFixture<VerifyMailChangeComponent>;
 
   beforeEach(async(() => {
     const activatedRouteSnapshotStub: any = {
@@ -25,10 +26,11 @@ describe('VerifyRegistrationComponent', () => {
       imports: [
         AlertModule,
         RouterTestingModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        CookieModule.forRoot()
       ],
       declarations: [
-        VerifyRegistrationComponent,
+        VerifyMailChangeComponent,
         MockPipe(ConvertNewLinePipe)
       ],
       providers: [
@@ -39,7 +41,7 @@ describe('VerifyRegistrationComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerifyRegistrationComponent);
+    fixture = TestBed.createComponent(VerifyMailChangeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

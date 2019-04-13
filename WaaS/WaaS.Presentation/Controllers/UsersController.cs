@@ -102,7 +102,6 @@ namespace WaaS.Presentation.Controllers
         return Ok();
       }
       return BadRequest(new BadRequestError("Captcha was invalid"));
-
     }
 
     [AllowAnonymous]
@@ -136,6 +135,27 @@ namespace WaaS.Presentation.Controllers
 
       return BadRequest(new BadRequestError("Captcha was invalid"));
 
+    }
+
+    [HttpPost("verify-mail-change")]
+    public async Task<IActionResult> VerifyMailChange(EmailTokenDto dto)
+    {
+
+        if (dto == null || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.VerificationToken))
+        {
+          return BadRequest(new BadRequestError("Email and verification token have to be set to verify mail change"));
+        }
+
+        try
+        {
+          var result = await _userService.UpdateEmailAsync(User, dto.Email, dto.VerificationToken);
+          if (result == null) return BadRequest();
+          return Ok(result);
+        }
+        catch (IdentityUserServiceException exception)
+        {
+          return BadRequest(new BadRequestError(exception.ToString()));
+        }
     }
 
     // PUT: api/Users
@@ -176,18 +196,13 @@ namespace WaaS.Presentation.Controllers
 
       try
       {
-        var result = await _userService.UpdateEmailAsync(User, userEditDto.NewEmail);
-        if (result != null)
-        {
-          return Ok(result);
-        }
+        await _userService.RequestEmailChangeAsync(User, userEditDto.NewEmail);
+        return Ok();
       }
       catch (IdentityUserServiceException exception)
       {
         return BadRequest(new BadRequestError(exception.ToString()));
       }
-
-      return BadRequest(new BadRequestError("There was an error updating your E-Mail"));
 
     }
 

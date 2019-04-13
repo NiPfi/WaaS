@@ -32,6 +32,7 @@ import { HttpSpinnerInterceptor } from './http-spinner/http-spinner.interceptor'
 import { AddJobComponent } from './overview/add-job/add-job.component';
 import { OverviewComponent } from './overview/overview.component';
 import { PipesModule } from './pipes/pipes.module';
+import { VerifyMailChangeComponent } from './authentication/verify/mail-change/verify-mail-change.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { PipesModule } from './pipes/pipes.module';
     AddJobComponent,
     VerifyRegistrationComponent,
     ControlMessagesComponent,
-    ResendConfirmationEmailComponent
+    ResendConfirmationEmailComponent,
+    VerifyMailChangeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
