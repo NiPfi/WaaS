@@ -13,7 +13,6 @@ import { User } from '../../user';
   providedIn: 'root'
 })
 export class VerificationService {
-
   constructor(
     private readonly http: HttpClient,
     private readonly auth: AuthService,
@@ -42,5 +41,15 @@ export class VerificationService {
       this.auth.updateUser(user as User);
       return user as User;
     })).pipe(catchError(this.handler.handleError));
+  }
+
+  verifyPasswordReset(email: string, captchaResponse: string) {
+    return this.http.post(`${environment.apiUrl}/users/verify-reset-password`, { user: { email }, captchaResponse }
+    ).pipe(catchError(this.handler.handleError));
+  }
+
+  doPasswordReset(email: string, password: string, token: string) {
+    return this.http.post(`${environment.apiUrl}/users/reset-password`, { user: { email, password }, verificationToken: token }
+    ).pipe(catchError(this.handler.handleError));
   }
 }

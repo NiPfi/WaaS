@@ -47,27 +47,26 @@ namespace WaaS.Business.Services
 
     public async Task<UserDto> CreateAsync(UserDto user)
     {
-      if (user != null && (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password)))
+      if (user == null || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
       {
-        var userEntity = _mapper.Map<IdentityUser>(user);
-        userEntity.PasswordHash = null;
-        var result = await _userManager.CreateAsync(userEntity, user.Password);
-
-        if (!result.Succeeded)
-        {
-          throw new IdentityUserServiceException(result.Errors);
-        }
-
-        await SendEmailConfirmationMailAsync(userEntity);
-        return _mapper.Map<UserDto>(userEntity);
-
+        throw new UserServiceException("Both E-Mail and Password are required");
       }
 
-      throw new UserServiceException("Both E-Mail and Password are required");
+      var userEntity = _mapper.Map<IdentityUser>(user);
+      userEntity.PasswordHash = null;
+      var result = await _userManager.CreateAsync(userEntity, user.Password);
+
+      if (!result.Succeeded)
+      {
+        throw new IdentityUserServiceException(result.Errors);
+      }
+
+      await SendEmailConfirmationMailAsync(userEntity);
+      return _mapper.Map<UserDto>(userEntity);
 
     }
 
-    public async Task ResendConfirmationMail(string email)
+    public async Task ResendConfirmationMailAsync(string email)
     {
       var userEntity = await _userManager.FindByEmailAsync(email);
       if (userEntity == null || await _userManager.IsEmailConfirmedAsync(userEntity))
@@ -145,6 +144,26 @@ namespace WaaS.Business.Services
     {
       IdentityUser idUser = await _userManager.FindByEmailAsync(email);
       var result = await _userManager.ConfirmEmailAsync(idUser, verificationToken);
+
+      if (result.Succeeded)
+      {
+        return new UserDto{Email = email};
+      }
+
+      throw new IdentityUserServiceException(result.Errors);
+    }
+
+    public async Task RequestResetPasswordAsync(string email)
+    {
+      var idUser = await _userManager.FindByEmailAsync(email);
+      var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(idUser);
+      await _emailService.SendPasswordResetConfirmationAsync(email, passwordResetToken);
+    }
+
+    public async Task<UserDto> ResetPasswordAsync(string email, string newPassword, string token)
+    {
+      var idUser = await _userManager.FindByEmailAsync(email);
+      var result = await _userManager.ResetPasswordAsync(idUser, token, newPassword);
 
       if (result.Succeeded)
       {

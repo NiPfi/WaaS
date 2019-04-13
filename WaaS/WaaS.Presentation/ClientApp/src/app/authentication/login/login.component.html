@@ -7,6 +7,7 @@
 
   <alert type="danger" *ngIf="error && error != ''" [dismissible]="true" (onClosed)="onErrorAlertClosed()">{{error}}
   </alert>
+
   <form [formGroup]="loginForm">
     <div class="form-group">
       <label for="username">E-Mail Address</label>

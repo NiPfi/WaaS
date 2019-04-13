@@ -44,7 +44,7 @@ export class ResendConfirmationEmailComponent implements OnInit {
       .pipe(first())
       .subscribe(
         () => {
-          this.router.navigate(['verify'], { queryParams: { email } });
+          this.router.navigate(['verify-registration'], { queryParams: { email } });
         });
   }
 

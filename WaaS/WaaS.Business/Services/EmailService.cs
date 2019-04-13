@@ -52,6 +52,20 @@ namespace WaaS.Business.Services
                                      $"<a href=\"{url}\">Confirm your new E-Mail address</a>";
       return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
     }
+    public Task SendPasswordResetConfirmationAsync(string email, string verificationToken)
+    {
+      const string emailVerificationSubject = "Reset your password";
 
+      UriBuilder builder = new UriBuilder(MyHttpContext.AppBaseUrl) {Path = "/verify-password-reset"};
+      var query = HttpUtility.ParseQueryString(builder.Query);
+      query["email"] = email;
+      query["verificationToken"] = verificationToken;
+      builder.Query = query.ToString();
+      var url = builder.ToString();
+
+      string emailVerificationBody = "A password reset was requested.<br /> <br />" +
+                                     $"<a href=\"{url}\">Set new password</a>";
+      return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
+    }
   }
 }

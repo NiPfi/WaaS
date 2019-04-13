@@ -1,36 +1,39 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPipe } from 'ng-mocks';
 import { AlertModule } from 'ngx-bootstrap';
 import { CookieModule } from 'ngx-cookie';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
-import { VerifyMailChangeComponent } from './verify-mail-change.component';
+import { VerifyPasswordResetComponent } from './verify-password-reset.component';
 
-describe('VerifyMailChangeComponent', () => {
-  let component: VerifyMailChangeComponent;
-  let fixture: ComponentFixture<VerifyMailChangeComponent>;
+describe('VerifyPasswordResetComponent', () => {
+  let component: VerifyPasswordResetComponent;
+  let fixture: ComponentFixture<VerifyPasswordResetComponent>;
 
   beforeEach(async(() => {
-
     TestBed.configureTestingModule({
+      declarations: [
+        VerifyPasswordResetComponent,
+        MockPipe(ConvertNewLinePipe)
+      ],
       imports: [
         AlertModule,
-        HttpClientTestingModule,
+        ReactiveFormsModule,
         RouterTestingModule,
+        HttpClientTestingModule,
+        NgxSpinnerModule,
         CookieModule.forRoot()
-      ],
-      declarations: [
-        VerifyMailChangeComponent,
-        MockPipe(ConvertNewLinePipe)
       ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerifyMailChangeComponent);
+    fixture = TestBed.createComponent(VerifyPasswordResetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
