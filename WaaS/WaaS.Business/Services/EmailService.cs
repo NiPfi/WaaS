@@ -25,16 +25,33 @@ namespace WaaS.Business.Services
     {
       const string emailVerificationSubject = "Verify your email address";
 
-      UriBuilder builder = new UriBuilder(MyHttpContext.AppBaseUrl);
-      builder.Path = "/verify";
+      UriBuilder builder = new UriBuilder(MyHttpContext.AppBaseUrl) {Path = "/verify-registration"};
       var query = HttpUtility.ParseQueryString(builder.Query);
       query["email"] = email;
       query["verificationToken"] = verificationToken;
       builder.Query = query.ToString();
       var url = builder.ToString();
 
-      string emailVerificationBody = $"Thank you for registering to WaaS! <br /> <br /> <a href=\"{url}\">Verify your E-Mail address</a>";
+      string emailVerificationBody = "Thank you for registering to WaaS!<br /><br />" +
+                                     $"<a href=\"{url}\">Verify your E-Mail address</a>";
       return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
     }
+
+    public Task SendMailChangeConfirmation(string email, string verificationToken)
+    {
+      const string emailVerificationSubject = "Confirm your new email address";
+
+      UriBuilder builder = new UriBuilder(MyHttpContext.AppBaseUrl) {Path = "/verify-mail-change"};
+      var query = HttpUtility.ParseQueryString(builder.Query);
+      query["email"] = email;
+      query["verificationToken"] = verificationToken;
+      builder.Query = query.ToString();
+      var url = builder.ToString();
+
+      string emailVerificationBody = "An E-Mail address change was requested.<br /> <br />" +
+                                     $"<a href=\"{url}\">Confirm your new E-Mail address</a>";
+      return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
+    }
+
   }
 }

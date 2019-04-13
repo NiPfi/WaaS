@@ -14,5 +14,13 @@ namespace WaaS.Business.Interfaces.Services
     /// <param name="verificationToken">The token to verify the email address with</param>
     /// <returns></returns>
     Task SendRegistrationConfirmation(string email, string verificationToken);
+
+    /// <summary>
+    /// Sends a email address change confirmation mail containing a confirmation token to a registered user so his address can be confirmed
+    /// </summary>
+    /// <param name="email">The recipients new E-Mail address</param>
+    /// <param name="verificationToken">The token to verify the email address with</param>
+    /// <returns></returns>
+    Task SendMailChangeConfirmation(string email, string verificationToken);
   }
 }

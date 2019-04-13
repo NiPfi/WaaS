@@ -103,29 +103,34 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail)
+    public async Task RequestEmailChangeAsync(ClaimsPrincipal principal, string newEmail)
     {
       IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
       if (newEmail != null)
       {
         idUser.UserName = newEmail;
         var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail).ConfigureAwait(false);
-        IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token).ConfigureAwait(false);
-
-        if (result.Succeeded)
-        {
-          var userDto = new UserDto
-          {
-            Email = newEmail,
-            Token = GenerateJwtToken(idUser)
-          };
-          return userDto;
-        }
-
-        throw new IdentityUserServiceException(result.Errors);
+        await _emailService.SendRegistrationConfirmation(newEmail, token);
       }
 
-      return null;
+    }
+
+    public async Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail, string token)
+    {
+      if (newEmail == null || token == null) return null;
+
+      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token).ConfigureAwait(false);
+
+      if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
+
+      var userDto = new UserDto
+      {
+        Email = newEmail,
+        Token = GenerateJwtToken(idUser)
+      };
+
+      return userDto;
     }
 
     public async Task<UserDto> VerifyEmailAsync(string email, string verificationToken)

@@ -11,7 +11,8 @@ namespace WaaS.Business.Interfaces.Services
     Task<UserDto> CreateAsync(UserDto user);
     Task ResendConfirmationMail(string email);
     Task<UserDto> AuthenticateAsync(string userEmail, string password);
-    Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail);
+    Task RequestEmailChangeAsync(ClaimsPrincipal principal, string newEmail);
+    Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail, string token);
     Task<UserDto> VerifyEmailAsync(string email, string verificationToken);
     Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword, string newPassword);
     Task<UserDto> DeleteAsync(ClaimsPrincipal principal);
