@@ -5,10 +5,11 @@
     "Name": "Nicola Pfister"
   },
   "ProjectKey": "webe-waas",
+  "ProjectName": "WaaS",
   "Profiles": {
     "CSharp": {
       "ProfileKey": "AWm5VhiSHcDGtXNl5-wL",
-      "ProfileTimestamp": "2019-03-26T10:44:24+01:00"
+      "ProfileTimestamp": "2019-04-13T15:27:42+02:00"
     }
   }
 }

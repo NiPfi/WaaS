@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SonarQube - WaaS Sonar way +" ToolsVersion="15.0">
+<RuleSet Name="SonarQube - WaaS Sonar way +" ToolsVersion="16.0">
   <Include Path="..\..\.sonarlint\webe-waascsharp.ruleset" Action="Default" />
+  <Include Path="waas.infrastructure.ruleset" Action="Default" />
 </RuleSet>
