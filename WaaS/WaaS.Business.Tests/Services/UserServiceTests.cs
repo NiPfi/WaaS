@@ -137,7 +137,7 @@ namespace WaaS.Business.Tests.Services
         .Returns(IdentityResult.Success);
 
       // Act
-      var result = await _userService.UpdateEmailAsync(_mockClaimsPrincipal, newEmail);
+      var result = await _userService.UpdateEmailAsync(_mockClaimsPrincipal, newEmail, testEmailResetToken);
 
       // Assert
       await _mockUserManager.Received().ChangeEmailAsync(_mockIdentityUser, newEmail, testEmailResetToken);
