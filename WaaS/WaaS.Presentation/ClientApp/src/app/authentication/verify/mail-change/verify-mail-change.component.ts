@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { VerificationService } from '../../verification-service/verification.service';
+import { VerificationService } from '../verification-service/verification.service';
 
 @Component({
   selector: 'app-verify-mail-change',

@@ -6,8 +6,8 @@ import { map } from 'rxjs/internal/operators/map';
 import { HttpErrorHandlerService } from 'src/app/error-handling/http-error-handler.service';
 import { environment } from 'src/environments/environment';
 
-import { AuthService } from '../auth.service';
-import { User } from '../user';
+import { AuthService } from '../../auth.service';
+import { User } from '../../user';
 
 @Injectable({
   providedIn: 'root'

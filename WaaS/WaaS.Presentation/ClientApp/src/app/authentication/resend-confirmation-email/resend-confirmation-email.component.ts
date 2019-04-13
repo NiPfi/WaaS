@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { first } from 'rxjs/internal/operators/first';
 
-import { VerificationService } from '../verification-service/verification.service';
+import { VerificationService } from '../verify/verification-service/verification.service';
 
 @Component({
   selector: 'app-resend-confirmation-email',
