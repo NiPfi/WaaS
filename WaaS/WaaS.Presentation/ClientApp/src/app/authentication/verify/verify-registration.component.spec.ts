@@ -6,11 +6,11 @@ import { MockPipe } from 'ng-mocks';
 import { AlertModule } from 'ngx-bootstrap';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
-import { VerifyComponent } from './verify.component';
+import { VerifyRegistrationComponent } from './registration/verify-registration.component';
 
-describe('VerifyComponent', () => {
-  let component: VerifyComponent;
-  let fixture: ComponentFixture<VerifyComponent>;
+describe('VerifyRegistrationComponent', () => {
+  let component: VerifyRegistrationComponent;
+  let fixture: ComponentFixture<VerifyRegistrationComponent>;
 
   beforeEach(async(() => {
     const activatedRouteSnapshotStub: any = {
@@ -28,7 +28,7 @@ describe('VerifyComponent', () => {
         HttpClientTestingModule
       ],
       declarations: [
-        VerifyComponent,
+        VerifyRegistrationComponent,
         MockPipe(ConvertNewLinePipe)
       ],
       providers: [
@@ -39,7 +39,7 @@ describe('VerifyComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerifyComponent);
+    fixture = TestBed.createComponent(VerifyRegistrationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

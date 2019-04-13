@@ -8,7 +8,7 @@ import { RegisterComponent } from './authentication/register/register.component'
 import {
   ResendConfirmationEmailComponent,
 } from './authentication/resend-confirmation-email/resend-confirmation-email.component';
-import { VerifyComponent } from './authentication/verify/verify.component';
+import { VerifyRegistrationComponent } from './authentication/verify/registration/verify-registration.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { HomeComponent } from './home/home.component';
 import { OverviewComponent } from './overview/overview.component';
@@ -41,9 +41,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'verify',
-    component: VerifyComponent
+    path: 'verify-registration',
+    component: VerifyRegistrationComponent
   },
+  // {
+  //   path: 'verify-mail-change',
+  //   component: VerifyComponent,
+  //   canActivate: [AuthGuard]
+  // },
   {
     path: 'resend-confirmation-email',
     component: ResendConfirmationEmailComponent

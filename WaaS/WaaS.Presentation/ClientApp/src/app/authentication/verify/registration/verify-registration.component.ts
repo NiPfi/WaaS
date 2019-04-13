@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { VerificationService } from '../verification-service/verification.service';
+import { VerificationService } from '../../verification-service/verification.service';
 
 @Component({
   selector: 'app-verify',
-  templateUrl: './verify.component.html',
-  styleUrls: ['./verify.component.scss']
+  templateUrl: './verify-registration.component.html',
+  styleUrls: ['./verify-registration.component.scss']
 })
-export class VerifyComponent implements OnInit {
+export class VerifyRegistrationComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
