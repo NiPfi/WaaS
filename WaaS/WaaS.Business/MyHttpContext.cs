@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WaaS.Business
 {
-  public class MyHttpContext
+  public static class MyHttpContext
   {
     private static IHttpContextAccessor m_httpContextAccessor;
     public static HttpContext Current => m_httpContextAccessor.HttpContext;
