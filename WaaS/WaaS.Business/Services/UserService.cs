@@ -47,24 +47,26 @@ namespace WaaS.Business.Services
 
     public async Task<UserDto> CreateAsync(UserDto user)
     {
-      if (user != null && (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.Password)))
+      if (user == null || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
       {
-        var userEntity = _mapper.Map<IdentityUser>(user);
-        userEntity.PasswordHash = null;
-        var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
-
-        if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
-
-        await SendEmailConfirmationMailAsync(userEntity);
-        return _mapper.Map<UserDto>(userEntity);
-
+        throw new UserServiceException("Both E-Mail and Password are required");
       }
 
-      throw new UserServiceException("Both E-Mail and Password are required");
+      var userEntity = _mapper.Map<IdentityUser>(user);
+      userEntity.PasswordHash = null;
+      var result = await _userManager.CreateAsync(userEntity, user.Password);
+
+      if (!result.Succeeded)
+      {
+        throw new IdentityUserServiceException(result.Errors);
+      }
+
+      await SendEmailConfirmationMailAsync(userEntity);
+      return _mapper.Map<UserDto>(userEntity);
 
     }
 
-    public async Task ResendConfirmationMail(string email)
+    public async Task ResendConfirmationMailAsync(string email)
     {
       var userEntity = await _userManager.FindByEmailAsync(email);
       if (userEntity == null || await _userManager.IsEmailConfirmedAsync(userEntity))
@@ -79,50 +81,55 @@ namespace WaaS.Business.Services
     private async Task SendEmailConfirmationMailAsync(IdentityUser userEntity)
     {
       var code = await _userManager.GenerateEmailConfirmationTokenAsync(userEntity);
-      await _emailService.SendRegistrationConfirmation(userEntity.Email, code);
+      await _emailService.SendRegistrationConfirmationAsync(userEntity.Email, code);
     }
 
     public async Task<UserDto> AuthenticateAsync(string userEmail, string password)
     {
-      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false).ConfigureAwait(false);
+      var result = await _signInManager.PasswordSignInAsync(userEmail, password, false, false);
 
-      if (result.Succeeded)
+      if (!result.Succeeded)
       {
-        var user = await _userManager.FindByEmailAsync(userEmail).ConfigureAwait(false);
-        var token = GenerateJwtToken(user);
-
-        var userDto = _mapper.Map<UserDto>(user);
-        userDto.Password = null;
-        userDto.Token = token;
-
-        return userDto;
-
+        throw new SignInUserServiceException(result);
       }
 
-      throw new SignInUserServiceException(result);
+      var user = await _userManager.FindByEmailAsync(userEmail);
+      var token = GenerateJwtToken(user);
+
+      var userDto = _mapper.Map<UserDto>(user);
+      userDto.Password = null;
+      userDto.Token = token;
+
+      return userDto;
 
     }
 
     public async Task RequestEmailChangeAsync(ClaimsPrincipal principal, string newEmail)
     {
-      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      IdentityUser idUser = await _userManager.GetUserAsync(principal);
       if (newEmail != null)
       {
         idUser.UserName = newEmail;
-        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail).ConfigureAwait(false);
-        await _emailService.SendMailChangeConfirmation(newEmail, token);
+        var token = await _userManager.GenerateChangeEmailTokenAsync(idUser, newEmail);
+        await _emailService.SendMailChangeConfirmationAsync(newEmail, token);
       }
 
     }
 
     public async Task<UserDto> UpdateEmailAsync(ClaimsPrincipal principal, string newEmail, string token)
     {
-      if (newEmail == null || token == null) return null;
+      if (newEmail == null || token == null)
+      {
+        return null;
+      }
 
-      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token).ConfigureAwait(false);
+      IdentityUser idUser = await _userManager.GetUserAsync(principal);
+      IdentityResult result = await _userManager.ChangeEmailAsync(idUser, newEmail, token);
 
-      if (!result.Succeeded) throw new IdentityUserServiceException(result.Errors);
+      if (!result.Succeeded)
+      {
+        throw new IdentityUserServiceException(result.Errors);
+      }
 
       var userDto = new UserDto
       {
@@ -146,11 +153,31 @@ namespace WaaS.Business.Services
       throw new IdentityUserServiceException(result.Errors);
     }
 
+    public async Task RequestResetPasswordAsync(string email)
+    {
+      var idUser = await _userManager.FindByEmailAsync(email);
+      var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(idUser);
+      await _emailService.SendPasswordResetConfirmationAsync(email, passwordResetToken);
+    }
+
+    public async Task<UserDto> ResetPasswordAsync(string email, string newPassword, string token)
+    {
+      var idUser = await _userManager.FindByEmailAsync(email);
+      var result = await _userManager.ResetPasswordAsync(idUser, token, newPassword);
+
+      if (result.Succeeded)
+      {
+        return new UserDto{Email = email};
+      }
+
+      throw new IdentityUserServiceException(result.Errors);
+    }
+
     public async Task<bool> UpdatePasswordAsync(ClaimsPrincipal principal, string currentPassword,
       string newPassword)
     {
-      IdentityUser idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      IdentityResult result = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword).ConfigureAwait(false);
+      IdentityUser idUser = await _userManager.GetUserAsync(principal);
+      IdentityResult result = await _userManager.ChangePasswordAsync(idUser, currentPassword, newPassword);
 
       if (!result.Succeeded)
       {
@@ -162,16 +189,11 @@ namespace WaaS.Business.Services
 
     public async Task<UserDto> DeleteAsync(ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      var idUser = await _userManager.GetUserAsync(principal);
 
-      var result = await _userManager.DeleteAsync(idUser).ConfigureAwait(false);
+      var result = await _userManager.DeleteAsync(idUser);
 
-      if (result.Succeeded)
-      {
-        return _mapper.Map<UserDto>(idUser);
-      }
-
-      return null;
+      return result.Succeeded ? _mapper.Map<UserDto>(idUser) : null;
     }
 
     #region private methods

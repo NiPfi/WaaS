@@ -1,12 +1,12 @@
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
+import { ValidationService } from 'src/app/error-handling/form-validation/validation-service/validation.service';
 
 import { OverviewService } from '../overview-service/overview.service';
 import { ScrapeJob } from '../scrape-job';
-import { ValidationService } from 'src/app/error-handling/form-validation/validation-service/validation.service'
 
 @Component({
   selector: 'app-add-job',
@@ -38,7 +38,6 @@ export class AddJobComponent implements OnInit {
       alternativeEmail: ['', [Validators.email]]
     });
   }
-  
 
   // convenience getter for easy access to form fields
   get form() { return this.addScrapeJobForm.controls; }
@@ -49,7 +48,7 @@ export class AddJobComponent implements OnInit {
       return;
     }
 
-    var job = new ScrapeJob();
+    const job = new ScrapeJob();
     job.name = this.addScrapeJobForm.controls.scrapeJobName.value;
     job.url = this.addScrapeJobForm.controls.url.value;
     job.pattern = this.addScrapeJobForm.controls.regexPattern.value;
@@ -69,7 +68,7 @@ export class AddJobComponent implements OnInit {
       ;
   }
 
-  
+
 
   openAddScrapeJobModal(template: TemplateRef<any>) {
     this.addScrapeJobModalRef = this.modalService.show(template, {});

@@ -38,11 +38,11 @@ namespace WaaS.Business.Services
       {
 
         var entity = _mapper.Map<ScrapeJob>(scrapeJob);
-        var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+        var idUser = await _userManager.GetUserAsync(principal);
         entity.IdentityUserForeignKey = idUser.Id;
         entity.UserSpecificId = _scrapeJobRepository.ReadUsersScrapeJobs(idUser.Id).Count() + 1;
 
-        var success = await _scrapeJobRepository.AddAsync(entity).ConfigureAwait(false);
+        var success = await _scrapeJobRepository.AddAsync(entity);
 
         if (success)
         {
@@ -57,10 +57,10 @@ namespace WaaS.Business.Services
 
     public async Task<bool> Delete(long id, ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      if (await ScrapeJobIsOfUser(id, idUser.Id).ConfigureAwait(false))
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
-        return await _scrapeJobRepository.DeleteAsync(id).ConfigureAwait(false);
+        return await _scrapeJobRepository.DeleteAsync(id);
       }
 
       return false;
@@ -69,10 +69,10 @@ namespace WaaS.Business.Services
 
     public async Task<ScrapeJobDto> Read(long id, ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      if (await ScrapeJobIsOfUser(id, idUser.Id).ConfigureAwait(false))
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
-        var entity = await _scrapeJobRepository.GetAsync(id).ConfigureAwait(false);
+        var entity = await _scrapeJobRepository.GetAsync(id);
 
         if (entity != null)
         {
@@ -100,7 +100,7 @@ namespace WaaS.Business.Services
 
     public async Task<IEnumerable<ScrapeJobDto>> ReadUsersScrapeJobs(ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
+      var idUser = await _userManager.GetUserAsync(principal);
 
       var entities = _scrapeJobRepository.ReadUsersScrapeJobs(idUser.Id);
 
@@ -115,14 +115,14 @@ namespace WaaS.Business.Services
 
     public async Task<ScrapeJobDto> ToggleEnabled(long id, ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      if (await ScrapeJobIsOfUser(id, idUser.Id).ConfigureAwait(false))
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
-        var success = await _scrapeJobRepository.UpdateAsync(id, e => e.Enabled = !e.Enabled).ConfigureAwait(false);
+        var success = await _scrapeJobRepository.UpdateAsync(id, e => e.Enabled = !e.Enabled);
 
         if (success)
         {
-          var updatedEntity = await _scrapeJobRepository.GetAsync(id).ConfigureAwait(false);
+          var updatedEntity = await _scrapeJobRepository.GetAsync(id);
           return _mapper.Map<ScrapeJobDto>(updatedEntity);
         }
       }
@@ -133,14 +133,14 @@ namespace WaaS.Business.Services
 
     public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
     {
-      var idUser = await _userManager.GetUserAsync(principal).ConfigureAwait(false);
-      if (await ScrapeJobIsOfUser(scrapeJob.Id, idUser.Id).ConfigureAwait(false))
+      var idUser = await _userManager.GetUserAsync(principal);
+      if (await ScrapeJobIsOfUser(scrapeJob.Id, idUser.Id))
       {
-        var success = await _scrapeJobRepository.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJob, e)).ConfigureAwait(false);
+        var success = await _scrapeJobRepository.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJob, e));
 
         if (success)
         {
-          var updatedEntity = await _scrapeJobRepository.GetAsync(scrapeJob.Id).ConfigureAwait(false);
+          var updatedEntity = await _scrapeJobRepository.GetAsync(scrapeJob.Id);
           return _mapper.Map<ScrapeJobDto>(updatedEntity);
         }
       }
@@ -151,7 +151,7 @@ namespace WaaS.Business.Services
 
     public async Task<bool> ScrapeJobIsOfUser(long scrapeJobId, string userId)
     {
-      var scrapeJobEntity = await _scrapeJobRepository.GetAsync(scrapeJobId).ConfigureAwait(false);
+      var scrapeJobEntity = await _scrapeJobRepository.GetAsync(scrapeJobId);
 
       return userId.Equals(scrapeJobEntity.IdentityUser.Id, StringComparison.InvariantCulture);
     }

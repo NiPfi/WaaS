@@ -2,17 +2,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
-import { first } from 'rxjs/internal/operators/first';
+import { first } from 'rxjs/operators';
 
 import { VerificationService } from '../verify/verification-service/verification.service';
 
 @Component({
-  selector: 'app-resend-confirmation-email',
-  templateUrl: './resend-confirmation-email.component.html',
-  styleUrls: ['./resend-confirmation-email.component.scss']
+  selector: 'app-password-reset',
+  templateUrl: './password-reset.component.html',
+  styleUrls: ['./password-reset.component.scss']
 })
-export class ResendConfirmationEmailComponent implements OnInit {
-  resendConfirmationForm: FormGroup;
+export class PasswordResetComponent implements OnInit {
+  resetPasswordForm: FormGroup;
 
   @ViewChild('captchaRef') reCaptcha: RecaptchaComponent;
 
@@ -23,7 +23,7 @@ export class ResendConfirmationEmailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.resendConfirmationForm = this.formBuilder.group({
+    this.resetPasswordForm = this.formBuilder.group({
       email: ['', [
         Validators.required,
         Validators.email
@@ -32,20 +32,19 @@ export class ResendConfirmationEmailComponent implements OnInit {
     });
   }
 
-  get form() { return this.resendConfirmationForm.controls; }
+  get form() { return this.resetPasswordForm.controls; }
 
   onSubmit(captchaResponse: string) {
     const email = this.form.email.value;
     // stop here if form is invalid
-    if (this.resendConfirmationForm.invalid) {
+    if (this.resetPasswordForm.invalid) {
       return;
     }
-    this.verification.resendConfirmationEmail(email, captchaResponse)
+    this.verification.verifyPasswordReset(email, captchaResponse)
       .pipe(first())
       .subscribe(
         () => {
-          this.router.navigate(['verify-registration'], { queryParams: { email } });
+          this.router.navigate(['verify-password-reset'], { queryParams: { email } });
         });
   }
-
 }

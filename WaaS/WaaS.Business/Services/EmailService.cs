@@ -21,7 +21,7 @@ namespace WaaS.Business.Services
 
     private readonly IEmailSender _emailSender;
 
-    public Task SendRegistrationConfirmation(string email, string verificationToken)
+    public Task SendRegistrationConfirmationAsync(string email, string verificationToken)
     {
       const string emailVerificationSubject = "Verify your email address";
 
@@ -37,7 +37,7 @@ namespace WaaS.Business.Services
       return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
     }
 
-    public Task SendMailChangeConfirmation(string email, string verificationToken)
+    public Task SendMailChangeConfirmationAsync(string email, string verificationToken)
     {
       const string emailVerificationSubject = "Confirm your new email address";
 
@@ -52,6 +52,20 @@ namespace WaaS.Business.Services
                                      $"<a href=\"{url}\">Confirm your new E-Mail address</a>";
       return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
     }
+    public Task SendPasswordResetConfirmationAsync(string email, string verificationToken)
+    {
+      const string emailVerificationSubject = "Reset your password";
 
+      UriBuilder builder = new UriBuilder(MyHttpContext.AppBaseUrl) {Path = "/verify-password-reset"};
+      var query = HttpUtility.ParseQueryString(builder.Query);
+      query["email"] = email;
+      query["verificationToken"] = verificationToken;
+      builder.Query = query.ToString();
+      var url = builder.ToString();
+
+      string emailVerificationBody = "A password reset was requested.<br /> <br />" +
+                                     $"<a href=\"{url}\">Set new password</a>";
+      return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
+    }
   }
 }

@@ -93,7 +93,7 @@ namespace WaaS.Presentation.Controllers
 
         try
         {
-          await _userService.ResendConfirmationMail(userCaptchaDto.User.Email);
+          await _userService.ResendConfirmationMailAsync(userCaptchaDto.User.Email);
         }
         catch (UserServiceException exception)
         {
@@ -102,6 +102,55 @@ namespace WaaS.Presentation.Controllers
         return Ok();
       }
       return BadRequest(new BadRequestError("Captcha was invalid"));
+    }
+
+    [AllowAnonymous]
+    [HttpPost("verify-reset-password")]
+    public async Task<IActionResult> VerifyResetPasswordRequest(UserCaptchaDto userCaptchaDto)
+    {
+      if (userCaptchaDto != null && CaptchaResponseValid(userCaptchaDto.CaptchaResponse))
+      {
+        if (userCaptchaDto.User == null || string.IsNullOrWhiteSpace(userCaptchaDto.User.Email))
+        {
+          return BadRequest(new BadRequestError("Email has to be set"));
+        }
+
+        try
+        {
+          await _userService.RequestResetPasswordAsync(userCaptchaDto.User.Email);
+        }
+        catch (UserServiceException exception)
+        {
+          _logger.LogWarning(exception.Message);
+        }
+        return Ok();
+      }
+      return BadRequest(new BadRequestError("Captcha was invalid"));
+    }
+
+    [AllowAnonymous]
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(UserTokenDto userTokenDto)
+    {
+
+      if (userTokenDto?.User == null ||
+          string.IsNullOrWhiteSpace(userTokenDto.VerificationToken) ||
+          string.IsNullOrWhiteSpace(userTokenDto.User.Email) ||
+          string.IsNullOrWhiteSpace(userTokenDto.User.Password))
+      {
+        return BadRequest(new BadRequestError("Verification token, Email and Password have to be set"));
+      }
+
+      try
+      {
+        var user = await _userService.ResetPasswordAsync(userTokenDto.User.Email, userTokenDto.User.Password, userTokenDto.VerificationToken);
+        return Ok(user);
+      }
+      catch (IdentityUserServiceException exception)
+      {
+        return BadRequest(new BadRequestError(exception.ToString()));
+      }
+
     }
 
     [AllowAnonymous]
@@ -141,21 +190,25 @@ namespace WaaS.Presentation.Controllers
     public async Task<IActionResult> VerifyMailChange(EmailTokenDto dto)
     {
 
-        if (dto == null || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.VerificationToken))
+      if (dto == null || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.VerificationToken))
+      {
+        return BadRequest(new BadRequestError("Email and verification token have to be set to verify mail change"));
+      }
+
+      try
+      {
+        var result = await _userService.UpdateEmailAsync(User, dto.Email, dto.VerificationToken);
+        if (result == null)
         {
-          return BadRequest(new BadRequestError("Email and verification token have to be set to verify mail change"));
+          return BadRequest();
         }
 
-        try
-        {
-          var result = await _userService.UpdateEmailAsync(User, dto.Email, dto.VerificationToken);
-          if (result == null) return BadRequest();
-          return Ok(result);
-        }
-        catch (IdentityUserServiceException exception)
-        {
-          return BadRequest(new BadRequestError(exception.ToString()));
-        }
+        return Ok(result);
+      }
+      catch (IdentityUserServiceException exception)
+      {
+        return BadRequest(new BadRequestError(exception.ToString()));
+      }
     }
 
     // PUT: api/Users

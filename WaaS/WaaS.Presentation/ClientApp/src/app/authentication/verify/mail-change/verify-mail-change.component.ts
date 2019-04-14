@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { VerificationService } from '../../verification-service/verification.service';
+import { VerificationService } from '../verification-service/verification.service';
 
 @Component({
   selector: 'app-verify-mail-change',
@@ -12,7 +12,6 @@ export class VerifyMailChangeComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
     private readonly verification: VerificationService
   ) { }
 

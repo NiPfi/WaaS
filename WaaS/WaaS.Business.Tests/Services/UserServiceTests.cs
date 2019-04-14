@@ -66,7 +66,7 @@ namespace WaaS.Business.Tests.Services
       _mockUserManager.GenerateEmailConfirmationTokenAsync(Arg.Any<IdentityUser>()).Returns("testToken");
 
       _mockEmailService = Substitute.For<IEmailService>();
-      _mockEmailService.SendRegistrationConfirmation(Arg.Any<string>(), Arg.Any<string>());
+      _mockEmailService.SendRegistrationConfirmationAsync(Arg.Any<string>(), Arg.Any<string>());
 
       _userService = new UserService(mockApplicationSettings, mockMapper, _mockSignInManager, _mockUserManager, _mockEmailService);
     }

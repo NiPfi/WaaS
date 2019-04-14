@@ -13,7 +13,7 @@ namespace WaaS.Business.Interfaces.Services
     /// <param name="email">The recipient E-Mail address</param>
     /// <param name="verificationToken">The token to verify the email address with</param>
     /// <returns></returns>
-    Task SendRegistrationConfirmation(string email, string verificationToken);
+    Task SendRegistrationConfirmationAsync(string email, string verificationToken);
 
     /// <summary>
     /// Sends a email address change confirmation mail containing a confirmation token to a registered user so his address can be confirmed
@@ -21,6 +21,14 @@ namespace WaaS.Business.Interfaces.Services
     /// <param name="email">The recipients new E-Mail address</param>
     /// <param name="verificationToken">The token to verify the email address with</param>
     /// <returns></returns>
-    Task SendMailChangeConfirmation(string email, string verificationToken);
+    Task SendMailChangeConfirmationAsync(string email, string verificationToken);
+
+    /// <summary>
+    /// Sends a password reset mail containing a confirmation token to a registered user so his password can be reset
+    /// </summary>
+    /// <param name="email">The recipient E-Mail address</param>
+    /// <param name="verificationToken">The token to verify the password change request with</param>
+    /// <returns></returns>
+    Task SendPasswordResetConfirmationAsync(string email, string verificationToken);
   }
 }

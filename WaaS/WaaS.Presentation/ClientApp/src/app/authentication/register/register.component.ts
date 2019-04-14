@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         data => {
           const email = (data as User).email;
-          this.router.navigate(['verify'], { queryParams: {email} });
+          this.router.navigate(['verify-registration'], { queryParams: {email} });
         },
         error => {
           this.error = error;

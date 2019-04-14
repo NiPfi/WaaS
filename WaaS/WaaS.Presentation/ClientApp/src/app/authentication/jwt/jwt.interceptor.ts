@@ -1,4 +1,4 @@
-import { HttpInterceptor } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { AuthService } from '../auth.service';
@@ -9,8 +9,8 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(
-    req: import('@angular/common/http').HttpRequest<any>,
-    next: import('@angular/common/http').HttpHandler): import('rxjs').Observable<import('@angular/common/http').HttpEvent<any>> {
+    req: HttpRequest<any>,
+    next: HttpHandler): import('rxjs').Observable<HttpEvent<any>> {
 
     if (this.authService.isAuthenticated()) {
       req = req.clone({
