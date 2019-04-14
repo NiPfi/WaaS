@@ -10,7 +10,7 @@
           <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
         </div>
     </div>
-      
+
   </div>
 
   <ng-container *ngIf="jobs && jobs.length > 0; then jobsOverview; else jobsPlaceholder">
@@ -22,7 +22,7 @@
     <div class="card crawl" *ngFor="let job of jobs">
       <div class="card-body">
         <div class="d-flex align-items-center">
-          <img class="favicon" src="https://via.placeholder.com/34">
+          <img class="favicon" src="https://via.placeholder.com/34" alt="Favicon of {{job.url}}">
         </div>
         <div class="grow">
             <h2>{{job.name}}</h2>
