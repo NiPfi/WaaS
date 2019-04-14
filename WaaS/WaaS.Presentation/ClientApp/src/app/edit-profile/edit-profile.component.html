@@ -1,61 +1,84 @@
 <div class="container">
-  <h1>Edit Profile</h1>
+  <div class="row">
+    <div class="col-md-2"></div>
 
-  <ngx-spinner type="ball-atom" size="medium">
-    <p style="font-size: 20px; color: white">Loading...</p>
-  </ngx-spinner>
+    <div class="col-md-8">
+        <div class="row">
 
-  <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
-    (onClosed)="onSuccessAlertClosed()">
-    <span [innerHtml]="successMessage | convertNewLine: true"></span>
-  </alert>
+          <div class="col-md-12">
 
-  <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
-    (onClosed)="onErrorAlertClosed()">
-    <span [innerHtml]="errorMessage | convertNewLine: true"></span>
-  </alert>
+            <h1>Profile Settings</h1>
 
-  <h2>Change your E-Mail Address</h2>
-  <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmitEmail()">
-    <div class="form-group">
-      <input type="email" formControlName="email" class="form-control" />
+            <ngx-spinner type="ball-atom" size="medium">
+              <p style="font-size: 20px; color: white">Loading...</p>
+            </ngx-spinner>
+
+            <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
+              (onClosed)="onSuccessAlertClosed()">
+              <span [innerHtml]="successMessage | convertNewLine: true"></span>
+            </alert>
+
+            <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+              (onClosed)="onErrorAlertClosed()">
+              <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+            </alert>
+
+          </div>
+          
+          <div class="col-md-6">
+
+            <h2>Change E-Mail</h2>
+            <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmitEmail()">
+              <div class="form-group">
+                <input type="email" formControlName="email" class="form-control" />
+              </div>
+              <button type="submit" class="btn btn-primary">Change E-Mail</button>
+            </form>
+
+            <h2>Your account</h2>
+            <button type="button" class="btn btn-danger" (click)="openDeleteModal(confirmAccountDeletionModal)">Delete account</button>
+
+          </div>
+
+          <div class="col-md-6">
+
+            <h2>Change Password</h2>
+            <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmitPassword()">
+              <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" formControlName="currentPassword" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" formControlName="newPassword" class="form-control" />
+              </div>
+              <button type="submit" class="btn btn-primary">Change Password</button>
+            </form>
+
+          </div>
+
+          <ng-template #confirmAccountDeletionModal>
+              <div class="modal-header">
+                <h4 class="modal-title pull-left">Confirm Deletion</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModalRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>
+                  Are you sure you want to delete your Account?<br />
+                  This will delete all associated information and <strong>cannot be undone</strong>!
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="confirmDelete()">Yes, delete my Account</button>
+                <button type="button" class="btn btn-outline-primary" (click)="deleteModalRef.hide()">No, cancel</button>
+              </div>
+            </ng-template>
+
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary">Change E-Mail</button>
-  </form>
 
-  <h2>Change your Password</h2>
-  <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmitPassword()">
-    <div class="form-group">
-      <label for="currentPassword">Current Password</label>
-      <input type="password" id="currentPassword" formControlName="currentPassword" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label for="newPassword">New Password</label>
-      <input type="password" id="newPassword" formControlName="newPassword" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Change Password</button>
-  </form>
-  <h2>Your account</h2>
-  <button type="button" class="btn btn-danger" (click)="openDeleteModal(confirmAccountDeletionModal)">Delete
-    account</button>
-
-  <ng-template #confirmAccountDeletionModal>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Confirm Deletion</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>
-        Are you sure you want to delete your Account?<br />
-        This will delete all associated information and <strong>cannot be undone</strong>!
-      </p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-danger" (click)="confirmDelete()">Yes, delete my Account</button>
-      <button type="button" class="btn btn-outline-primary" (click)="deleteModalRef.hide()">No, cancel</button>
-    </div>
-  </ng-template>
-
-</div>>
+    <div class="col-md-2"></div>
+  </div>
+</div>
