@@ -3,3 +3,30 @@
     margin-right: 1rem;
     margin-top: 1rem;
 }
+
+.crawl h1, .crawl h2, .crawl h3, .crawl h4, .crawl h5 {
+    font-size: 1rem;
+}
+
+.crawl .card-body {
+    display: flex;
+}
+
+.crawl .favicon {
+    height: 4rem;
+    width: 4rem;
+    margin-right: 1rem;
+    border-radius: 50%;
+}
+
+.crawl .actions a:not(:first-child) {
+    margin-left: 0.25rem;
+}
+
+.crawl .actions a:last-child {
+    font-size: 1.5rem;
+}
+
+.crawl .actions * {
+    color: darkgray;
+}
