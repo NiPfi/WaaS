@@ -4,12 +4,13 @@
 
 <div class="container">
   <div class="row">
-    <div class="col">
+    <div class="row">
       <h1>Overview</h1>
+        <div class="addScrapeJobBtn d-flex align-items-end ml-2 pb-2">
+          <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
+        </div>
     </div>
-    <div class="col">
-      <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
-    </div>
+      
   </div>
 
   <ng-container *ngIf="jobs && jobs.length > 0; then jobsOverview; else jobsPlaceholder">
