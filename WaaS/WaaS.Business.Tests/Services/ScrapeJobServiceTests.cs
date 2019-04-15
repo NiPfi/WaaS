@@ -27,6 +27,8 @@ namespace WaaS.Business.Tests.Services
       var mockMapper = Substitute.For<IMapper>();
       var mockUserManager = Substitute.For<MockUserManager>();
       var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
+      var mockScrapeJobEventService = Substitute.For<IScrapeJobEventService>();
+      var mockScraper = Substitute.For<IScraper>();
 
       ScrapeJobDto testScrapeJobDto = new ScrapeJobDto()
       {
@@ -42,7 +44,11 @@ namespace WaaS.Business.Tests.Services
 
       mockScrapeJobRepository.AddAsync(Arg.Any<ScrapeJob>()).ReturnsForAnyArgs(Task.FromResult(true));
 
-      IScrapeJobService scrapeJobService = new ScrapeJobService(mockMapper, mockScrapeJobRepository, mockUserManager);
+      IScrapeJobService scrapeJobService = new ScrapeJobService(mockMapper,
+                                                                mockScrapeJobRepository,
+                                                                mockUserManager,
+                                                                mockScrapeJobEventService,
+                                                                mockScraper);
 
       // Act
       var result = await scrapeJobService.Create(testScrapeJobDto, mockClaimsPrincipal);

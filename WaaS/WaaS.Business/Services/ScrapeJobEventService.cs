@@ -57,7 +57,7 @@ namespace WaaS.Business.Services
       return null;
     }
 
-    async Task<bool> Create(ScrapeJobEvent scrapeJobEvent)
+    public async Task<bool> Create(ScrapeJobEvent scrapeJobEvent)
     {
       var result = false;
       if (scrapeJobEvent != null)
