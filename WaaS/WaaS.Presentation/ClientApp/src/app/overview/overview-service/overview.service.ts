@@ -11,7 +11,7 @@ import { ScrapeJob } from '../scrape-job';
 @Injectable({
   providedIn: 'root'
 })
-export class OverviewService {
+export class OverviewService{
 
   constructor(
     private readonly http: HttpClient,

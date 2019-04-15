@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -13,6 +14,7 @@ describe('OverviewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        FontAwesomeModule,
         HttpClientTestingModule,
         NgxSpinnerModule
       ],

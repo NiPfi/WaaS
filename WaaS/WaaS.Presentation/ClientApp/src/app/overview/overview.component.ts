@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { faPen, faTrashAlt, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { OverviewService } from './overview-service/overview.service';
 import { ScrapeJob } from './scrape-job';
 
@@ -9,6 +10,11 @@ import { ScrapeJob } from './scrape-job';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
+
+  faPen = faPen;
+  faTrashAlt = faTrashAlt;
+  faToggleOn = faToggleOn;
+  faToggleOff = faToggleOff;
 
   public jobs: ScrapeJob[];
 
