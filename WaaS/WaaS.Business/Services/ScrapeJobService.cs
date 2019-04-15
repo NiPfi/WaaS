@@ -16,19 +16,25 @@ namespace WaaS.Business.Services
   {
 
     private readonly IScrapeJobRepository _scrapeJobRepository;
+    private readonly IScrapeJobEventService _scrapeJobEventService;
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IScraper _scraper;
 
     public ScrapeJobService
       (
       IMapper mapper,
       IScrapeJobRepository scrapeJobsRepository,
-      UserManager<IdentityUser> userManager
+      UserManager<IdentityUser> userManager,
+      IScrapeJobEventService scrapeJobEventService,
+      IScraper scraper
       )
     {
       _mapper = mapper;
       _userManager = userManager;
       _scrapeJobRepository = scrapeJobsRepository;
+      _scrapeJobEventService = scrapeJobEventService;
+      _scraper = scraper;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -43,6 +49,11 @@ namespace WaaS.Business.Services
         entity.UserSpecificId = _scrapeJobRepository.ReadUsersScrapeJobs(idUser.Id).Count() + 1;
 
         var success = await _scrapeJobRepository.AddAsync(entity);
+
+        if (success)
+        {
+          success = await ExecuteScrapeJobAsync(entity);
+        }
 
         if (success)
         {
@@ -67,7 +78,7 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<ScrapeJobDto> Read(long id, ClaimsPrincipal principal)
+    public async Task<ScrapeJobDto> ReadUserScrapeJob(long id, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(id, idUser.Id))
@@ -84,21 +95,7 @@ namespace WaaS.Business.Services
 
     }
 
-    public IEnumerable<ScrapeJobDto> ReadAll()
-    {
-
-      var entities = _scrapeJobRepository.GetAll().ToList();
-
-      if (entities.Any())
-      {
-        return _mapper.Map<IEnumerable<ScrapeJobDto>>(entities);
-      }
-
-      return Enumerable.Empty<ScrapeJobDto>();
-
-    }
-
-    public async Task<IEnumerable<ScrapeJobDto>> ReadUsersScrapeJobs(ClaimsPrincipal principal)
+    public async Task<IEnumerable<ScrapeJobDto>> ReadAllUserScrapeJobs(ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
 
@@ -156,6 +153,14 @@ namespace WaaS.Business.Services
       return userId.Equals(scrapeJobEntity.IdentityUser.Id, StringComparison.InvariantCulture);
     }
 
+    public async Task<bool> ExecuteScrapeJobAsync(ScrapeJob scrapeJob)
+    {
+      var url = new Uri(scrapeJob.Url);
+      var result = await _scraper.ExecuteAsync(url, scrapeJob.Pattern);
+      result.ScrapeJob = scrapeJob;
+      result.ScrapeJobForeignKey = scrapeJob.Id;
+      return await _scrapeJobEventService.Create(result);
+    } 
 
   }
 }

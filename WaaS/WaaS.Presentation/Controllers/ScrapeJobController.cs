@@ -38,7 +38,7 @@ namespace WaaS.Presentation.Controllers
     [HttpGet ,Authorize]
     public async Task<IActionResult> GetUsersScrapeJobs()
     {
-      var scrapeJobs =  await _scrapeJobService.ReadUsersScrapeJobs(User);
+      var scrapeJobs =  await _scrapeJobService.ReadAllUserScrapeJobs(User);
       if (scrapeJobs != null)
       {
         return Ok(scrapeJobs);

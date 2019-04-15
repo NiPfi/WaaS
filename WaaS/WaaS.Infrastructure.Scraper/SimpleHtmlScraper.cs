@@ -5,10 +5,11 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WaaS.Business.Entities;
+using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Infrastructure.Scraper
 {
-  public class SimpleHtmlScraper
+  public class SimpleHtmlScraper: IScraper
   {
 
     private HttpClient _client;

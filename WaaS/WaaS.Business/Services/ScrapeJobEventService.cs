@@ -38,12 +38,14 @@ namespace WaaS.Business.Services
 
     public async Task<ScrapeJobEventDto> Create(ScrapeJobEventDto scrapeJobEvent)
     {
-      if (!string.IsNullOrEmpty(scrapeJobEvent.Message) && scrapeJobEvent.TimeStamp != null)
+      if (scrapeJobEvent != null
+          && !string.IsNullOrEmpty(scrapeJobEvent.Message)
+          && scrapeJobEvent.TimeStamp != null)
       {
 
         var entity = _mapper.Map<ScrapeJobEvent>(scrapeJobEvent);
 
-        var success = await _scrapeJobEventRepository.AddAsync(entity);
+        var success = await Create(entity);
 
         if (success)
         {
@@ -53,6 +55,16 @@ namespace WaaS.Business.Services
       }
 
       return null;
+    }
+
+    async Task<bool> Create(ScrapeJobEvent scrapeJobEvent)
+    {
+      var result = false;
+      if (scrapeJobEvent != null)
+      {
+        result = await _scrapeJobEventRepository.AddAsync(scrapeJobEvent);
+      }
+      return result;
     }
 
     public async Task<bool> Delete(long id, ClaimsPrincipal principal)
@@ -85,8 +97,7 @@ namespace WaaS.Business.Services
     public async Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId, ClaimsPrincipal principal)
     {
 
-      var idUser = await _userManager.GetUserAsync(principal);
-      var scrapeJob = await _scrapeJobService.Read(scrapeJobId, principal);
+      var scrapeJob = await _scrapeJobService.ReadUserScrapeJob(scrapeJobId, principal);
 
       if(scrapeJob != null)
       {
