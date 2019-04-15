@@ -8,7 +8,7 @@ namespace WaaS.Business.Dtos
   {
     public long Id { get; set; }
     public int HttpResponseCode { get; set; }
-    public int HttpResponseTimeInMs { get; set; }
+    public long HttpResponseTimeInMs { get; set; }
     public string Message { get; set; }
     public DateTime TimeStamp { get; set; }
   }
