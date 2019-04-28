@@ -4,11 +4,20 @@
 
 <div class="container">
   <div class="row">
-    <div class="row">
-      <h1>Overview</h1>
-        <div class="d-flex align-items-end ml-2 pb-2">
-          <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
-        </div>
+
+    <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
+      (onClosed)="onSuccessAlertClosed()">
+      <span [innerHtml]="successMessage | convertNewLine: true"></span>
+    </alert>
+
+    <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+      (onClosed)="onErrorAlertClosed()">
+      <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+    </alert>
+
+    <h1>Overview</h1>
+    <div class="d-flex align-items-end ml-2 pb-2">
+      <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
     </div>
 
   </div>
@@ -30,7 +39,7 @@
           <div class="d-flex justify-content-end">
             <div class="actions d-flex align-items-center">
               <a href="#" data-toggle="modal" data-target="#editModal"><fa-icon [icon]="faPen"></fa-icon></a>
-              <a href="#" data-toggle="modal" data-target="#deleteModal"><fa-icon [icon]="faTrashAlt"></fa-icon></a>
+              <a (click)="openDeleteModal(confirmScrapeJobDeletionModal)"><fa-icon [icon]="faTrashAlt"></fa-icon></a>
               <a href="#"><fa-icon [icon]="faToggleOn"></fa-icon></a>
             </div>
           </div>
@@ -39,6 +48,26 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #confirmScrapeJobDeletionModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm Deletion</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      Are you sure you want to delete this ScrapeJob?<br />
+      This action <strong>cannot be undone</strong>!
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">Yes, delete the ScrapeJob</button>
+    <button type="button" class="btn btn-outline-primary" (click)="deleteModalRef.hide()">No, cancel</button>
+  </div>
+</ng-template>
+
 
 <ng-template #jobsPlaceholder>
   No Jobs yet... Why not create some?
