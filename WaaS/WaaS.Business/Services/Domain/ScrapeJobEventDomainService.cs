@@ -20,7 +20,7 @@ namespace WaaS.Business.Services.Domain
       _scrapeJobEventRepository = scrapeJobEventRepository;
     }
 
-    public async Task<bool> Create(ScrapeJobEvent scrapeJobEvent)
+    public async Task<bool> CreateAsync(ScrapeJobEvent scrapeJobEvent)
     {
       var result = false;
       if (scrapeJobEvent != null)
@@ -28,6 +28,26 @@ namespace WaaS.Business.Services.Domain
         result = await _scrapeJobEventRepository.AddAsync(scrapeJobEvent);
       }
       return result;
+    }
+
+    public Task<ScrapeJobEvent> GetAsync(long id)
+    {
+      return _scrapeJobEventRepository.GetAsync(id);
+    }
+
+    public IEnumerable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(int scrapeJobId)
+    {
+      return _scrapeJobEventRepository.ReadScrapeJobEventsOfScrapeJob(scrapeJobId);
+    }
+
+    public Task<bool> UpdateAsync(long id, Action<ScrapeJobEvent> updateAction)
+    {
+      return _scrapeJobEventRepository.UpdateAsync(id, updateAction);
+    }
+
+    public Task<bool> DeleteAsync(long id)
+    {
+      throw new NotImplementedException();
     }
   }
 }

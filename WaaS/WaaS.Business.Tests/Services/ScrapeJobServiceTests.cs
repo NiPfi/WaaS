@@ -9,6 +9,7 @@ using WaaS.Business.Dtos;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Interfaces.Services.Domain;
 using WaaS.Business.Services;
 using WaaS.Business.Tests.Mocks;
 using Xunit;
@@ -27,7 +28,7 @@ namespace WaaS.Business.Tests.Services
       var mockMapper = Substitute.For<IMapper>();
       var mockUserManager = Substitute.For<MockUserManager>();
       var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
-      var mockScrapeJobEventService = Substitute.For<IScrapeJobEventService>();
+      var mockScrapeJobEventDomainService = Substitute.For<IScrapeJobEventDomainService>();
       var mockScraper = Substitute.For<IScraper>();
 
       ScrapeJobDto testScrapeJobDto = new ScrapeJobDto()
@@ -47,8 +48,9 @@ namespace WaaS.Business.Tests.Services
       IScrapeJobService scrapeJobService = new ScrapeJobService(mockMapper,
                                                                 mockScrapeJobRepository,
                                                                 mockUserManager,
-                                                                mockScrapeJobEventService,
-                                                                mockScraper);
+                                                                mockScraper,
+                                                                mockScrapeJobEventDomainService
+                                                                );
 
       // Act
       var result = await scrapeJobService.Create(testScrapeJobDto, mockClaimsPrincipal);

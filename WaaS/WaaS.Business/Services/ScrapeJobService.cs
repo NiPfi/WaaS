@@ -9,6 +9,7 @@ using WaaS.Business.Dtos;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Interfaces.Services.Domain;
 
 namespace WaaS.Business.Services
 {
@@ -16,25 +17,23 @@ namespace WaaS.Business.Services
   {
 
     private readonly IScrapeJobRepository _scrapeJobRepository;
-    private readonly IScrapeJobEventService _scrapeJobEventService;
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IScraper _scraper;
+    private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
 
     public ScrapeJobService
       (
       IMapper mapper,
       IScrapeJobRepository scrapeJobsRepository,
       UserManager<IdentityUser> userManager,
-      IScrapeJobEventService scrapeJobEventService,
-      IScraper scraper
-      )
+      IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService)
     {
       _mapper = mapper;
       _userManager = userManager;
       _scrapeJobRepository = scrapeJobsRepository;
-      _scrapeJobEventService = scrapeJobEventService;
       _scraper = scraper;
+      _scrapeJobEventDomainService = scrapeJobEventDomainService;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -159,7 +158,7 @@ namespace WaaS.Business.Services
       var result = await _scraper.ExecuteAsync(url, scrapeJob.Pattern);
       result.ScrapeJob = scrapeJob;
       result.ScrapeJobForeignKey = scrapeJob.Id;
-      return await _scrapeJobEventService.Create(result);
+      return await _scrapeJobEventDomainService.CreateAsync(result);
     } 
 
   }

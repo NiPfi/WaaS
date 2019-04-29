@@ -1,17 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
 using WaaS.Business.Entities;
-using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Interfaces.Services.Domain;
-using WaaS.Business.Services.Domain;
 
 namespace WaaS.Business.Services
 {
@@ -40,13 +36,12 @@ namespace WaaS.Business.Services
     public async Task<ScrapeJobEventDto> Create(ScrapeJobEventDto scrapeJobEvent)
     {
       if (scrapeJobEvent != null
-          && !string.IsNullOrEmpty(scrapeJobEvent.Message)
-          && scrapeJobEvent.TimeStamp != null)
+          && !string.IsNullOrEmpty(scrapeJobEvent.Message))
       {
 
         var entity = _mapper.Map<ScrapeJobEvent>(scrapeJobEvent);
 
-        var success = await _scrapeJobEventDomainService.Create(entity);
+        var success = await _scrapeJobEventDomainService.CreateAsync(entity);
 
         if (success)
         {
@@ -111,7 +106,7 @@ namespace WaaS.Business.Services
 
       if (entity != null && await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
       {
-        var success = await _scrapeJobEventDomainService.UpdateAsync(scrapeJobEvent.Id, e => e = _mapper.Map(scrapeJobEvent, e));
+        var success = await _scrapeJobEventDomainService.UpdateAsync(scrapeJobEvent.Id, e => _mapper.Map(scrapeJobEvent, e));
 
         if (success)
         {
