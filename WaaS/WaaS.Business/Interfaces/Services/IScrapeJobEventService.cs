@@ -11,7 +11,6 @@ namespace WaaS.Business.Interfaces.Services
   public interface IScrapeJobEventService
   {
     Task<ScrapeJobEventDto> Create(ScrapeJobEventDto scrapeJobEvent);
-    Task<bool> Create(ScrapeJobEvent scrapeJobEvent);
     Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId, ClaimsPrincipal principal);
     Task<ScrapeJobEventDto> Read(long id, ClaimsPrincipal principal);
     Task<ScrapeJobEventDto> Update(ScrapeJobEventDto scrapeJobEvent, ClaimsPrincipal principal);

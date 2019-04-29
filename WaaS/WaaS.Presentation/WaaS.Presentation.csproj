@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WaaS.Business\WaaS.Business.csproj" />
+    <ProjectReference Include="..\WaaS.Infrastructure.Scraper\WaaS.Infrastructure.Scraper.csproj" />
     <ProjectReference Include="..\WaaS.Infrastructure.SendGridMail\WaaS.Infrastructure.SendGridMail.csproj" />
     <ProjectReference Include="..\WaaS.Infrastructure\WaaS.Infrastructure.csproj" />
   </ItemGroup>

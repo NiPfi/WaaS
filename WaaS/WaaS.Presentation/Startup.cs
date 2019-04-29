@@ -22,6 +22,7 @@ using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Services;
 using WaaS.Infrastructure;
 using WaaS.Infrastructure.Repositories;
+using WaaS.Infrastructure.Scraper;
 using WaaS.Infrastructure.SendGridMail;
 using WaaS.Presentation.Middlewares.HttpContext;
 
@@ -107,6 +108,7 @@ namespace WaaS.Presentation
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
       services.AddTransient<IEmailSender, EmailSender>();
+      services.AddTransient<IScraper, SimpleHtmlScraper>();
 
       services.AddScoped<IEmailService, EmailService>();
       services.AddScoped<IUserService, UserService>();
