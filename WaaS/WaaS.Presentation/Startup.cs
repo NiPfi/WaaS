@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,7 +20,9 @@ using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
 using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Interfaces.Services.Domain;
 using WaaS.Business.Services;
+using WaaS.Business.Services.Domain;
 using WaaS.Infrastructure;
 using WaaS.Infrastructure.Repositories;
 using WaaS.Infrastructure.Scraper;
@@ -106,6 +109,7 @@ namespace WaaS.Presentation
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
 
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      services.AddSingleton<HttpClient, HttpClient>();
 
       services.AddTransient<IEmailSender, EmailSender>();
       services.AddTransient<IScraper, SimpleHtmlScraper>();
@@ -115,6 +119,7 @@ namespace WaaS.Presentation
       services.AddScoped<IScrapeJobRepository, ScrapeJobRepository>();
       services.AddScoped<IScrapeJobService, ScrapeJobService>();
       services.AddScoped<IScrapeJobEventRepository, ScrapeJobEventRepository>();
+      services.AddScoped<IScrapeJobEventDomainService, ScrapeJobEventDomainService>();
       services.AddScoped<IScrapeJobEventService, ScrapeJobEventService>();
     }
 

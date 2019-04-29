@@ -8,7 +8,7 @@ using WaaS.Business.Interfaces.Services.Domain;
 
 namespace WaaS.Business.Services.Domain
 {
-  class ScrapeJobEventDomainService: IScrapeJobEventDomainService
+  public class ScrapeJobEventDomainService: IScrapeJobEventDomainService
   {
     private readonly IScrapeJobEventRepository _scrapeJobEventRepository;
 
