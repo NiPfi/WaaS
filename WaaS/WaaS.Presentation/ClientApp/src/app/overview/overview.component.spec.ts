@@ -1,8 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MockComponent } from 'ng-mocks';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ModalModule, AlertModule } from 'ngx-bootstrap';
+import { MockPipe } from 'ng-mocks';
 
+import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
 import { AddJobComponent } from './add-job/add-job.component';
 import { OverviewComponent } from './overview.component';
 
@@ -13,12 +17,16 @@ describe('OverviewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        FontAwesomeModule,
         HttpClientTestingModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        ModalModule.forRoot(),
+        AlertModule
       ],
       declarations: [
         OverviewComponent,
-        MockComponent(AddJobComponent)
+        MockComponent(AddJobComponent),
+        MockPipe(ConvertNewLinePipe)
       ]
     })
       .compileComponents();

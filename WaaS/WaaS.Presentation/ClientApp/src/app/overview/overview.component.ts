@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 
+import { faPen, faTrashAlt, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { OverviewService } from './overview-service/overview.service';
 import { ScrapeJob } from './scrape-job';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { first } from 'rxjs/internal/operators/first';
 
 @Component({
   selector: 'app-overview',
@@ -10,9 +13,20 @@ import { ScrapeJob } from './scrape-job';
 })
 export class OverviewComponent implements OnInit {
 
+  faPen = faPen;
+  faTrashAlt = faTrashAlt;
+  faToggleOn = faToggleOn;
+  faToggleOff = faToggleOff;
+
+  deleteModalRef: BsModalRef;
+
+  successMessage = '';
+  errorMessage = '';
+
   public jobs: ScrapeJob[];
 
   constructor(
+    private readonly modalService: BsModalService,
     private readonly jobsService: OverviewService
   ) { }
 
@@ -31,4 +45,31 @@ export class OverviewComponent implements OnInit {
       }
     );
   }
+
+  openDeleteModal(template: TemplateRef<any>) {
+    this.deleteModalRef = this.modalService.show(template, {});
+  }
+
+  confirmDelete(job: ScrapeJob) {
+    this.deleteModalRef.hide();
+    this.jobsService.deleteScrapeJob(job.id)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.successMessage = "Successfully deleted ScrapeJob";
+        },
+        error => {
+          this.errorMessage = error;
+        }
+      );;
+  }
+
+  onSuccessAlertClosed() {
+    this.successMessage = '';
+  }
+
+  onErrorAlertClosed() {
+    this.errorMessage = '';
+  }
+
 }

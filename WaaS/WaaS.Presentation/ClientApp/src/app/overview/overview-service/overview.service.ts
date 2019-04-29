@@ -11,7 +11,7 @@ import { ScrapeJob } from '../scrape-job';
 @Injectable({
   providedIn: 'root'
 })
-export class OverviewService {
+export class OverviewService{
 
   constructor(
     private readonly http: HttpClient,
@@ -28,4 +28,11 @@ export class OverviewService {
     return this.http.post(`${environment.apiUrl}/scrapejob`, job)
       .pipe(catchError(this.handler.handleError));
   }
+
+  deleteScrapeJob(id: number): Observable<{}> {
+    const url = `${environment.apiUrl}/scrapeJob/${id}`;
+    return this.http.delete(url)
+      .pipe(catchError(this.handler.handleError));
+  }
+
 }
