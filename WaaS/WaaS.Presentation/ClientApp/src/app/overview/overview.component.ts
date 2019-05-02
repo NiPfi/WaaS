@@ -25,6 +25,8 @@ export class OverviewComponent implements OnInit {
 
   public jobs: ScrapeJob[];
 
+  public currentJobIndex: number;
+
   constructor(
     private readonly modalService: BsModalService,
     private readonly jobsService: OverviewService
@@ -46,8 +48,9 @@ export class OverviewComponent implements OnInit {
     );
   }
 
-  openDeleteModal(template: TemplateRef<any>) {
+  openDeleteModal(template: TemplateRef<any>, i: number) {
     this.deleteModalRef = this.modalService.show(template, {});
+    this.currentJobIndex = i;
   }
 
   confirmDelete(job: ScrapeJob) {
