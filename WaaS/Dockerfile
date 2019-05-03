@@ -1,6 +1,6 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 # Get Node.js for npm scripts
-COPY --from=node:alpine / /
+COPY --from=node:11-alpine / /
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT=Production
 EXPOSE 5000
