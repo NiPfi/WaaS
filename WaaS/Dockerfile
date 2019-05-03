@@ -18,7 +18,7 @@ WORKDIR /src/WaaS.Presentation
 RUN dotnet build "WaaS.Presentation.csproj" -c Release -o /app
 
 FROM build AS publish
-COPY --from=node:alpine / /
+COPY --from=node:lts-alpine / /
 WORKDIR /src/WaaS.Presentation
 RUN dotnet publish "WaaS.Presentation.csproj" -c Release -o /app
 WORKDIR /src/WaaS.Presentation/ClientApp
