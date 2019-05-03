@@ -1,6 +1,6 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 # Get Node.js for npm scripts
-COPY --from=node:alpine / /
+COPY --from=node:lts-alpine / /
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT=Production
 EXPOSE 5000
@@ -18,7 +18,7 @@ WORKDIR /src/WaaS.Presentation
 RUN dotnet build "WaaS.Presentation.csproj" -c Release -o /app
 
 FROM build AS publish
-COPY --from=node:alpine / /
+COPY --from=node:lts-alpine / /
 WORKDIR /src/WaaS.Presentation
 RUN dotnet publish "WaaS.Presentation.csproj" -c Release -o /app
 WORKDIR /src/WaaS.Presentation/ClientApp
