@@ -154,11 +154,16 @@ namespace WaaS.Business.Services
 
     public async Task<bool> ExecuteScrapeJobAsync(ScrapeJob scrapeJob)
     {
+      if (scrapeJob == null)
+      {
+        return false;
+      }
+
       var url = new Uri(scrapeJob.Url);
       var result = await _scraper.ExecuteAsync(url, scrapeJob.Pattern);
-      result.ScrapeJob = scrapeJob;
       result.ScrapeJobForeignKey = scrapeJob.Id;
       return await _scrapeJobEventDomainService.CreateAsync(result);
+
     } 
 
   }

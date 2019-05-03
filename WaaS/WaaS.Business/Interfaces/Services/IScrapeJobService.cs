@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
+using WaaS.Business.Entities;
 
 namespace WaaS.Business.Interfaces.Services
 {
@@ -17,6 +18,13 @@ namespace WaaS.Business.Interfaces.Services
     Task<bool> Delete(long id, ClaimsPrincipal principal);
     Task<ScrapeJobDto> ToggleEnabled(long id, ClaimsPrincipal principal);
     Task<bool> ScrapeJobIsOfUser(long scrapeJobId, string userId);
+
+    /// <summary>
+    /// Executes a given scrape job and saves its result as a <see cref="ScrapeJobEvent"/>
+    /// </summary>
+    /// <param name="scrapeJob">The <see cref="ScrapeJob"/> to execute</param>
+    /// <returns></returns>
+    Task<bool> ExecuteScrapeJobAsync(ScrapeJob scrapeJob);
 
   }
 }

@@ -26,6 +26,7 @@ using WaaS.Business.Services.Domain;
 using WaaS.Infrastructure;
 using WaaS.Infrastructure.Repositories;
 using WaaS.Infrastructure.Scraper;
+using WaaS.Infrastructure.ScrapeScheduler;
 using WaaS.Infrastructure.SendGridMail;
 using WaaS.Presentation.Middlewares.HttpContext;
 
@@ -106,7 +107,7 @@ namespace WaaS.Presentation
 
       services.AddAutoMapper();
 
-      services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
+      services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")), ServiceLifetime.Transient);
 
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
       services.AddSingleton<HttpClient, HttpClient>();
@@ -121,6 +122,8 @@ namespace WaaS.Presentation
       services.AddScoped<IScrapeJobEventRepository, ScrapeJobEventRepository>();
       services.AddScoped<IScrapeJobEventDomainService, ScrapeJobEventDomainService>();
       services.AddScoped<IScrapeJobEventService, ScrapeJobEventService>();
+
+      services.AddHostedService<SimpleTimedScrapeScheduler>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
