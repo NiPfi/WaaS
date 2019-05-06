@@ -40,10 +40,11 @@ namespace WaaS.Business.Services
         var entity = _mapper.Map<ScrapeJob>(scrapeJob);
         var idUser = await _userManager.GetUserAsync(principal);
         entity.IdentityUserForeignKey = idUser.Id;
-        entity.UserSpecificId = _scrapeJobRepository
+        var highestId = _scrapeJobRepository
           .ReadUsersScrapeJobs(idUser.Id)
           .OrderByDescending(j => j.UserSpecificId)
-          .FirstOrDefault().UserSpecificId + 1;
+          .FirstOrDefault()?.UserSpecificId;
+        entity.UserSpecificId = (highestId ?? 0) + 1;
 
         var success = await _scrapeJobRepository.AddAsync(entity);
 
