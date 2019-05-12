@@ -7,29 +7,31 @@
   <div class="row">
 
     <h1>Overview</h1>
+
+    
+
     <div class="d-flex align-items-end ml-2 pb-2">
       <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
     </div>
 
   </div>
+  
+  <div class="row">
+    <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
+        (onClosed)="onSuccessAlertClosed()">
+        <span [innerHtml]="successMessage | convertNewLine: true"></span>
+      </alert>
+      
+      <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+        (onClosed)="onErrorAlertClosed()">
+        <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+    </alert>
+  </div>
 
   <ng-container *ngIf="jobs && jobs.length > 0; then jobsOverview; else jobsPlaceholder">
   </ng-container>
+
 </div>
-
-<div class="row">
-  <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
-      (onClosed)="onSuccessAlertClosed()">
-      <span [innerHtml]="successMessage | convertNewLine: true"></span>
-    </alert>
-
-    <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
-      (onClosed)="onErrorAlertClosed()">
-      <span [innerHtml]="errorMessage | convertNewLine: true"></span>
-    </alert>
-</div>
-
-<div class="row">
 
 <ng-template #jobsOverview>
   <div class="row">
@@ -57,8 +59,6 @@
 <ng-template #jobsPlaceholder>
   No Jobs yet... Why not create some?
 </ng-template>
-
-</div>
 
 <ng-template #confirmScrapeJobDeletionModal>
   <div class="modal-header">
