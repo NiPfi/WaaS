@@ -11,11 +11,11 @@
     
 
     <div class="d-flex align-items-end ml-2 pb-2">
-      <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
+      <app-edit-job (jobEdited)="onJobEdited()"></app-edit-job>
     </div>
 
   </div>
-  
+
   <div class="row">
     <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
         (onClosed)="onSuccessAlertClosed()">

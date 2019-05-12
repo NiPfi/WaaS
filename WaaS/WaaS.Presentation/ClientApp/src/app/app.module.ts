@@ -29,7 +29,6 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { HttpSpinnerInterceptor } from './http-spinner/http-spinner.interceptor';
-import { AddJobComponent } from './overview/add-job/add-job.component';
 import { OverviewComponent } from './overview/overview.component';
 import { PipesModule } from './pipes/pipes.module';
 import { VerifyMailChangeComponent } from './authentication/verify/mail-change/verify-mail-change.component';
@@ -48,14 +47,13 @@ import { EditJobComponent } from './overview/edit-job/edit-job.component';
     EditProfileComponent,
     AboutComponent,
     OverviewComponent,
-    AddJobComponent,
+    EditJobComponent,
     VerifyRegistrationComponent,
     ControlMessagesComponent,
     ResendConfirmationEmailComponent,
     VerifyMailChangeComponent,
     PasswordResetComponent,
-    VerifyPasswordResetComponent,
-    EditJobComponent
+    VerifyPasswordResetComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

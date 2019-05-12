@@ -1,5 +1,12 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MockComponent } from 'ng-mocks';
+import { AlertModule, ModalModule } from 'ngx-bootstrap';
+import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
+import { ControlMessagesComponent } from 'src/app/error-handling/form-validation/control-messages/control-messages.component';
 import { EditJobComponent } from './edit-job.component';
 
 describe('EditJobComponent', () => {
@@ -8,7 +15,18 @@ describe('EditJobComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditJobComponent ]
+      imports: [
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        HttpClientTestingModule,
+        ModalModule.forRoot(),
+        AlertModule
+      ],
+      declarations: [ 
+        EditJobComponent,
+        MockComponent(ControlMessagesComponent),
+        ConvertNewLinePipe
+       ]
     })
     .compileComponents();
   }));

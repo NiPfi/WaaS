@@ -1,3 +1,49 @@
-<p>
-  edit-job works!
-</p>
+<div class="text-center">
+  <button type="button" class="btn btn-success" (click)="openEditScrapeJobModal(editScrapeJobModal)">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
+</div>
+
+<ng-template #editScrapeJobModal>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Create ScrapeJob</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="editScrapeJobModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    
+    <form [formGroup]="editScrapeJobForm" (ngSubmit)="createScrapeJob()">
+      <div class="modal-body">
+
+        <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+          (onClosed)="onErrorAlertClosed()">
+          <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+        </alert>
+
+        <div class="form-group">
+
+          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name" required />
+          <app-control-messages [control]="form.scrapeJobName"></app-control-messages>
+
+          <input class="form-control" formControlName="url" type="url" placeholder="URL" required />
+          <app-control-messages [control]="form.url"></app-control-messages>
+
+          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern" required />
+          <app-control-messages [control]="form.regexPattern"></app-control-messages>
+
+          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email" />
+          <app-control-messages [control]="form.alternativeEmail"></app-control-messages>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <div class="form-group">
+          <button type="button" class="btn btn-secondary" (click)="editScrapeJobModalRef.hide()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+    
+</ng-template>

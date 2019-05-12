@@ -36,7 +36,7 @@ export class OverviewComponent implements OnInit {
     this.loadJobs();
   }
 
-  onJobAdded() {
+  onJobEdited() {
     this.loadJobs();
   }
 
