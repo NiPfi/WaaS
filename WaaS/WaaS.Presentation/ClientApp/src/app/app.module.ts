@@ -35,6 +35,7 @@ import { PipesModule } from './pipes/pipes.module';
 import { VerifyMailChangeComponent } from './authentication/verify/mail-change/verify-mail-change.component';
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
 import { VerifyPasswordResetComponent } from './authentication/verify/password-reset/verify-password-reset.component';
+import { EditJobComponent } from './overview/edit-job/edit-job.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { VerifyPasswordResetComponent } from './authentication/verify/password-r
     ResendConfirmationEmailComponent,
     VerifyMailChangeComponent,
     PasswordResetComponent,
-    VerifyPasswordResetComponent
+    VerifyPasswordResetComponent,
+    EditJobComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
