@@ -60,6 +60,7 @@ export class OverviewComponent implements OnInit {
       .subscribe(
         () => {
           this.successMessage = "Successfully deleted ScrapeJob";
+          this.loadJobs();
         },
         error => {
           this.errorMessage = error;

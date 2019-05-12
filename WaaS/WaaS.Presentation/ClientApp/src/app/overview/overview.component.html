@@ -3,17 +3,8 @@
 </ngx-spinner>
 
 <div class="container">
+  
   <div class="row">
-
-    <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
-      (onClosed)="onSuccessAlertClosed()">
-      <span [innerHtml]="successMessage | convertNewLine: true"></span>
-    </alert>
-
-    <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
-      (onClosed)="onErrorAlertClosed()">
-      <span [innerHtml]="errorMessage | convertNewLine: true"></span>
-    </alert>
 
     <h1>Overview</h1>
     <div class="d-flex align-items-end ml-2 pb-2">
@@ -25,6 +16,20 @@
   <ng-container *ngIf="jobs && jobs.length > 0; then jobsOverview; else jobsPlaceholder">
   </ng-container>
 </div>
+
+<div class="row">
+  <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
+      (onClosed)="onSuccessAlertClosed()">
+      <span [innerHtml]="successMessage | convertNewLine: true"></span>
+    </alert>
+
+    <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+      (onClosed)="onErrorAlertClosed()">
+      <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+    </alert>
+</div>
+
+<div class="row">
 
 <ng-template #jobsOverview>
   <div class="row">
@@ -49,6 +54,12 @@
   </div>
 </ng-template>
 
+<ng-template #jobsPlaceholder>
+  No Jobs yet... Why not create some?
+</ng-template>
+
+</div>
+
 <ng-template #confirmScrapeJobDeletionModal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Confirm Deletion</h4>
@@ -66,9 +77,4 @@
     <button type="button" class="btn btn-danger" (click)="confirmDelete(jobs[currentJobIndex])">Yes, delete the ScrapeJob</button>
     <button type="button" class="btn btn-outline-primary" (click)="deleteModalRef.hide()">No, cancel</button>
   </div>
-</ng-template>
-
-
-<ng-template #jobsPlaceholder>
-  No Jobs yet... Why not create some?
 </ng-template>
