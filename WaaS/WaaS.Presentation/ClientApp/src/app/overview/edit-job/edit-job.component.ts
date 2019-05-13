@@ -44,18 +44,27 @@ export class EditJobComponent implements OnInit {
   // convenience getter for easy access to form fields
   get form() { return this.editScrapeJobForm.controls; }
 
-  createScrapeJob(){
+  saveScrapeJob(){
     if (this.editScrapeJobForm.invalid) {
       ValidationService.validateAllFormFields(this.editScrapeJobForm);
       return;
     }
 
-    const job = new ScrapeJob();
+    const job = this.scrapeJob ? this.scrapeJob : new ScrapeJob();
     job.name = this.editScrapeJobForm.controls.scrapeJobName.value;
     job.url = this.editScrapeJobForm.controls.url.value;
     job.pattern = this.editScrapeJobForm.controls.regexPattern.value;
     job.alternativeEmail = this.editScrapeJobForm.controls.alternativeEmail.value;
 
+    if(job.id == 0){
+      this.createScrapeJob(job);
+    }
+    else{
+      this.updateScrapeJob(job);
+    }
+  }
+
+  createScrapeJob(job: ScrapeJob){
     this.jobsService.addScrapeJob(job)
     .pipe(first())
       .subscribe(
@@ -66,8 +75,21 @@ export class EditJobComponent implements OnInit {
         error => {
           this.errorMessage = error;
         }
-      )
-      ;
+      );
+  }
+
+  updateScrapeJob(job: ScrapeJob){
+    this.jobsService.updateScrapeJob(job)
+    .pipe(first())
+      .subscribe(
+        () => {
+          this.jobEdited.emit();
+          this.editScrapeJobModalRef.hide();
+        },
+        error => {
+          this.errorMessage = error;
+        }
+      );
   }
 
   openCreateModal(){
