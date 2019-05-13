@@ -1,6 +1,5 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
 import { ValidationService } from 'src/app/error-handling/form-validation/validation-service/validation.service';
@@ -17,12 +16,15 @@ export class EditJobComponent implements OnInit {
 
   @Output() jobEdited = new EventEmitter();
 
+  @ViewChild('editScrapeJobModal') editScrapeJobModalTemplateRef: TemplateRef<any>;
+
   editScrapeJobForm: FormGroup;
   editScrapeJobModalRef: BsModalRef;
 
   errorMessage = '';
 
-  faPlus = faPlus;
+  scrapeJob : ScrapeJob;
+
 
   constructor(
     private readonly jobsService: OverviewService,
@@ -68,7 +70,14 @@ export class EditJobComponent implements OnInit {
       ;
   }
 
+  openCreateModal(){
+    this.openEditScrapeJobModal(this.editScrapeJobModalTemplateRef);
+  }
 
+  openEditModal(job: ScrapeJob){
+    this.scrapeJob = job;
+    this.openEditScrapeJobModal(this.editScrapeJobModalTemplateRef);
+  }
 
   openEditScrapeJobModal(template: TemplateRef<any>) {
     this.editScrapeJobModalRef = this.modalService.show(template, {});
