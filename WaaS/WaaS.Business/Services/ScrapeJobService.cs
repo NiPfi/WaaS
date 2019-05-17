@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
 using WaaS.Business.Entities;
-using WaaS.Business.Interfaces.Repositories;
+using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Interfaces.Services.Domain;
 
@@ -16,24 +16,26 @@ namespace WaaS.Business.Services
   public class ScrapeJobService : IScrapeJobService
   {
 
-    private readonly IScrapeJobRepository _scrapeJobRepository;
     private readonly IMapper _mapper;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IScraper _scraper;
+    private readonly IScrapeJobDomainService _scrapeJobDomainService;
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ScrapeJobService
       (
       IMapper mapper,
-      IScrapeJobRepository scrapeJobsRepository,
       UserManager<IdentityUser> userManager,
-      IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService)
+      IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService,
+      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork)
     {
       _mapper = mapper;
       _userManager = userManager;
-      _scrapeJobRepository = scrapeJobsRepository;
       _scraper = scraper;
       _scrapeJobEventDomainService = scrapeJobEventDomainService;
+      _scrapeJobDomainService = scrapeJobDomainService;
+      _unitOfWork = unitOfWork;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -45,14 +47,15 @@ namespace WaaS.Business.Services
         var entity = _mapper.Map<ScrapeJob>(scrapeJob);
         var idUser = await _userManager.GetUserAsync(principal);
         entity.IdentityUserForeignKey = idUser.Id;
-        var highestId = _scrapeJobRepository
+        var highestId = _scrapeJobDomainService
           .ReadUsersScrapeJobs(idUser.Id)
           .OrderByDescending(j => j.UserSpecificId)
           .FirstOrDefault()?.UserSpecificId;
         entity.UserSpecificId = (highestId ?? 0) + 1;
         entity.Enabled = true;
 
-        var success = await _scrapeJobRepository.AddAsync(entity);
+        await _scrapeJobDomainService.AddAsync(entity);
+        var success = await _unitOfWork.CommitAsync();
 
         if (success)
         {
@@ -71,7 +74,8 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
-        return await _scrapeJobRepository.DeleteAsync(id);
+        await _scrapeJobDomainService.DeleteAsync(id);
+        return await _unitOfWork.CommitAsync();
       }
 
       return false;
@@ -83,7 +87,7 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
-        var entity = await _scrapeJobRepository.GetAsync(id);
+        var entity = await _scrapeJobDomainService.GetAsync(id);
 
         if (entity != null)
         {
@@ -99,7 +103,7 @@ namespace WaaS.Business.Services
     {
       var idUser = await _userManager.GetUserAsync(principal);
 
-      var entities = _scrapeJobRepository.ReadUsersScrapeJobs(idUser.Id);
+      var entities = _scrapeJobDomainService.ReadUsersScrapeJobs(idUser.Id);
 
       if (entities.Any())
       {
@@ -115,11 +119,12 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(id, idUser.Id))
       {
-        var success = await _scrapeJobRepository.UpdateAsync(id, e => e.Enabled = !e.Enabled);
+        await _scrapeJobDomainService.UpdateAsync(id, e => e.Enabled = !e.Enabled);
+        var success = await _unitOfWork.CommitAsync();
 
         if (success)
         {
-          var updatedEntity = await _scrapeJobRepository.GetAsync(id);
+          var updatedEntity = await _scrapeJobDomainService.GetAsync(id);
           return _mapper.Map<ScrapeJobDto>(updatedEntity);
         }
       }
@@ -133,11 +138,12 @@ namespace WaaS.Business.Services
       var idUser = await _userManager.GetUserAsync(principal);
       if (await ScrapeJobIsOfUser(scrapeJob.Id, idUser.Id))
       {
-        var success = await _scrapeJobRepository.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJob, e));
+        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJob, e));
+        var success = await _unitOfWork.CommitAsync();
 
         if (success)
         {
-          var updatedEntity = await _scrapeJobRepository.GetAsync(scrapeJob.Id);
+          var updatedEntity = await _scrapeJobDomainService.GetAsync(scrapeJob.Id);
           return _mapper.Map<ScrapeJobDto>(updatedEntity);
         }
       }
@@ -148,7 +154,7 @@ namespace WaaS.Business.Services
 
     public async Task<bool> ScrapeJobIsOfUser(long scrapeJobId, string userId)
     {
-      var scrapeJobEntity = await _scrapeJobRepository.GetAsync(scrapeJobId);
+      var scrapeJobEntity = await _scrapeJobDomainService.GetAsync(scrapeJobId);
 
       return userId.Equals(scrapeJobEntity.IdentityUser.Id, StringComparison.InvariantCulture);
     }
@@ -169,7 +175,7 @@ namespace WaaS.Business.Services
       }
       catch (UriFormatException ex)
       {
-        await _scrapeJobRepository.UpdateAsync(scrapeJob.Id, job => job.Enabled = false);
+        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, job => job.Enabled = false);
 
         result.Type = ScrapeJobEventType.Error;
         result.Message = ex.Message;
@@ -178,7 +184,8 @@ namespace WaaS.Business.Services
       }
       result.ScrapeJobForeignKey = scrapeJob.Id;
 
-      return await _scrapeJobEventDomainService.CreateAsync(result);
+      await _scrapeJobEventDomainService.AddAsync(result);
+      return await _unitOfWork.CommitAsync();
 
     }
 

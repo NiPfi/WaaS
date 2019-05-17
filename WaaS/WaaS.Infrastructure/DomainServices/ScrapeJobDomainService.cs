@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Entities;
-using WaaS.Business.Interfaces.Repositories;
+using WaaS.Business.Interfaces.Services.Domain;
 
-namespace WaaS.Infrastructure.Repositories
+namespace WaaS.Infrastructure.DomainServices
 {
-  public class ScrapeJobRepository : Repository<ScrapeJob, long>, IScrapeJobRepository
+  public class ScrapeJobDomainService : BaseDomainService<ScrapeJob, long>, IScrapeJobDomainService
   {
-    public ScrapeJobRepository(WaasDbContext context) : base(context)
+    public ScrapeJobDomainService(WaasDbContext context) : base(context)
     {
     }
 
@@ -18,5 +17,6 @@ namespace WaaS.Infrastructure.Repositories
     {
       return GetAll().Where(x => x.IdentityUser.Id.Equals(userId, StringComparison.InvariantCulture));
     }
+
   }
 }

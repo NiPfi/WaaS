@@ -6,12 +6,8 @@ using WaaS.Business.Entities;
 
 namespace WaaS.Business.Interfaces.Services.Domain
 {
-  public interface IScrapeJobEventDomainService
+  public interface IScrapeJobEventDomainService: IBaseDomainService<ScrapeJobEvent, long>
   {
-    Task<bool> CreateAsync(ScrapeJobEvent scrapeJobEvent);
-    Task<ScrapeJobEvent> GetAsync(long id);
     IEnumerable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(int scrapeJobId);
-    Task<bool> UpdateAsync(long id, Action<ScrapeJobEvent> updateAction);
-    Task<bool> DeleteAsync(long id);
   }
 }

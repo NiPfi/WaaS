@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
 using WaaS.Business.Entities;
-using WaaS.Business.Interfaces.Repositories;
+using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Interfaces.Services.Domain;
 using WaaS.Business.Services;
@@ -24,12 +24,13 @@ namespace WaaS.Business.Tests.Services
     {
 
       // Arrange
-      var mockScrapeJobRepository = Substitute.For<IScrapeJobRepository>();
+      var mockScrapeJobDomainService = Substitute.For<IScrapeJobDomainService>();
       var mockMapper = Substitute.For<IMapper>();
       var mockUserManager = Substitute.For<MockUserManager>();
       var mockClaimsPrincipal = Substitute.For<ClaimsPrincipal>();
       var mockScrapeJobEventDomainService = Substitute.For<IScrapeJobEventDomainService>();
       var mockScraper = Substitute.For<IScraper>();
+      var mockUnitOfWork = Substitute.For<IUnitOfWork>();
 
       ScrapeJobDto testScrapeJobDto = new ScrapeJobDto()
       {
@@ -43,19 +44,22 @@ namespace WaaS.Business.Tests.Services
       mockMapper.Map<ScrapeJob>(testScrapeJobDto).Returns(testScrapeJob);
       mockMapper.Map<ScrapeJobDto>(testScrapeJob).Returns(testScrapeJobDto);
 
-      mockScrapeJobRepository.AddAsync(Arg.Any<ScrapeJob>()).ReturnsForAnyArgs(Task.FromResult(true));
+      mockScrapeJobDomainService.AddAsync(Arg.Any<ScrapeJob>()).ReturnsForAnyArgs(Task.FromResult(testScrapeJob));
+      mockUnitOfWork.CommitAsync().Returns(Task.FromResult(true));
 
       IScrapeJobService scrapeJobService = new ScrapeJobService(mockMapper,
-                                                                mockScrapeJobRepository,
                                                                 mockUserManager,
                                                                 mockScraper,
-                                                                mockScrapeJobEventDomainService
+                                                                mockScrapeJobEventDomainService,
+                                                                mockScrapeJobDomainService,
+                                                                mockUnitOfWork
                                                                 );
 
       // Act
       var result = await scrapeJobService.Create(testScrapeJobDto, mockClaimsPrincipal);
 
       // Assert
+      mockUnitOfWork.Received().CommitAsync();
       Assert.Equal(testScrapeJobDto, result);
 
     }

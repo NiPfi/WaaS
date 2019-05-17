@@ -2,12 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using WaaS.Business.Entities;
-using WaaS.Infrastructure.Repositories;
+using WaaS.Business.Interfaces.Services.Domain;
+using WaaS.Infrastructure.DomainServices;
 using Xunit;
 
 namespace WaaS.Infrastructure.Tests.Repositories
 {
-  public class RepositoryTests
+  public class DomainServiceTests
   {
     [Fact]
     public async Task GetAsyncSucceeds()
@@ -26,7 +27,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       // Act
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, long>(context);
+        var testRepository = new BaseDomainService<ScrapeJob, long>(context);
         var result = await testRepository.GetAsync(testEntity.Id);
 
         // Assert
@@ -54,7 +55,7 @@ namespace WaaS.Infrastructure.Tests.Repositories
       // Act
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, long>(context);
+        var testRepository = new BaseDomainService<ScrapeJob, long>(context);
         var result = testRepository.GetAll();
 
         Assert.Equal(count, await result.CountAsync());
@@ -74,8 +75,9 @@ namespace WaaS.Infrastructure.Tests.Repositories
       bool result;
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, long>(context);
-        result = await testRepository.AddAsync(testEntity);
+        var testRepository = new BaseDomainService<ScrapeJob, long>(context);
+        await testRepository.AddAsync(testEntity);
+        result = await context.CommitAsync();
       }
 
       // Assert
@@ -105,8 +107,9 @@ namespace WaaS.Infrastructure.Tests.Repositories
       bool result;
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, long>(context);
-        result = await testRepository.DeleteAsync(testEntity.Id);
+        var testRepository = new BaseDomainService<ScrapeJob, long>(context);
+        await testRepository.DeleteAsync(testEntity.Id);
+        result = await context.CommitAsync();
       }
 
       // Assert
@@ -134,13 +137,14 @@ namespace WaaS.Infrastructure.Tests.Repositories
       bool result;
       using (var context = new WaasDbContext(options))
       {
-        var testRepository = new Repository<ScrapeJob, long>(context);
-        result = await testRepository.UpdateAsync(testEntity.Id, job =>
+        var testRepository = new BaseDomainService<ScrapeJob, long>(context);
+        await testRepository.UpdateAsync(testEntity.Id, job =>
         {
           job.Pattern = "updatedPattern";
           job.Url = "updatedUrl";
           job.Enabled = !testEntity.Enabled;
         });
+        result = await context.CommitAsync();
       }
 
       // Assert

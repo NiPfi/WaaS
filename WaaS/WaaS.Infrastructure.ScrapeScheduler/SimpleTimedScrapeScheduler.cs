@@ -9,8 +9,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WaaS.Business;
 using WaaS.Business.Entities;
-using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Interfaces.Services.Domain;
 
 namespace WaaS.Infrastructure.ScrapeScheduler
 {
@@ -64,7 +64,7 @@ namespace WaaS.Infrastructure.ScrapeScheduler
       {
         var scrapeJobService = scope.ServiceProvider.GetRequiredService<IScrapeJobService>();
 
-        var scrapeJobs = scope.ServiceProvider.GetRequiredService<IScrapeJobRepository>().GetAll().AsEnumerable();
+        var scrapeJobs = scope.ServiceProvider.GetRequiredService<IScrapeJobDomainService>().GetAll().AsEnumerable();
 
         foreach (ScrapeJob scrapeJob in scrapeJobs)
         {

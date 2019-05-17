@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using WaaS.Business.Interfaces;
 
 namespace WaaS.Infrastructure
 {
-  public sealed class WaasDbContext : IdentityDbContext<IdentityUser>
+  public sealed class WaasDbContext : IdentityDbContext<IdentityUser>, IUnitOfWork
   {
     public DbSet<ScrapeJob> ScrapeJobs { get; set; }
     public DbSet<ScrapeJobEvent> ScrapeJobEvents { get; set; }
@@ -29,6 +30,18 @@ namespace WaaS.Infrastructure
       builder.Entity<ScrapeJobEvent>().ToTable("ScrapeJobEvent");
 
       base.OnModelCreating(builder);
+    }
+
+    public bool Commit()
+    {
+      SaveChanges();
+      return true;
+    }
+
+    public async Task<bool> CommitAsync()
+    {
+      await SaveChangesAsync();
+      return true;
     }
   }
 }

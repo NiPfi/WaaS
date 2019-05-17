@@ -1,16 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Interfaces.Entities;
 
-namespace WaaS.Business.Interfaces.Repositories
+namespace WaaS.Business.Interfaces.Services.Domain
 {
   /// <summary>
-  /// Represents a Repository that handles storage and retrieval of <see cref="IEntity{TKey}"/>
+  /// Represents a domain service for <see cref="IEntity{TKey}"/>
   /// </summary>
   /// <typeparam name="TEntity"></typeparam>
   /// <typeparam name="TKey"></typeparam>
-  public interface IRepository<TEntity, in TKey>: IDisposable where TKey: IEquatable<TKey>
+  public interface IBaseDomainService<TEntity, in TKey>: IDisposable where TKey: IEquatable<TKey>
   {
     /// <summary>
     /// Gets a specific <see cref="IEntity{TKey}"/>
@@ -30,14 +32,14 @@ namespace WaaS.Business.Interfaces.Repositories
     /// </summary>
     /// <param name="entity">The <see cref="IEntity{TKey}"/> that is to be added to this repository</param>
     /// <returns>A <see cref="Task{TResult}"/> that will resolve to a boolean that is true if the operation was successful, false otherwise</returns>
-    Task<bool> AddAsync(TEntity entity);
+    Task<TEntity> AddAsync(TEntity entity);
 
     /// <summary>
     /// Removes an <see cref="IEntity{TKey}"/> from this repository
     /// </summary>
     /// <param name="id">The unique identifier <see cref="TKey"/> of an <see cref="IEntity{TKey}"/></param>
     /// <returns>A <see cref="Task{TResult}"/> that will resolve to a boolean that is true if the operation was successful, false otherwise</returns>
-    Task<bool> DeleteAsync(TKey id);
+    Task<TEntity> DeleteAsync(TKey id);
 
     /// <summary>
     /// Updates an <see cref="IEntity{TKey}"/> with new values
@@ -45,6 +47,6 @@ namespace WaaS.Business.Interfaces.Repositories
     /// <param name="id">The unique identifier <see cref="TKey"/> of an <see cref="IEntity{TKey}"/></param>
     /// <param name="changeAction">An <see cref="Action{T}"/> lambda expression that can be used to insert the updated values</param>
     /// <returns></returns>
-    Task<bool> UpdateAsync(TKey id, Action<TEntity> changeAction);
+    Task<TEntity> UpdateAsync(TKey id, Action<TEntity> changeAction);
   }
 }

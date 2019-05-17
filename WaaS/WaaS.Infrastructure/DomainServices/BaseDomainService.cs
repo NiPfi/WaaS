@@ -1,17 +1,16 @@
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WaaS.Business.Interfaces.Entities;
-using WaaS.Business.Interfaces.Repositories;
 
-namespace WaaS.Infrastructure.Repositories
+namespace WaaS.Infrastructure.DomainServices
 {
-  public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey> where TKey : IEquatable<TKey>
+  public class BaseDomainService<TEntity, TKey> : IDisposable where TEntity : class, IEntity<TKey> where TKey : IEquatable<TKey>
   {
     protected readonly WaasDbContext Context;
 
-    public Repository(WaasDbContext context)
+    public BaseDomainService(WaasDbContext context)
     {
       Context = context;
     }
@@ -28,26 +27,22 @@ namespace WaaS.Infrastructure.Repositories
       return DbSet.AsNoTracking().AsQueryable();
     }
 
-    public async Task<bool> AddAsync(TEntity entity)
+    public async Task<TEntity> AddAsync(TEntity entity)
     {
-      await DbSet.AddAsync(entity);
-      return 1 == await Context.SaveChangesAsync();
+      return (await DbSet.AddAsync(entity)).Entity;
     }
 
-    public async Task<bool> DeleteAsync(TKey id)
+    public async Task<TEntity> DeleteAsync(TKey id)
     {
       var entity = await DbSet.FindAsync(id);
-      DbSet.Remove(entity);
-
-      return 1 == await Context.SaveChangesAsync();
+      return DbSet.Remove(entity).Entity;
     }
 
-    public async Task<bool> UpdateAsync(TKey id, Action<TEntity> changeAction)
+    public async Task<TEntity> UpdateAsync(TKey id, Action<TEntity> changeAction)
     {
       var entity = await DbSet.FindAsync(id);
       changeAction(entity);
-
-      return 1 == await Context.SaveChangesAsync();
+      return entity;
     }
 
     public void Dispose()

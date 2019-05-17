@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
 using WaaS.Business.Entities;
+using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Interfaces.Services.Domain;
 
@@ -17,19 +18,20 @@ namespace WaaS.Business.Services
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IScrapeJobService _scrapeJobService;
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ScrapeJobEventService
       (
         IMapper mapper,
         UserManager<IdentityUser> userManager,
         IScrapeJobService scrapeJobService,
-        IScrapeJobEventDomainService scrapeJobEventDomainService
-      )
+        IScrapeJobEventDomainService scrapeJobEventDomainService, IUnitOfWork unitOfWork)
     {
       _mapper = mapper;
       _userManager = userManager;
       _scrapeJobService = scrapeJobService;
       _scrapeJobEventDomainService = scrapeJobEventDomainService;
+      _unitOfWork = unitOfWork;
     }
 
 
@@ -41,7 +43,8 @@ namespace WaaS.Business.Services
 
         var entity = _mapper.Map<ScrapeJobEvent>(scrapeJobEvent);
 
-        var success = await _scrapeJobEventDomainService.CreateAsync(entity);
+        await _scrapeJobEventDomainService.AddAsync(entity);
+        var success = await _unitOfWork.CommitAsync();
 
         if (success)
         {
@@ -60,7 +63,8 @@ namespace WaaS.Business.Services
 
       if (entity != null && await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
       {
-        return await _scrapeJobEventDomainService.DeleteAsync(id);
+        await _scrapeJobEventDomainService.DeleteAsync(id);
+        return await _unitOfWork.CommitAsync();
       }
 
       return false;
@@ -106,7 +110,8 @@ namespace WaaS.Business.Services
 
       if (entity != null && await _scrapeJobService.ScrapeJobIsOfUser(entity.ScrapeJob.Id, idUser.Id))
       {
-        var success = await _scrapeJobEventDomainService.UpdateAsync(scrapeJobEvent.Id, e => _mapper.Map(scrapeJobEvent, e));
+        await _scrapeJobEventDomainService.UpdateAsync(scrapeJobEvent.Id, e => _mapper.Map(scrapeJobEvent, e));
+        var success = await _unitOfWork.CommitAsync();
 
         if (success)
         {
