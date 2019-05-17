@@ -7,11 +7,11 @@ import { AlertModule, ModalModule } from 'ngx-bootstrap';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
 import { ControlMessagesComponent } from 'src/app/error-handling/form-validation/control-messages/control-messages.component';
-import { AddJobComponent } from './add-job.component';
+import { EditJobComponent } from './edit-job.component';
 
-describe('AddJobComponent', () => {
-  let component: AddJobComponent;
-  let fixture: ComponentFixture<AddJobComponent>;
+describe('EditJobComponent', () => {
+  let component: EditJobComponent;
+  let fixture: ComponentFixture<EditJobComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -23,7 +23,7 @@ describe('AddJobComponent', () => {
         AlertModule
       ],
       declarations: [ 
-        AddJobComponent,
+        EditJobComponent,
         MockComponent(ControlMessagesComponent),
         ConvertNewLinePipe
        ]
@@ -32,7 +32,7 @@ describe('AddJobComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddJobComponent);
+    fixture = TestBed.createComponent(EditJobComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

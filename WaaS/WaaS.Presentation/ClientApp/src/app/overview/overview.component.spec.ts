@@ -7,7 +7,7 @@ import { ModalModule, AlertModule } from 'ngx-bootstrap';
 import { MockPipe } from 'ng-mocks';
 
 import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
-import { AddJobComponent } from './add-job/add-job.component';
+import { EditJobComponent } from './edit-job/edit-job.component';
 import { OverviewComponent } from './overview.component';
 
 describe('OverviewComponent', () => {
@@ -25,7 +25,7 @@ describe('OverviewComponent', () => {
       ],
       declarations: [
         OverviewComponent,
-        MockComponent(AddJobComponent),
+        MockComponent(EditJobComponent),
         MockPipe(ConvertNewLinePipe)
       ]
     })

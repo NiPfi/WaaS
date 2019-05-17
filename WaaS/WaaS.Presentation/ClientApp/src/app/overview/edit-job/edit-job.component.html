@@ -1,18 +1,12 @@
-<div class="text-center">
-  <button type="button" class="btn btn-success" (click)="openAddScrapeJobModal(addScrapeJobModal)">
-    <fa-icon [icon]="faPlus"></fa-icon>
-  </button>
-</div>
-
-<ng-template #addScrapeJobModal>
+<ng-template #editScrapeJobModal>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Create ScrapeJob</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="addScrapeJobModalRef.hide()">
+      <button type="button" class="close pull-right" aria-label="Close" (click)="editScrapeJobModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     
-    <form [formGroup]="addScrapeJobForm" (ngSubmit)="createScrapeJob()">
+    <form [formGroup]="editScrapeJobForm" (ngSubmit)="createScrapeJob()">
       <div class="modal-body">
 
         <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
@@ -40,7 +34,7 @@
 
       <div class="modal-footer">
         <div class="form-group">
-          <button type="button" class="btn btn-secondary" (click)="addScrapeJobModalRef.hide()">Cancel</button>
+          <button type="button" class="btn btn-secondary" (click)="editScrapeJobModalRef.hide()">Cancel</button>
           <button type="submit" class="btn btn-primary">Save</button>
         </div>
       </div>

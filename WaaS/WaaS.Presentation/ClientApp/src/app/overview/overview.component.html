@@ -3,27 +3,37 @@
 </ngx-spinner>
 
 <div class="container">
+  
   <div class="row">
 
-    <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
-      (onClosed)="onSuccessAlertClosed()">
-      <span [innerHtml]="successMessage | convertNewLine: true"></span>
-    </alert>
-
-    <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
-      (onClosed)="onErrorAlertClosed()">
-      <span [innerHtml]="errorMessage | convertNewLine: true"></span>
-    </alert>
-
     <h1>Overview</h1>
+
     <div class="d-flex align-items-end ml-2 pb-2">
-      <app-add-job (jobAdded)="onJobAdded()"></app-add-job>
+      <div class="text-center">
+        <button type="button" class="btn btn-success" (click)="openCreateModal()">
+          <fa-icon [icon]="faPlus"></fa-icon>
+        </button>
+      </div>
+      <app-edit-job (jobEdited)="onJobEdited()"></app-edit-job>
     </div>
 
   </div>
 
+  <div class="row">
+    <alert type="success" *ngIf="successMessage && successMessage != ''" [dismissible]="true"
+        (onClosed)="onSuccessAlertClosed()">
+        <span [innerHtml]="successMessage | convertNewLine: true"></span>
+      </alert>
+      
+      <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+        (onClosed)="onErrorAlertClosed()">
+        <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+    </alert>
+  </div>
+
   <ng-container *ngIf="jobs && jobs.length > 0; then jobsOverview; else jobsPlaceholder">
   </ng-container>
+
 </div>
 
 <ng-template #jobsOverview>
@@ -38,15 +48,19 @@
             <p class="small text-muted">{{job.url}}</p>
           <div class="d-flex justify-content-end">
             <div class="actions d-flex align-items-center">
-              <a><fa-icon [icon]="faPen"></fa-icon></a>
-              <a (click)="openDeleteModal(confirmScrapeJobDeletionModal, i)"><fa-icon [icon]="faTrashAlt"></fa-icon></a>
-              <a><fa-icon [icon]="faToggleOn"></fa-icon></a>
+              <a><fa-icon class="cursor-pointer" [icon]="faPen"></fa-icon></a>
+              <a (click)="openDeleteModal(confirmScrapeJobDeletionModal, i)"><fa-icon class="cursor-pointer" [icon]="faTrashAlt"></fa-icon></a>
+              <a><fa-icon class="cursor-pointer" [icon]="faToggleOn"></fa-icon></a>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #jobsPlaceholder>
+  No Jobs yet... Why not create some?
 </ng-template>
 
 <ng-template #confirmScrapeJobDeletionModal>
@@ -58,7 +72,7 @@
   </div>
   <div class="modal-body">
     <p>
-      Are you sure you want to delete the ScrapeJob: <i>{{ jobs[currentJobIndex].name }} </i> ?<br />
+      Are you sure you want to delete the ScrapeJob: <em>{{ jobs[currentJobIndex].name }} </em> ?<br />
       This action <strong>cannot be undone</strong>!
     </p>
   </div>
@@ -66,9 +80,4 @@
     <button type="button" class="btn btn-danger" (click)="confirmDelete(jobs[currentJobIndex])">Yes, delete the ScrapeJob</button>
     <button type="button" class="btn btn-outline-primary" (click)="deleteModalRef.hide()">No, cancel</button>
   </div>
-</ng-template>
-
-
-<ng-template #jobsPlaceholder>
-  No Jobs yet... Why not create some?
 </ng-template>

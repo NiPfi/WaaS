@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError } from 'rxjs/internal/operators/catchError';
@@ -30,8 +30,8 @@ export class OverviewService{
   }
 
   deleteScrapeJob(id: number): Observable<{}> {
-    const url = `${environment.apiUrl}/scrapeJob/${id}`;
-    return this.http.delete(url)
+    const params = new HttpParams().set('scrapeJobId', `${id}`);
+    return this.http.delete(`${environment.apiUrl}/scrapeJob/`, { params })
       .pipe(catchError(this.handler.handleError));
   }
 

@@ -60,9 +60,9 @@ namespace WaaS.Presentation.Controllers
     }
 
     [HttpDelete, Authorize]
-    public async Task<IActionResult> DeleteScrapeJob(ScrapeJobDto scrapeJobDto)
+    public async Task<IActionResult> DeleteScrapeJob(int scrapeJobId)
     {
-      var success = await _scrapeJobService.Delete(scrapeJobDto.Id, User);
+      var success = await _scrapeJobService.Delete(scrapeJobId, User);
       if (success)
       {
         return Ok();
