@@ -55,11 +55,7 @@ namespace WaaS.Business.Services
 
         if (success)
         {
-          success = await ExecuteScrapeJobAsync(entity);
-        }
-
-        if (success)
-        {
+          ExecuteScrapeJob(entity);
           return _mapper.Map<ScrapeJobDto>(entity);
         }
 
@@ -163,12 +159,29 @@ namespace WaaS.Business.Services
         return false;
       }
 
-      var url = new Uri(scrapeJob.Url);
-      var result = await _scraper.ExecuteAsync(url, scrapeJob.Pattern);
+      var result = new ScrapeJobEvent();
+      
+      try
+      {
+        var url = new Uri(scrapeJob.Url);
+        result = await _scraper.ExecuteAsync(url, scrapeJob.Pattern);
+      }
+      catch (UriFormatException ex)
+      {
+        result.Type = ScrapeJobEventType.Error;
+        result.Message = ex.Message;
+        result.Url = scrapeJob.Url;
+        result.TimeStamp = DateTime.UtcNow;
+      }
       result.ScrapeJobForeignKey = scrapeJob.Id;
+
       return await _scrapeJobEventDomainService.CreateAsync(result);
 
-    } 
+    }
 
+    public void ExecuteScrapeJob(ScrapeJob scrapeJob)
+    {
+      Task.Factory.StartNew(() => ExecuteScrapeJobAsync(scrapeJob));
+    }
   }
 }

@@ -26,5 +26,11 @@ namespace WaaS.Business.Interfaces.Services
     /// <returns></returns>
     Task<bool> ExecuteScrapeJobAsync(ScrapeJob scrapeJob);
 
+    /// <summary>
+    /// Executes a given scrape job in a fire and forget manner and saves its result as a <see cref="ScrapeJobEvent"/>
+    /// </summary>
+    /// <param name="scrapeJob">The <see cref="ScrapeJob"/> to execute</param>
+    void ExecuteScrapeJob(ScrapeJob scrapeJob);
+
   }
 }
