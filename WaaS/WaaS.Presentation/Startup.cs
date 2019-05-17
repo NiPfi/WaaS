@@ -113,7 +113,8 @@ namespace WaaS.Presentation
       services.AddSingleton<HttpClient, HttpClient>();
 
       services.AddTransient<IEmailSender, EmailSender>();
-      services.AddTransient<IScraper, SimpleHtmlScraper>();
+      //services.AddTransient<IScraper, SimpleHtmlRegexScraper>();
+      services.AddScoped<IScraper, CachedHtmlRegexScraper>();
 
       services.AddScoped<IEmailService, EmailService>();
       services.AddScoped<IUserService, UserService>();

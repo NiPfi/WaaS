@@ -37,7 +37,7 @@ namespace WaaS.Infrastructure.ScrapeScheduler
     {
       _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-      _timer = new Timer(ExecuteTask, null, TimeSpan.Zero, TimeSpan.FromMinutes(10)); //TODO Load interval from Application settings
+      _timer = new Timer(ExecuteTask, null, TimeSpan.Zero, TimeSpan.FromMinutes(1)); //TODO Load interval from Application settings
 
       _logger.LogDebug("ScrapeJob timer has been scheduled");
       return Task.CompletedTask;

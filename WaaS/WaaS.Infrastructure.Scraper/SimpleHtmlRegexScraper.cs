@@ -12,12 +12,12 @@ using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Infrastructure.Scraper
 {
-  public class SimpleHtmlScraper: IScraper
+  public class SimpleHtmlRegexScraper: IScraper
   {
 
     private readonly HttpClient _client;
 
-    public SimpleHtmlScraper(HttpClient client)
+    public SimpleHtmlRegexScraper(HttpClient client)
     {
       _client = client;
     }
