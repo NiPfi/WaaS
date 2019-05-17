@@ -50,6 +50,7 @@ namespace WaaS.Business.Services
           .OrderByDescending(j => j.UserSpecificId)
           .FirstOrDefault()?.UserSpecificId;
         entity.UserSpecificId = (highestId ?? 0) + 1;
+        entity.Enabled = true;
 
         var success = await _scrapeJobRepository.AddAsync(entity);
 
