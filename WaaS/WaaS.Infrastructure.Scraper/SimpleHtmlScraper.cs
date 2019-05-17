@@ -12,7 +12,7 @@ namespace WaaS.Infrastructure.Scraper
   public class SimpleHtmlScraper: IScraper
   {
 
-    private HttpClient _client;
+    private readonly HttpClient _client;
 
     public SimpleHtmlScraper(HttpClient client)
     {
@@ -26,23 +26,15 @@ namespace WaaS.Infrastructure.Scraper
       public string HtmlString { get; set; }
     }
 
-
     public async Task<ScrapeJobEvent> ExecuteAsync(Uri url, string searchPattern)
     {
 
-      var response = await GetResponse(url);
+      var response = await GetResponseAsync(url);
       var eventType = ScrapeJobEventType.Error;
       if (!string.IsNullOrWhiteSpace(response.HtmlString))
       {
         var matches = MatchesPattern(response.HtmlString, searchPattern);
-        if (matches)
-        {
-          eventType = ScrapeJobEventType.Match;
-        } else
-        {
-          eventType = ScrapeJobEventType.NoMatch;
-        }
-
+        eventType = matches ? ScrapeJobEventType.Match : ScrapeJobEventType.NoMatch;
       }
 
       return new ScrapeJobEvent
@@ -54,7 +46,7 @@ namespace WaaS.Infrastructure.Scraper
       };
     }
 
-    private async Task<HttpResult> GetResponse(Uri url)
+    private async Task<HttpResult> GetResponseAsync(Uri url)
     {
       string htmlString = "";
 
@@ -74,7 +66,7 @@ namespace WaaS.Infrastructure.Scraper
       };
     }
 
-    private bool MatchesPattern(string html, string searchPattern)
+    private static bool MatchesPattern(string html, string searchPattern)
     {
       Regex regex = new Regex(searchPattern);
       var result = regex.Match(html);
