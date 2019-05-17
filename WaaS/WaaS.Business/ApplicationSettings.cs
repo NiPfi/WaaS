@@ -29,5 +29,15 @@ namespace WaaS.Business
     /// The API Key for the SendGridUser
     /// </summary>
     public string SendGridKey { get; set; }
+
+    /// <summary>
+    /// The amount of minutes to wait before starting the first scrapes
+    /// </summary>
+    public int InitialScrapeDelayMins { get; set; }
+
+    /// <summary>
+    /// How many minutes to wait between scrapes
+    /// </summary>
+    public int ScrapeIntervalMins { get; set; }
   }
 }

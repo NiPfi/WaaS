@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using WaaS.Business;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces.Repositories;
 using WaaS.Business.Interfaces.Services;
@@ -16,6 +18,7 @@ namespace WaaS.Infrastructure.ScrapeScheduler
   {
 
     private readonly ILogger _logger;
+    private readonly ApplicationSettings _applicationSettings;
 
     private CancellationTokenSource _cancellationTokenSource;
     private Timer _timer;
@@ -25,11 +28,16 @@ namespace WaaS.Infrastructure.ScrapeScheduler
 
     public SimpleTimedScrapeScheduler(
         IServiceProvider services,
-        ILogger<SimpleTimedScrapeScheduler> logger
-      )
+        ILogger<SimpleTimedScrapeScheduler> logger,
+        IOptions<ApplicationSettings> applicationSettings)
     {
       Services = services;
       _logger = logger;
+
+      if (applicationSettings != null)
+      {
+        _applicationSettings = applicationSettings.Value;
+      }
     }
 
 
@@ -37,7 +45,7 @@ namespace WaaS.Infrastructure.ScrapeScheduler
     {
       _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-      _timer = new Timer(ExecuteTask, null, TimeSpan.Zero, TimeSpan.FromMinutes(1)); //TODO Load interval from Application settings
+      _timer = new Timer(ExecuteTask, null, TimeSpan.FromMinutes(_applicationSettings.InitialScrapeDelayMins), TimeSpan.FromMinutes(_applicationSettings.ScrapeIntervalMins));
 
       _logger.LogDebug("ScrapeJob timer has been scheduled");
       return Task.CompletedTask;
