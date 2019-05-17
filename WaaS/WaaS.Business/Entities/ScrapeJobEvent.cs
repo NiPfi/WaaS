@@ -22,7 +22,8 @@ namespace WaaS.Business.Entities
     public string Message { get; set; }
     public DateTime TimeStamp { get; set; }
     public ScrapeJobEventType Type { get; set; }
-
+    public string Url { get; set; }
+    public string Fingerprint { get; set; }
     public long ScrapeJobForeignKey { get; set; }
 
     [ForeignKey("ScrapeJobForeignKey")]
