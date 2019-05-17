@@ -60,11 +60,11 @@ namespace WaaS.Infrastructure.ScrapeScheduler
     {
       _logger.LogInformation("Starting scheduled ScrapeJob execution");
 
-      using (var scope = Services.CreateScope())
+      using (var queryScope = Services.CreateScope())
+      using (var writeScope = Services.CreateScope())
       {
-        var scrapeJobService = scope.ServiceProvider.GetRequiredService<IScrapeJobService>();
-
-        var scrapeJobs = scope.ServiceProvider.GetRequiredService<IScrapeJobDomainService>().GetAll().AsEnumerable();
+        var scrapeJobs = queryScope.ServiceProvider.GetRequiredService<IScrapeJobDomainService>().GetEnabledScrapeJobs();
+        var scrapeJobService = writeScope.ServiceProvider.GetRequiredService<IScrapeJobService>();
 
         foreach (ScrapeJob scrapeJob in scrapeJobs)
         {
