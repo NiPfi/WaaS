@@ -168,6 +168,8 @@ namespace WaaS.Business.Services
       }
       catch (UriFormatException ex)
       {
+        await _scrapeJobRepository.UpdateAsync(scrapeJob.Id, job => job.Enabled = false);
+
         result.Type = ScrapeJobEventType.Error;
         result.Message = ex.Message;
         result.Url = scrapeJob.Url;
