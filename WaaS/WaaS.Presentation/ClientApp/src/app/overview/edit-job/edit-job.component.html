@@ -24,16 +24,16 @@
 
         <div class="form-group">
 
-          <input class="form-control" formControlName="scrapeJobName" type="text" [ngModel]="scrapeJob?.name" placeholder="Name" required />
+          <input class="form-control" formControlName="scrapeJobName" type="text" placeholder="Name" required />
           <app-control-messages [control]="form.scrapeJobName"></app-control-messages>
 
-          <input class="form-control" formControlName="url" type="url" [ngModel]="scrapeJob?.url" placeholder="URL" required />
+          <input class="form-control" formControlName="url" type="url" required />
           <app-control-messages [control]="form.url"></app-control-messages>
 
-          <input class="form-control" formControlName="regexPattern" type="text" [ngModel]="scrapeJob?.pattern" placeholder="RegEx Pattern" required />
+          <input class="form-control" formControlName="regexPattern" type="text" placeholder="RegEx Pattern" required />
           <app-control-messages [control]="form.regexPattern"></app-control-messages>
 
-          <input class="form-control" formControlName="alternativeEmail" type="text" [ngModel]="scrapeJob?.alternativeEmail" placeholder="Alternative email" />
+          <input class="form-control" formControlName="alternativeEmail" type="text" placeholder="Alternative email" />
           <app-control-messages [control]="form.alternativeEmail"></app-control-messages>
 
         </div>

@@ -52,10 +52,10 @@ export class EditJobComponent implements OnInit {
     }
 
     const job = this.scrapeJob ? this.scrapeJob : new ScrapeJob();
-    job.name = this.editScrapeJobForm.controls.scrapeJobName.value;
-    job.url = this.editScrapeJobForm.controls.url.value;
-    job.pattern = this.editScrapeJobForm.controls.regexPattern.value;
-    job.alternativeEmail = this.editScrapeJobForm.controls.alternativeEmail.value;
+    job.name = this.form.scrapeJobName.value;
+    job.url = this.form.url.value;
+    job.pattern = this.form.regexPattern.value;
+    job.alternativeEmail = this.form.alternativeEmail.value;
 
     if(job.id == null || job.id == 0){
       this.createScrapeJob(job);
@@ -103,6 +103,11 @@ export class EditJobComponent implements OnInit {
 
   openEditModal(job: ScrapeJob){
     this.scrapeJob = job;
+    this.form.scrapeJobName.setValue(job.name);
+    this.form.url.setValue(job.url);
+    this.form.regexPattern.setValue(job.pattern);
+    this.form.alternativeEmail.setValue(job.alternativeEmail);
+
     this.openEditScrapeJobModal(this.editScrapeJobModalTemplateRef);
   }
 
