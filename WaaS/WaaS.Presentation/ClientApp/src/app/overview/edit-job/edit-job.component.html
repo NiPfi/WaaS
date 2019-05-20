@@ -43,7 +43,10 @@
       <div class="modal-footer">
         <div class="form-group">
           <button type="button" class="btn btn-secondary" (click)="editScrapeJobModalRef.hide()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button *ngIf="scrapeJob;else createBtn" type="submit" class="btn btn-primary">Save</button>
+          <ng-template #createBtn>
+            <button type="submit" class="btn btn-primary">Create</button>
+          </ng-template>
         </div>
       </div>
     </form>

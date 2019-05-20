@@ -157,7 +157,7 @@ namespace WaaS.Business.Services
     {
       var scrapeJobEntity = await _scrapeJobRepository.GetAsync(scrapeJobId);
 
-      return userId.Equals(scrapeJobEntity.IdentityUser.Id, StringComparison.InvariantCulture);
+      return scrapeJobEntity != null ?  userId.Equals(scrapeJobEntity.IdentityUser.Id, StringComparison.InvariantCulture) : false;
     }
 
 

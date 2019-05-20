@@ -1,7 +1,8 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
+import { Subscription } from 'rxjs';
 import { ValidationService } from 'src/app/error-handling/form-validation/validation-service/validation.service';
 
 import { OverviewService } from '../overview-service/overview.service';
@@ -20,11 +21,11 @@ export class EditJobComponent implements OnInit {
 
   editScrapeJobForm: FormGroup;
   editScrapeJobModalRef: BsModalRef;
+  onHiddenSubscription: Subscription;
 
   errorMessage = '';
 
   scrapeJob : ScrapeJob;
-
 
   constructor(
     private readonly jobsService: OverviewService,
@@ -56,10 +57,13 @@ export class EditJobComponent implements OnInit {
     job.pattern = this.editScrapeJobForm.controls.regexPattern.value;
     job.alternativeEmail = this.editScrapeJobForm.controls.alternativeEmail.value;
 
-    if(job.id == 0){
+    if(job.id == null || job.id == 0){
       this.createScrapeJob(job);
     }
-    else{
+    else if (job === this.scrapeJob){
+      this.editScrapeJobModalRef.hide();
+      return;
+    } else{
       this.updateScrapeJob(job);
     }
   }
@@ -93,6 +97,7 @@ export class EditJobComponent implements OnInit {
   }
 
   openCreateModal(){
+    this.scrapeJob = null;
     this.openEditScrapeJobModal(this.editScrapeJobModalTemplateRef);
   }
 
@@ -102,7 +107,19 @@ export class EditJobComponent implements OnInit {
   }
 
   openEditScrapeJobModal(template: TemplateRef<any>) {
+
+    this.onHiddenSubscription = this.modalService.onHidden.subscribe((reason: string) => {
+      this.onModalHidden();
+    });
+
     this.editScrapeJobModalRef = this.modalService.show(template, {});
+  }
+
+  onModalHidden(){
+    this.editScrapeJobForm.reset();
+    this.errorMessage = "";
+    this.scrapeJob = null;
+    this.onHiddenSubscription.unsubscribe();
   }
 
   onErrorAlertClosed() {
