@@ -22,6 +22,11 @@ export class EditJobComponent implements OnInit {
   editScrapeJobForm: FormGroup;
   editScrapeJobModalRef: BsModalRef;
   onHiddenSubscription: Subscription;
+  modalConfig = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  }
+
 
   errorMessage = '';
 
@@ -117,7 +122,7 @@ export class EditJobComponent implements OnInit {
       this.onModalHidden();
     });
 
-    this.editScrapeJobModalRef = this.modalService.show(template, {});
+    this.editScrapeJobModalRef = this.modalService.show(template, this.modalConfig);
   }
 
   onModalHidden(){

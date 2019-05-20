@@ -23,6 +23,10 @@ export class OverviewComponent implements OnInit {
   faPlus = faPlus;
 
   deleteModalRef: BsModalRef;
+  modalConfig = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  }
 
   successMessage = '';
   errorMessage = '';
@@ -61,7 +65,7 @@ export class OverviewComponent implements OnInit {
   }
 
   openDeleteModal(template: TemplateRef<any>, i: number) {
-    this.deleteModalRef = this.modalService.show(template, {});
+    this.deleteModalRef = this.modalService.show(template, this.modalConfig);
     this.currentJobIndex = i;
   }
 
