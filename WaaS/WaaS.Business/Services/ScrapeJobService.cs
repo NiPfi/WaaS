@@ -156,7 +156,12 @@ namespace WaaS.Business.Services
     {
       var scrapeJobEntity = await _scrapeJobDomainService.GetAsync(scrapeJobId);
 
-      return scrapeJobEntity != null ?  userId.Equals(scrapeJobEntity.IdentityUser.Id, StringComparison.InvariantCulture) : false;
+      if (scrapeJobEntity == null || userId == null)
+      {
+        return false;
+      }
+
+      return userId.Equals(scrapeJobEntity.IdentityUser.Id, StringComparison.InvariantCulture);
     }
 
     public async Task<bool> ExecuteScrapeJobAsync(ScrapeJob scrapeJob)
