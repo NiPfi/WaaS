@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -176,24 +177,25 @@ namespace WaaS.Presentation
 
         spa.Options.SourcePath = "ClientApp";
 
-        spa.UseSpaPrerendering(options =>
-        {
-          
-          options.BootModulePath = $"{spa.Options.SourcePath}/dist-server/main.js";
-          options.BootModuleBuilder = env.IsDevelopment()
-              ? new AngularCliBuilder(npmScript: "build:ssr")
-              : null;
-          options.ExcludeUrls = new[] { "/sockjs-node" };
-          options.SupplyData = (context, data) =>
-          {
-            data["cookie"] = context.Request.Cookies;
-          };
-        });
+        //ConfigureSpaPrerendering(env, spa);
 
         if (env.IsDevelopment())
         {
           spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
         }
+      });
+    }
+
+    private static void ConfigureSpaPrerendering(IHostingEnvironment env, ISpaBuilder spa)
+    {
+      spa.UseSpaPrerendering(options =>
+      {
+        options.BootModulePath = $"{spa.Options.SourcePath}/dist-server/main.js";
+        options.BootModuleBuilder = env.IsDevelopment()
+          ? new AngularCliBuilder(npmScript: "build:ssr")
+          : null;
+        options.ExcludeUrls = new[] {"/sockjs-node"};
+        options.SupplyData = (context, data) => { data["cookie"] = context.Request.Cookies; };
       });
     }
   }
