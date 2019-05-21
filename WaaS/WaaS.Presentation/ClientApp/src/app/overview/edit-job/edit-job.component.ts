@@ -1,7 +1,8 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
+import { Subscription } from 'rxjs';
 import { ValidationService } from 'src/app/error-handling/form-validation/validation-service/validation.service';
 
 import { OverviewService } from '../overview-service/overview.service';
@@ -20,11 +21,16 @@ export class EditJobComponent implements OnInit {
 
   editScrapeJobForm: FormGroup;
   editScrapeJobModalRef: BsModalRef;
+  onHiddenSubscription: Subscription;
+  modalConfig = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  }
+
 
   errorMessage = '';
 
   scrapeJob : ScrapeJob;
-
 
   constructor(
     private readonly jobsService: OverviewService,
@@ -44,18 +50,30 @@ export class EditJobComponent implements OnInit {
   // convenience getter for easy access to form fields
   get form() { return this.editScrapeJobForm.controls; }
 
-  createScrapeJob(){
+  saveScrapeJob(){
     if (this.editScrapeJobForm.invalid) {
       ValidationService.validateAllFormFields(this.editScrapeJobForm);
       return;
     }
 
-    const job = new ScrapeJob();
-    job.name = this.editScrapeJobForm.controls.scrapeJobName.value;
-    job.url = this.editScrapeJobForm.controls.url.value;
-    job.pattern = this.editScrapeJobForm.controls.regexPattern.value;
-    job.alternativeEmail = this.editScrapeJobForm.controls.alternativeEmail.value;
+    const job = this.scrapeJob ? this.scrapeJob : new ScrapeJob();
+    job.name = this.form.scrapeJobName.value;
+    job.url = this.form.url.value;
+    job.pattern = this.form.regexPattern.value;
+    job.alternativeEmail = this.form.alternativeEmail.value;
 
+    if(job.id == null || job.id == 0){
+      this.createScrapeJob(job);
+    }
+    else if (job === this.scrapeJob){
+      this.editScrapeJobModalRef.hide();
+      return;
+    } else{
+      this.updateScrapeJob(job);
+    }
+  }
+
+  createScrapeJob(job: ScrapeJob){
     this.jobsService.addScrapeJob(job)
     .pipe(first())
       .subscribe(
@@ -66,21 +84,52 @@ export class EditJobComponent implements OnInit {
         error => {
           this.errorMessage = error;
         }
-      )
-      ;
+      );
+  }
+
+  updateScrapeJob(job: ScrapeJob){
+    this.jobsService.updateScrapeJob(job)
+    .pipe(first())
+      .subscribe(
+        () => {
+          this.jobEdited.emit();
+          this.editScrapeJobModalRef.hide();
+        },
+        error => {
+          this.errorMessage = error;
+        }
+      );
   }
 
   openCreateModal(){
+    this.scrapeJob = null;
     this.openEditScrapeJobModal(this.editScrapeJobModalTemplateRef);
   }
 
   openEditModal(job: ScrapeJob){
     this.scrapeJob = job;
+    this.form.scrapeJobName.setValue(job.name);
+    this.form.url.setValue(job.url);
+    this.form.regexPattern.setValue(job.pattern);
+    this.form.alternativeEmail.setValue(job.alternativeEmail);
+
     this.openEditScrapeJobModal(this.editScrapeJobModalTemplateRef);
   }
 
   openEditScrapeJobModal(template: TemplateRef<any>) {
-    this.editScrapeJobModalRef = this.modalService.show(template, {});
+
+    this.onHiddenSubscription = this.modalService.onHidden.subscribe((reason: string) => {
+      this.onModalHidden();
+    });
+
+    this.editScrapeJobModalRef = this.modalService.show(template, this.modalConfig);
+  }
+
+  onModalHidden(){
+    this.editScrapeJobForm.reset();
+    this.errorMessage = "";
+    this.scrapeJob = null;
+    this.onHiddenSubscription.unsubscribe();
   }
 
   onErrorAlertClosed() {

@@ -514,6 +514,21 @@ Due to the two week submission cycle of the project we used a duration of two we
 
 Since we used a tailored version of scrum we did not do any daily scrum meetings and had no sprint retrospective. This would not have been easily achievable due to different work times and work locations. Also we did not have a traditional scrum management hierarchy with scrum master and product manager due to our team size being limited to two people.
 
+\section{Security Analysis}
+
+In the scope of the project we analysed some security aspects of WaaS. Specifically we focused on google hacking. Most of the methods described in \cite{mJohnnyLong2005} should be prevented by using third party libraries for features containing security measures. Concerning google hacking there are two potential vulnerabilities we took a closer look at.
+
+\subsection{Open Source}
+
+
+
+\subsection{Third party libraries}
+
+Through advanced google searches and the usage of it's search operators it is possible to search for websites that use specific libraries. For example the npm package-lock file can be found in the source repository of our project. Therefor attackers could try to look for dependencies with known vulnerabilities.
+
+\subsection{OWASP}
+(won't include in docs)
+
 \pagebreak
 
 \listoftables

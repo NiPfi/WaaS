@@ -29,6 +29,11 @@ export class OverviewService{
       .pipe(catchError(this.handler.handleError));
   }
 
+  updateScrapeJob(job: ScrapeJob): Observable<{}> {
+    return this.http.put(`${environment.apiUrl}/scrapejob`, job)
+    .pipe(catchError(this.handler.handleError));
+  }
+
   deleteScrapeJob(id: number): Observable<{}> {
     const params = new HttpParams().set('scrapeJobId', `${id}`);
     return this.http.delete(`${environment.apiUrl}/scrapeJob/`, { params })
