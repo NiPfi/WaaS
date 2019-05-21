@@ -27,6 +27,7 @@ using WaaS.Infrastructure.DomainServices;
 using WaaS.Infrastructure.Scraper;
 using WaaS.Infrastructure.ScrapeScheduler;
 using WaaS.Infrastructure.SendGridMail;
+using WaaS.Presentation.Hubs;
 using WaaS.Presentation.Middlewares.HttpContext;
 
 namespace WaaS.Presentation
@@ -92,6 +93,7 @@ namespace WaaS.Presentation
 
       services.AddResponseCompression();
 
+      services.AddSignalR();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
       ServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -154,6 +156,11 @@ namespace WaaS.Presentation
         app.UseStaticFiles();
         app.UseSpaStaticFiles();
       }
+
+      app.UseSignalR(routes =>
+      {
+        routes.MapHub<ScrapeJobStatusHub>("/signalr/scrapejob/status");
+      });
 
       app.UseMvc(routes =>
       {
