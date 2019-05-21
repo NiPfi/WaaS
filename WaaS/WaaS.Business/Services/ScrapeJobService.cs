@@ -180,7 +180,7 @@ namespace WaaS.Business.Services
       }
       catch (UriFormatException ex)
       {
-        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, job => job.Enabled = false);
+        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, job => job.Enabled = false); //TODO Resolve bug when context already disposed bc of async
 
         result.Type = ScrapeJobEventType.Error;
         result.Message = ex.Message;
