@@ -8,5 +8,9 @@ namespace WaaS.Presentation.Hubs
 {
   public class ScrapeJobStatusHub : Hub
   {
+    public async Task RegisterStatusListener()
+    {
+      await Clients.Caller.SendCoreAsync("statusUpdate", null);
+    }
   }
 }

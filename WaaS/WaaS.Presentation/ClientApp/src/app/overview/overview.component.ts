@@ -1,11 +1,12 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-
-import { faPen, faTrashAlt, faToggleOn, faToggleOff, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { OverviewService } from './overview-service/overview.service';
-import { ScrapeJob } from './scrape-job';
+import { faPen, faPlus, faToggleOff, faToggleOn, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
+
 import { EditJobComponent } from './edit-job/edit-job.component';
+import { OverviewService } from './overview-service/overview.service';
+import { ScrapeJob } from './scrape-job';
+import { ScrapeJobStatusService } from './scrape-job-status/scrape-job-status.service';
 
 @Component({
   selector: 'app-overview',
@@ -37,11 +38,13 @@ export class OverviewComponent implements OnInit {
 
   constructor(
     private readonly modalService: BsModalService,
-    private readonly jobsService: OverviewService
+    private readonly jobsService: OverviewService,
+    private readonly statusService: ScrapeJobStatusService
   ) { }
 
   ngOnInit() {
     this.loadJobs();
+    this.statusService.startConnection();
   }
 
   onJobEdited() {

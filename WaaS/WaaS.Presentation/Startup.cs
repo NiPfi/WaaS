@@ -94,7 +94,11 @@ namespace WaaS.Presentation
 
       services.AddResponseCompression();
 
-      services.AddSignalR();
+      services.AddSignalR(hubOptions =>
+      {
+        hubOptions.EnableDetailedErrors = true;
+        hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(5);
+      });
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
       ServiceProvider serviceProvider = services.BuildServiceProvider();
