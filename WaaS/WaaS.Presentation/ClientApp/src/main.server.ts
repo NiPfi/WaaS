@@ -25,8 +25,7 @@ export default createServerRenderer(params => {
     extraProviders: [
       provideModuleMap(LAZY_MODULE_MAP),
       { provide: APP_BASE_HREF, useValue: params.baseUrl },
-      { provide: 'BASE_URL', useValue: params.origin + params.baseUrl },
-      { provide: 'COOKIE', useValue: params.data.cookie }
+      { provide: 'BASE_URL', useValue: params.origin + params.baseUrl }
     ]
   };
 

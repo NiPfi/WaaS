@@ -8,7 +8,6 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 
@@ -67,8 +66,7 @@ import { EditJobComponent } from './overview/edit-job/edit-job.component';
     NgxSpinnerModule,
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot(),
-    CookieModule.forRoot()
+    ModalModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

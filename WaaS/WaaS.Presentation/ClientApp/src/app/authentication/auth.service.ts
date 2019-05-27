@@ -1,7 +1,7 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieOptions, CookieService } from 'ngx-cookie';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -20,15 +20,15 @@ export class AuthService {
     private readonly router: Router,
     private readonly jwtHelper: JwtHelperService,
     private readonly handler: HttpErrorHandlerService,
-    private readonly cookies: CookieService
+    @Inject(PLATFORM_ID) private readonly platformId: object
   ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.localStorage = window.localStorage;
+      this.localStorageUserKey = 'currentUserToken';
+    }
   }
-  private readonly userKey = 'currentUserToken';
-  private readonly cookieOptions: CookieOptions = {
-    domain: environment.apiUrl,
-    httpOnly: true,
-    secure: true
-  };
+  private readonly localStorage: any;
+  private readonly localStorageUserKey: string;
 
   public isAuthenticated(): boolean {
     const token = this.getUserToken();
@@ -63,20 +63,25 @@ export class AuthService {
       .pipe(catchError(this.handler.handleError));
   }
 
+  updateUser(user: User) {
+    if (this.localStorage) {
+      this.localStorage.setItem(this.localStorageUserKey, user.token);
+    }
+  }
+
   logout() {
-    this.cookies.removeAll();
+    if (this.localStorage) {
+      this.localStorage.removeItem(this.localStorageUserKey);
+    }
     this.router.navigate(['']);
   }
 
-  updateUser(user: User) {
-    this.cookies.put(this.userKey, user.token);
-  }
-
   public getUserToken(): string {
-    const token = this.cookies.get(this.userKey);
-    if (token) {
-      return this.jwtHelper.isTokenExpired(token) ? '' : token;
+    if (this.localStorage) {
+      return this.localStorage.getItem(this.localStorageUserKey);
     }
+    return null;
+
   }
 
 }
