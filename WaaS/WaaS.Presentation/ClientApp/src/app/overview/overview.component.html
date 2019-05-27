@@ -50,7 +50,8 @@
             <div class="actions d-flex align-items-center">
               <a (click)="openEditModal(i)"><fa-icon class="cursor-pointer" [icon]="faPen"></fa-icon></a>
               <a (click)="openDeleteModal(confirmScrapeJobDeletionModal, i)"><fa-icon class="cursor-pointer" [icon]="faTrashAlt"></fa-icon></a>
-              <a><fa-icon class="cursor-pointer" [icon]="faToggleOn"></fa-icon></a>
+              <a (click)="toggleEnabled(i)" *ngIf="job.enabled"><fa-icon class="cursor-pointer" [icon]="faToggleOn"></fa-icon></a>
+              <a (click)="toggleEnabled(i)" *ngIf="!job.enabled"><fa-icon class="cursor-pointer" [icon]="faToggleOff"></fa-icon></a>
             </div>
           </div>
         </div>

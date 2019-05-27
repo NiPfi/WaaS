@@ -84,6 +84,20 @@ export class OverviewComponent implements OnInit {
       );;
   }
 
+  toggleEnabled(index: number){
+    var job = this.jobs[index];
+    this.jobsService.toggleEnabled(job)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.loadJobs();
+        },
+        error => {
+          this.errorMessage = error;
+        }
+      );
+  }
+
   onSuccessAlertClosed() {
     this.successMessage = '';
   }
