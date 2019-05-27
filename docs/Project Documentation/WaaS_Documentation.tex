@@ -516,18 +516,26 @@ Since we used a tailored version of scrum we did not do any daily scrum meetings
 
 \section{Security Analysis}
 
-In the scope of the project we analysed some security aspects of WaaS. Specifically we focused on google hacking. Most of the methods described in \cite{mJohnnyLong2005} should be prevented by using third party libraries for features containing security measures. Concerning google hacking there are two potential vulnerabilities we took a closer look at.
+In the scope of the project we analysed security aspects of WaaS. Specifically we focused on google hacking. Most of the methods described in \cite{mJohnnyLong2005} should be prevented by using third party libraries for features containing security measures. Given that we only use third party libraries of developers we can trust. Concerning google hacking there are two potential vulnerabilities we took a closer look at. We discuss them in the following sections.
 
 \subsection{Open Source}
+\label{sec:opensource}
 
+Our project WaaS is licensed under the open source license AGPL 3.0. Therefor our projects source code can be found publicly on github. While a principle of open source software is that it can be reviewed and tested by other people this may also be a security risk. If there are any overlooked security flaws to be found in our code they can be discovered by anyone. It is then up to those people to decide if they contact us about the flaw or if they plan to do malicious actions with that information.
+
+
+One way to prevent this potential security flaw would be to make our project closed source. We don't want to do so because we are supporters of open source software and we accept the risks that come with it. Also we believe that this flaw will possibly be balanced out by helping members of the community that would point out flaws in the code.
 
 
 \subsection{Third party libraries}
 
-Through advanced google searches and the usage of it's search operators it is possible to search for websites that use specific libraries. For example the npm package-lock file can be found in the source repository of our project. Therefor attackers could try to look for dependencies with known vulnerabilities.
+Through advanced google searches and the usage of it's search operators it is possible to search for websites that use specific libraries. For example the npm package-lock file can be found in the source repository of our project. Therefor attackers could try to look for dependencies with known vulnerabilities and try to use those vulnerabilities to attack a hosted instance of WaaS. As our project is open source (as described in \ref{sec:opensource}) the dependencies of our projects can easily be looked up.
+
+To minimise the risk of this security flaw we can regularly update the libraries that we use and check for known vulnerabilities ourselves. That way we can prevent security flaws of those libraries being integrated into our software.
 
 \subsection{OWASP}
-(won't include in docs)
+
+Further analysis of security aspects for this project was done concerning the OWASP Top Ten Project (\cite{mOWASPTopTen}). Due to the scope of the project this analysis is not documented here.
 
 \pagebreak
 
