@@ -8,12 +8,8 @@ EXPOSE 5001
 
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
-COPY ["WaaS.Presentation/WaaS.Presentation.csproj", "WaaS.Presentation/"]
-COPY ["WaaS.Business/WaaS.Business.csproj", "WaaS.Business/"]
-COPY ["WaaS.Infrastructure/WaaS.Infrastructure.csproj", "WaaS.Infrastructure/"]
-COPY ["WaaS.Infrastructure.SendGridMail/WaaS.Infrastructure.SendGridMail.csproj", "WaaS.Infrastructure.SendGridMail/"]
-RUN dotnet restore "WaaS.Presentation/WaaS.Presentation.csproj"
 COPY . .
+RUN dotnet restore "WaaS.Presentation/WaaS.Presentation.csproj"
 WORKDIR /src/WaaS.Presentation
 RUN dotnet build "WaaS.Presentation.csproj" -c Release -o /app
 

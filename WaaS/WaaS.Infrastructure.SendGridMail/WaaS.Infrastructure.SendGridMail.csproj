@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>WaaS.Infrastructure.SendGridMail.Release.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CodeAnalysisRuleSet>WaaS.Infrastructure.SendGridMail-1.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 

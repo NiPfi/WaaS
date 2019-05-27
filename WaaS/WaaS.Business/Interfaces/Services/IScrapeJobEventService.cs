@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
+using WaaS.Business.Entities;
 
 namespace WaaS.Business.Interfaces.Services
 {

@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,11 +18,14 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WaaS.Business;
-using WaaS.Business.Interfaces.Repositories;
+using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
+using WaaS.Business.Interfaces.Services.Domain;
 using WaaS.Business.Services;
 using WaaS.Infrastructure;
-using WaaS.Infrastructure.Repositories;
+using WaaS.Infrastructure.DomainServices;
+using WaaS.Infrastructure.Scraper;
+using WaaS.Infrastructure.ScrapeScheduler;
 using WaaS.Infrastructure.SendGridMail;
 using WaaS.Presentation.Middlewares.HttpContext;
 
@@ -103,17 +107,23 @@ namespace WaaS.Presentation
       services.AddAutoMapper();
 
       services.AddDbContext<WaasDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WaasDbContext")));
+      services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<WaasDbContext>());
 
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      services.AddSingleton<HttpClient, HttpClient>();
 
       services.AddTransient<IEmailSender, EmailSender>();
+      //services.AddTransient<IScraper, SimpleHtmlRegexScraper>();
+      services.AddScoped<IScraper, CachedHtmlRegexScraper>();
 
       services.AddScoped<IEmailService, EmailService>();
       services.AddScoped<IUserService, UserService>();
-      services.AddScoped<IScrapeJobRepository, ScrapeJobRepository>();
       services.AddScoped<IScrapeJobService, ScrapeJobService>();
-      services.AddScoped<IScrapeJobEventRepository, ScrapeJobEventRepository>();
+      services.AddScoped<IScrapeJobDomainService, ScrapeJobDomainService>();
+      services.AddScoped<IScrapeJobEventDomainService, ScrapeJobEventDomainService>();
       services.AddScoped<IScrapeJobEventService, ScrapeJobEventService>();
+
+      services.AddHostedService<SimpleTimedScrapeScheduler>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

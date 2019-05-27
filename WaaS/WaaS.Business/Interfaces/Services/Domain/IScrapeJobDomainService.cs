@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using WaaS.Business.Entities;
 
-namespace WaaS.Business.Interfaces.Repositories
+namespace WaaS.Business.Interfaces.Services.Domain
 {
-  public interface IScrapeJobRepository : IRepository<ScrapeJob, long>
+  public interface IScrapeJobDomainService: IBaseDomainService<ScrapeJob, long>
   {
-
     IQueryable<ScrapeJob> ReadUsersScrapeJobs(string userId);
-
+    IEnumerable<ScrapeJob> GetEnabledScrapeJobs();
   }
 }

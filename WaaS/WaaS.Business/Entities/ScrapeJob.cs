@@ -22,6 +22,11 @@ namespace WaaS.Business.Entities
     public virtual IdentityUser IdentityUser { get; set; }
     public virtual ICollection<ScrapeJobEvent> Events { get; set; }
 
+    public override string ToString()
+    {
+      return $"{nameof(Id)}: {Id}, {nameof(UserSpecificId)}: {UserSpecificId}, {nameof(Url)}: {Url}, {nameof(Pattern)}: {Pattern}, {nameof(IdentityUserForeignKey)}: {IdentityUserForeignKey}";
+    }
+
     public override bool Equals(object obj)
     {
       if(obj is IEntity<long> other)
