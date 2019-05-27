@@ -25,23 +25,12 @@ export class ScrapeJobStatusService {
   public startConnection(): void {
     console.log(this.connection.state);
     console.log('startConnection');
-    this.connection.start().then(() => {
-      this.handleConnected();
-    }).catch(err => console.error(err));
+    this.connection.start();
+    this.connection.on("statusUpdate", this.handleStatusUpdate);
   }
 
-  private handleConnected() {
-    console.log('Connected');
-
-    this.connection.onclose(() => {
-      this.startConnection();
-    });
-
-    this.connection.on('statusUpdate', () => {
-      this.handleStatusUpdate();
-    });
-
-    this.connection.invoke('registerStatusListener');
+  public closeConnection(): void {
+    this.connection.stop();
   }
 
   private handleStatusUpdate() {

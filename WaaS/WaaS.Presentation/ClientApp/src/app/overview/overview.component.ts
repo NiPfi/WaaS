@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { faPen, faPlus, faToggleOff, faToggleOn, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
@@ -13,7 +13,7 @@ import { ScrapeJobStatusService } from './scrape-job-status/scrape-job-status.se
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit, OnDestroy {
 
   @ViewChild(EditJobComponent) editJobComponent: EditJobComponent;
 
@@ -42,9 +42,13 @@ export class OverviewComponent implements OnInit {
     private readonly statusService: ScrapeJobStatusService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadJobs();
     this.statusService.startConnection();
+  }
+
+  ngOnDestroy(): void {
+    this.statusService.closeConnection();
   }
 
   onJobEdited() {
