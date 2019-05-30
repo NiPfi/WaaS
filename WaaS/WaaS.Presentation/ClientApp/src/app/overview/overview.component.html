@@ -15,6 +15,7 @@
         </button>
       </div>
       <app-edit-job (jobEdited)="onJobEdited()"></app-edit-job>
+      <app-job-events></app-job-events>
     </div>
 
   </div>
@@ -39,7 +40,7 @@
 <ng-template #jobsOverview>
   <div class="row">
     <div class="card crawl" *ngFor="let job of jobs; let i = index">
-      <div class="card-body">
+      <div class="card-body cursor-pointer" (click)="openEventsModal(i)">
         <div class="d-flex align-items-center">
           <img class="favicon" src="https://via.placeholder.com/34" alt="Favicon of {{job.url}}">
         </div>

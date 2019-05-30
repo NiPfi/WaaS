@@ -6,6 +6,7 @@ import { ScrapeJob } from './scrape-job';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
 import { EditJobComponent } from './edit-job/edit-job.component';
+import { JobEventsComponent } from './job-events/job-events.component';
 
 @Component({
   selector: 'app-overview',
@@ -15,6 +16,7 @@ import { EditJobComponent } from './edit-job/edit-job.component';
 export class OverviewComponent implements OnInit {
 
   @ViewChild(EditJobComponent) editJobComponent: EditJobComponent;
+  @ViewChild(JobEventsComponent) jobEventsComponent: JobEventsComponent;
 
   faPen = faPen;
   faTrashAlt = faTrashAlt;
@@ -62,6 +64,10 @@ export class OverviewComponent implements OnInit {
 
   openEditModal(i: number){
     this.editJobComponent.openEditModal(this.jobs[i]);
+  }
+
+  openEventsModal(i: number){
+    this.jobEventsComponent.openJobEventsModal(this.jobs[i]);
   }
 
   openDeleteModal(template: TemplateRef<any>, i: number) {

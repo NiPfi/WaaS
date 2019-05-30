@@ -35,6 +35,7 @@ import { VerifyMailChangeComponent } from './authentication/verify/mail-change/v
 import { PasswordResetComponent } from './authentication/password-reset/password-reset.component';
 import { VerifyPasswordResetComponent } from './authentication/verify/password-reset/verify-password-reset.component';
 import { EditJobComponent } from './overview/edit-job/edit-job.component';
+import { JobEventsComponent } from './overview/job-events/job-events.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { EditJobComponent } from './overview/edit-job/edit-job.component';
     ResendConfirmationEmailComponent,
     VerifyMailChangeComponent,
     PasswordResetComponent,
-    VerifyPasswordResetComponent
+    VerifyPasswordResetComponent,
+    JobEventsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
