@@ -9,6 +9,7 @@ import { MockPipe } from 'ng-mocks';
 import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
 import { EditJobComponent } from './edit-job/edit-job.component';
 import { OverviewComponent } from './overview.component';
+import { JobEventsComponent } from './job-events/job-events.component';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
@@ -26,6 +27,7 @@ describe('OverviewComponent', () => {
       declarations: [
         OverviewComponent,
         MockComponent(EditJobComponent),
+        MockComponent(JobEventsComponent),
         MockPipe(ConvertNewLinePipe)
       ]
     })

@@ -1,4 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ModalModule, AlertModule } from 'ngx-bootstrap';
+import { ConvertNewLinePipe } from '../../pipes/new-line-pipe/convert-new-line.pipe';
+import { MockPipe } from 'ng-mocks';
 
 import { JobEventsComponent } from './job-events.component';
 
@@ -8,7 +11,14 @@ describe('JobEventsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JobEventsComponent ]
+      imports: [
+        ModalModule.forRoot(),
+        AlertModule
+      ],
+      declarations: [ 
+        JobEventsComponent,
+        MockPipe(ConvertNewLinePipe)
+       ]
     })
     .compileComponents();
   }));
