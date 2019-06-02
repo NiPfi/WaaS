@@ -40,7 +40,7 @@
 <ng-template #jobsOverview>
   <div class="row">
     <div class="card crawl" *ngFor="let job of jobs; let i = index">
-      <div class="card-body cursor-pointer" (click)="openEventsModal(i)">
+      <div class="card-body">
         <div class="d-flex align-items-center">
           <img class="favicon" src="https://via.placeholder.com/34" alt="Favicon of {{job.url}}">
         </div>
@@ -49,6 +49,7 @@
             <p class="small text-muted">{{job.url}}</p>
           <div class="d-flex justify-content-end">
             <div class="actions d-flex align-items-center">
+              <a (click)="openEventsModal(i)"><fa-icon class="cursor-pointer" [icon]="faHistory" size="lg"></fa-icon></a>
               <a (click)="openEditModal(i)"><fa-icon class="cursor-pointer" [icon]="faPen" size="lg"></fa-icon></a>
               <a (click)="openDeleteModal(confirmScrapeJobDeletionModal, i)"><fa-icon class="cursor-pointer" [icon]="faTrashAlt" size="lg"></fa-icon></a>
               <a (click)="toggleEnabled(i)" *ngIf="job.enabled"><fa-icon class="cursor-pointer" [icon]="faToggleOn" size="lg"></fa-icon></a>

@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
-import { faPen, faTrashAlt, faToggleOn, faToggleOff, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrashAlt, faToggleOn, faToggleOff, faPlus, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { OverviewService } from './overview-service/overview.service';
 import { ScrapeJob } from './scrape-job';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -23,6 +23,7 @@ export class OverviewComponent implements OnInit {
   faToggleOn = faToggleOn;
   faToggleOff = faToggleOff;
   faPlus = faPlus;
+  faHistory = faHistory;
 
   deleteModalRef: BsModalRef;
   modalConfig = {
