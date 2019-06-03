@@ -59,7 +59,7 @@ namespace WaaS.Business.Tests.Services
       var result = await scrapeJobService.Create(testScrapeJobDto, mockClaimsPrincipal);
 
       // Assert
-      mockUnitOfWork.Received().CommitAsync();
+      await mockUnitOfWork.Received().CommitAsync();
       Assert.Equal(testScrapeJobDto, result);
 
     }

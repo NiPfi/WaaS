@@ -15,6 +15,7 @@
         </button>
       </div>
       <app-edit-job (jobEdited)="onJobEdited()"></app-edit-job>
+      <app-job-events></app-job-events>
     </div>
 
   </div>
@@ -48,9 +49,11 @@
             <p class="small text-muted">{{job.url}}</p>
           <div class="d-flex justify-content-end">
             <div class="actions d-flex align-items-center">
-              <a (click)="openEditModal(i)"><fa-icon class="cursor-pointer" [icon]="faPen"></fa-icon></a>
-              <a (click)="openDeleteModal(confirmScrapeJobDeletionModal, i)"><fa-icon class="cursor-pointer" [icon]="faTrashAlt"></fa-icon></a>
-              <a><fa-icon class="cursor-pointer" [icon]="faToggleOn"></fa-icon></a>
+              <a (click)="openEventsModal(i)"><fa-icon class="cursor-pointer" [icon]="faHistory" size="lg"></fa-icon></a>
+              <a (click)="openEditModal(i)"><fa-icon class="cursor-pointer" [icon]="faPen" size="lg"></fa-icon></a>
+              <a (click)="openDeleteModal(confirmScrapeJobDeletionModal, i)"><fa-icon class="cursor-pointer" [icon]="faTrashAlt" size="lg"></fa-icon></a>
+              <a (click)="toggleEnabled(i)" *ngIf="job.enabled"><fa-icon class="cursor-pointer" [icon]="faToggleOn" size="lg"></fa-icon></a>
+              <a (click)="toggleEnabled(i)" *ngIf="!job.enabled"><fa-icon class="cursor-pointer" [icon]="faToggleOff" size="lg"></fa-icon></a>
             </div>
           </div>
         </div>

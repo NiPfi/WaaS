@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { faPen, faPlus, faToggleOff, faToggleOn, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faPen, faPlus, faToggleOff, faToggleOn, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
 
 import { EditJobComponent } from './edit-job/edit-job.component';
+import { JobEventsComponent } from './job-events/job-events.component';
 import { OverviewService } from './overview-service/overview.service';
 import { ScrapeJob } from './scrape-job';
 import { ScrapeJobStatusService } from './scrape-job-status/scrape-job-status.service';
@@ -16,12 +17,14 @@ import { ScrapeJobStatusService } from './scrape-job-status/scrape-job-status.se
 export class OverviewComponent implements OnInit, OnDestroy {
 
   @ViewChild(EditJobComponent) editJobComponent: EditJobComponent;
+  @ViewChild(JobEventsComponent) jobEventsComponent: JobEventsComponent;
 
   faPen = faPen;
   faTrashAlt = faTrashAlt;
   faToggleOn = faToggleOn;
   faToggleOff = faToggleOff;
   faPlus = faPlus;
+  faHistory = faHistory;
 
   deleteModalRef: BsModalRef;
   modalConfig = {
@@ -71,6 +74,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.editJobComponent.openEditModal(this.jobs[i]);
   }
 
+  openEventsModal(i: number){
+    this.jobEventsComponent.openJobEventsModal(this.jobs[i]);
+  }
+
   openDeleteModal(template: TemplateRef<any>, i: number) {
     this.deleteModalRef = this.modalService.show(template, this.modalConfig);
     this.currentJobIndex = i;
@@ -89,6 +96,20 @@ export class OverviewComponent implements OnInit, OnDestroy {
           this.errorMessage = error;
         }
       );;
+  }
+
+  toggleEnabled(index: number){
+    var job = this.jobs[index];
+    this.jobsService.toggleEnabled(job)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.loadJobs();
+        },
+        error => {
+          this.errorMessage = error;
+        }
+      );
   }
 
   onSuccessAlertClosed() {

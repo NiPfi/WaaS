@@ -1,0 +1,64 @@
+<ng-template #jobEventsModal>
+
+  <div class="modal-header">
+
+    <h4 class="modal-title pull-left">ScrapeJob History</h4>
+
+    <button type="button" class="close pull-right" aria-label="Close" (click)="jobEventsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  
+  <div class="modal-body">
+
+    <alert type="danger" *ngIf="errorMessage && errorMessage != ''" [dismissible]="true"
+      (onClosed)="onErrorAlertClosed()">
+      <span [innerHtml]="errorMessage | convertNewLine: true"></span>
+    </alert>
+
+    <ng-container *ngIf="scrapeJobEvents && scrapeJobEvents.length > 0; then jobEventsTable; else jobEventsTablePlaceholder">
+    </ng-container>
+
+  </div>
+
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="jobEventsModalRef.hide()">Close</button>
+  </div>
+
+</ng-template>
+
+<ng-template #jobEventsTable>
+  <div class="row">
+
+      <table class="table table-striped col-sm-12">
+        <thead>
+          <th>TimeStamp</th>
+          <th>Http Response</th>
+          <th>Response Time</th>
+          <th>Message</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let scrapeJobEvent of scrapeJobEvents;">
+            <td>
+              {{scrapeJobEvent.TimeStamp}}
+            </td>
+            <td>
+              {{scrapeJobEvent.HttpResponseCode}}
+            </td>
+            <td>
+              {{scrapeJobEvent.HttpResponseTimeInMs}}
+            </td>
+            <td>
+              {{scrapeJobEvent.Message}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+  </div>
+</ng-template>
+
+<ng-template #jobEventsTablePlaceholder>
+  Loading...
+</ng-template>

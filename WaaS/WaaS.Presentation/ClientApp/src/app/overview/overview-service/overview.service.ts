@@ -7,6 +7,7 @@ import { HttpErrorHandlerService } from 'src/app/error-handling/http-error-handl
 import { environment } from 'src/environments/environment';
 
 import { ScrapeJob } from '../scrape-job';
+import { ScrapeJobEvent } from '../scrape-job-event';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +25,24 @@ export class OverviewService{
       .pipe(map((response: ScrapeJob[]) => response));
   }
 
+  getScrapeJobEvents(): Observable<ScrapeJobEvent[]> {
+    return this.http.get(`${environment.apiUrl}/scrapejobevent`)
+      .pipe(catchError(this.handler.handleError))
+      .pipe(map((response: ScrapeJobEvent[]) => response));
+  }
+
   addScrapeJob(job: ScrapeJob): Observable<{}> {
     return this.http.post(`${environment.apiUrl}/scrapejob`, job)
       .pipe(catchError(this.handler.handleError));
   }
 
   updateScrapeJob(job: ScrapeJob): Observable<{}> {
+    return this.http.put(`${environment.apiUrl}/scrapejob`, job)
+    .pipe(catchError(this.handler.handleError));
+  }
+
+  toggleEnabled(job: ScrapeJob): Observable<{}> {
+    job.enabled = !job.enabled;
     return this.http.put(`${environment.apiUrl}/scrapejob`, job)
     .pipe(catchError(this.handler.handleError));
   }
