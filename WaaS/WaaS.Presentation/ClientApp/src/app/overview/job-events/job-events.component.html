@@ -25,21 +25,24 @@
   <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="jobEventsModalRef.hide()">Close</button>
   </div>
-  
+
 </ng-template>
 
 <ng-template #jobEventsTable>
   <div class="row">
 
-      <table>
+      <table class="table table-striped col-sm-12">
         <thead>
-          <th>HttpResponse Code</th>
+          <th>TimeStamp</th>
+          <th>Http Response</th>
           <th>Response Time</th>
           <th>Message</th>
-          <th>TimeStamp</th>
         </thead>
         <tbody>
           <tr *ngFor="let scrapeJobEvent of scrapeJobEvents;">
+            <td>
+              {{scrapeJobEvent.TimeStamp}}
+            </td>
             <td>
               {{scrapeJobEvent.HttpResponseCode}}
             </td>
@@ -48,9 +51,6 @@
             </td>
             <td>
               {{scrapeJobEvent.Message}}
-            </td>
-            <td>
-              {{scrapeJobEvent.TimeStamp}}
             </td>
           </tr>
         </tbody>
