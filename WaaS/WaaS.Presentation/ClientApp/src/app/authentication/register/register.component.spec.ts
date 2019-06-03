@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { AlertModule } from 'ngx-bootstrap';
-import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
@@ -27,8 +26,7 @@ describe('RegisterComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        NgxSpinnerModule,
-        CookieModule.forRoot()
+        NgxSpinnerModule
       ]
     })
       .compileComponents();

@@ -4,7 +4,6 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPipe } from 'ng-mocks';
 import { AlertModule } from 'ngx-bootstrap';
-import { CookieModule } from 'ngx-cookie';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
 import { VerifyRegistrationComponent } from './verify-registration.component';
@@ -26,8 +25,7 @@ describe('VerifyRegistrationComponent', () => {
       imports: [
         AlertModule,
         RouterTestingModule,
-        HttpClientTestingModule,
-        CookieModule.forRoot()
+        HttpClientTestingModule
       ],
       declarations: [
         VerifyRegistrationComponent,
