@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using NSubstitute.Core.Arguments;
 using WaaS.Business.Dtos;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces;
@@ -33,17 +34,32 @@ namespace WaaS.Business.Tests.Services
       var mockUnitOfWork = Substitute.For<IUnitOfWork>();
       var mockEmailService = Substitute.For<IEmailService>();
 
+      const string testUrl = "http://www.url.trololo";
+      const string testPattern = "hello world";
+
       ScrapeJobDto testScrapeJobDto = new ScrapeJobDto()
       {
+        Id = 100,
         Enabled = true,
-        Url = "http://www.url.trololo",
-        Pattern = "hello world"
+        Url = testUrl,
+        Pattern = testPattern
       };
 
-      var testScrapeJob = Substitute.For<ScrapeJob>();
+      var testScrapeJob = new ScrapeJob
+      {
+        Id = 333,
+        UserSpecificId = 100,
+        Enabled = true,
+        Url = testUrl,
+        Pattern = testPattern
+      };
 
       mockMapper.Map<ScrapeJob>(testScrapeJobDto).Returns(testScrapeJob);
       mockMapper.Map<ScrapeJobDto>(testScrapeJob).Returns(testScrapeJobDto);
+
+      mockScraper.ExecuteAsync(new Uri(testUrl), testPattern).Returns(new ScrapeJobEvent {
+        Url = testUrl
+        });
 
       mockScrapeJobDomainService.AddAsync(Arg.Any<ScrapeJob>()).ReturnsForAnyArgs(Task.FromResult(testScrapeJob));
       mockUnitOfWork.CommitAsync().Returns(Task.FromResult(true));
