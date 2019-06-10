@@ -19,11 +19,10 @@ namespace WaaS.Presentation.Hubs
       _scrapeJobService = scrapeJobService;
     }
 
-    public override Task OnConnectedAsync()
+    public override async Task OnConnectedAsync()
     {
-      
-      Clients.Caller.SendAsync("statusUpdate");
-      return base.OnConnectedAsync();
+      var statusDto = await _scrapeJobService.ReadUsersScrapeJobsStatusAsync(Context.User);
+      await Clients.Caller.SendAsync("statusUpdate", statusDto);
     }
   }
 }

@@ -1,11 +1,14 @@
 using System;
+using System.Collections;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.ScrapeJob;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
@@ -22,13 +25,14 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobDomainService _scrapeJobDomainService;
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IServiceProvider _services;
 
     public ScrapeJobService
       (
       IMapper mapper,
       UserManager<IdentityUser> userManager,
       IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService,
-      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork)
+      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork, IServiceProvider services)
     {
       _mapper = mapper;
       _userManager = userManager;
@@ -36,6 +40,7 @@ namespace WaaS.Business.Services
       _scrapeJobEventDomainService = scrapeJobEventDomainService;
       _scrapeJobDomainService = scrapeJobDomainService;
       _unitOfWork = unitOfWork;
+      _services = services;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -59,7 +64,7 @@ namespace WaaS.Business.Services
 
         if (success)
         {
-          ExecuteScrapeJob(entity);
+          await ExecuteScrapeJobAsync(entity);
           return _mapper.Map<ScrapeJobDto>(entity);
         }
 
@@ -180,8 +185,6 @@ namespace WaaS.Business.Services
       }
       catch (UriFormatException ex)
       {
-        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, job => job.Enabled = false); //TODO Resolve bug when context already disposed bc of async
-
         result.Type = ScrapeJobEventType.Error;
         result.Message = ex.Message;
         result.Url = scrapeJob.Url;
@@ -194,9 +197,27 @@ namespace WaaS.Business.Services
 
     }
 
-    public void ExecuteScrapeJob(ScrapeJob scrapeJob)
+    public async Task<IEnumerable<ScrapeJobStatusDto>> ReadUsersScrapeJobsStatusAsync(ClaimsPrincipal principal)
     {
-      Task.Factory.StartNew(() => ExecuteScrapeJobAsync(scrapeJob));
+      var idUser = await _userManager.GetUserAsync(principal);
+      var jobs = _scrapeJobDomainService.ReadUsersEnabledScrapeJobs(idUser.Id);
+      List<ScrapeJobStatusDto> resultList = new List<ScrapeJobStatusDto>();
+      foreach (ScrapeJob scrapeJob in jobs)
+      {
+        var scrapeJobEvent = _scrapeJobEventDomainService.ReadLatestScrapeJobEventOfScrapeJob(scrapeJob.Id);
+        if (scrapeJobEvent != null)
+        {
+          var statusDto = new ScrapeJobStatusDto
+          {
+            ScrapeJobId = scrapeJob.UserSpecificId,
+            StatusCode = scrapeJobEvent.Type
+          };
+          resultList.Add(statusDto);
+        }
+      }
+
+      return resultList;
     }
+
   }
 }

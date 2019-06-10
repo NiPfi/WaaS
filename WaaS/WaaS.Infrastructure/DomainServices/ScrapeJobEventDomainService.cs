@@ -13,9 +13,14 @@ namespace WaaS.Infrastructure.DomainServices
     {
     }
 
-    public IEnumerable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(int scrapeJobId)
+    public IEnumerable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId)
     {
       return GetAll().Where(x => x.ScrapeJob.Id.Equals(scrapeJobId));
+    }
+
+    public ScrapeJobEvent ReadLatestScrapeJobEventOfScrapeJob(long scrapeJobId)
+    {
+      return ReadScrapeJobEventsOfScrapeJob(scrapeJobId).OrderByDescending(e => e.TimeStamp).FirstOrDefault();
     }
 
   }

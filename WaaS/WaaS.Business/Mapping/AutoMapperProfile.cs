@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.ScrapeJob;
 using WaaS.Business.Dtos.User;
 using WaaS.Business.Entities;
 
