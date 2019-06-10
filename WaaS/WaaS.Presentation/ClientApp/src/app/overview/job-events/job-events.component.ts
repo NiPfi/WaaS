@@ -37,6 +37,7 @@ export class JobEventsComponent implements OnInit {
     this.scrapeJob = job;
     this.loadJobEvents(job.id);
     this.jobEventsModalRef = this.modalService.show(this.jobEventsModalTemplateRef, this.modalConfig);
+    this.jobEventsModalRef.setClass("modal-lg");
   }
 
   loadJobEvents(scrapeJobId: number) {
