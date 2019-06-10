@@ -100,7 +100,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(
         () => {
-          this.successMessage = "Successfully deleted ScrapeJob";
           this.loadJobs();
         },
         error => {
