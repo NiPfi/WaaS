@@ -35,6 +35,7 @@ import { PasswordResetComponent } from './authentication/password-reset/password
 import { VerifyPasswordResetComponent } from './authentication/verify/password-reset/verify-password-reset.component';
 import { EditJobComponent } from './overview/edit-job/edit-job.component';
 import { JobEventsComponent } from './overview/job-events/job-events.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { JobEventsComponent } from './overview/job-events/job-events.component';
     NgxSpinnerModule,
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
