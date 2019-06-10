@@ -42,7 +42,8 @@
     <div class="card crawl" *ngFor="let job of jobs; let i = index">
       <div class="card-body">
         <div class="d-flex align-items-center">
-          <img class="favicon" src="https://via.placeholder.com/34" alt="Favicon of {{job.url}}">
+          <img class="favicon" src="https://www.google.com/s2/favicons?domain={{extractHostname(job.url)}}" alt="Favicon of {{job.url}}">
+          
         </div>
         <div class="flex-grow-1 card-text">
             <div class="d-flex justify-content-end">
