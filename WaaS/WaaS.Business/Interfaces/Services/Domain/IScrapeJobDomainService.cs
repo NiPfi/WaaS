@@ -10,6 +10,7 @@ namespace WaaS.Business.Interfaces.Services.Domain
   public interface IScrapeJobDomainService: IBaseDomainService<ScrapeJob, long>
   {
     IQueryable<ScrapeJob> ReadUsersScrapeJobs(string userId);
-    IEnumerable<ScrapeJob> GetEnabledScrapeJobs();
+    IQueryable<ScrapeJob> ReadUsersEnabledScrapeJobs(string userId);
+    IEnumerable<ScrapeJob> ReadAllEnabledScrapeJobs();
   }
 }

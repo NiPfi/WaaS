@@ -30,14 +30,14 @@ export class ScrapeJobStatusService {
 
   public startConnection(): void {
     this.connection.start();
-    this.connection.on("statusUpdate", this.handleStatusUpdate);
+    this.connection.on('statusUpdate', this.handleStatusUpdate);
   }
 
   public closeConnection(): void {
     this.connection.stop();
   }
 
-  private handleStatusUpdate() {
-    console.log('Received status information');
+  private handleStatusUpdate(status: ScrapeJobStatus) {
+    console.log(status);
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.ScrapeJob;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
@@ -198,5 +200,28 @@ namespace WaaS.Business.Services
     {
       Task.Factory.StartNew(() => ExecuteScrapeJobAsync(scrapeJob));
     }
+
+    public async Task<IEnumerable<ScrapeJobStatusDto>> ReadUsersScrapeJobsStatusAsync(ClaimsPrincipal principal)
+    {
+      var idUser = await _userManager.GetUserAsync(principal);
+      var jobs = _scrapeJobDomainService.ReadUsersEnabledScrapeJobs(idUser.Id);
+      List<ScrapeJobStatusDto> resultList = new List<ScrapeJobStatusDto>();
+      foreach (ScrapeJob scrapeJob in jobs)
+      {
+        var scrapeJobEvent = _scrapeJobEventDomainService.ReadLatestScrapeJobEventOfScrapeJob(scrapeJob.Id);
+        if (scrapeJobEvent != null)
+        {
+          var statusDto = new ScrapeJobStatusDto
+          {
+            ScrapeJobId = scrapeJob.UserSpecificId,
+            StatusCode = scrapeJobEvent.Type
+          };
+          resultList.Add(statusDto);
+        }
+      }
+
+      return resultList;
+    }
+
   }
 }

@@ -5,7 +5,7 @@ using WaaS.Business.Entities;
 
 namespace WaaS.Business.Dtos.ScrapeJob
 {
-  class ScrapeJobStatusDto
+  public class ScrapeJobStatusDto
   {
     public int ScrapeJobId { get; set; }
     public ScrapeJobEventType StatusCode { get; set; }
