@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockComponent } from 'ng-mocks';
 import { RecaptchaComponent } from 'ng-recaptcha';
-import { CookieModule } from 'ngx-cookie';
 
 import { PasswordResetComponent } from './password-reset.component';
 
@@ -21,8 +20,7 @@ describe('PasswordResetComponent', () => {
       imports: [
         ReactiveFormsModule,
         RouterTestingModule,
-        HttpClientTestingModule,
-        CookieModule.forRoot()
+        HttpClientTestingModule
       ]
     })
     .compileComponents();

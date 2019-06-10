@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001/api',
+  signalrUrl: 'https://localhost:5001/signalr',
   reCaptchaSiteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 };
 

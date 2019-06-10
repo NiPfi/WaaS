@@ -10,6 +10,6 @@ namespace WaaS.Business.Dtos
     public int HttpResponseCode { get; set; }
     public long HttpResponseTimeInMs { get; set; }
     public string Message { get; set; }
-    public DateTime TimeStamp { get; set; }
+    public string TimeStamp { get; set; }
   }
 }

@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPipe } from 'ng-mocks';
 import { AlertModule, ModalModule } from 'ngx-bootstrap';
-import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
@@ -26,7 +25,6 @@ describe('EditProfileComponent', () => {
         RouterTestingModule,
         NgxSpinnerModule,
         ModalModule.forRoot(),
-        CookieModule.forRoot(),
         AlertModule
       ]
     })

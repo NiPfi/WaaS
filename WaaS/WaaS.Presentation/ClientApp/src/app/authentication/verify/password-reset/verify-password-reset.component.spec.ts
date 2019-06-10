@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPipe } from 'ng-mocks';
 import { AlertModule } from 'ngx-bootstrap';
-import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
@@ -25,8 +24,7 @@ describe('VerifyPasswordResetComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         HttpClientTestingModule,
-        NgxSpinnerModule,
-        CookieModule.forRoot()
+        NgxSpinnerModule
       ]
     })
     .compileComponents();

@@ -8,7 +8,6 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { CookieModule } from 'ngx-cookie';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 
@@ -36,6 +35,7 @@ import { PasswordResetComponent } from './authentication/password-reset/password
 import { VerifyPasswordResetComponent } from './authentication/verify/password-reset/verify-password-reset.component';
 import { EditJobComponent } from './overview/edit-job/edit-job.component';
 import { JobEventsComponent } from './overview/job-events/job-events.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -70,7 +70,7 @@ import { JobEventsComponent } from './overview/job-events/job-events.component';
     AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
-    CookieModule.forRoot()
+    PaginationModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

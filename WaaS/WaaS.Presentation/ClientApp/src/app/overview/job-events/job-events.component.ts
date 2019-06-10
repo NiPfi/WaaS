@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { BsModalRef, BsModalService, PageChangedEvent } from 'ngx-bootstrap';
 import { ScrapeJob } from '../scrape-job';
 import { OverviewService } from '../overview-service/overview.service';
 import { ScrapeJobEvent } from '../scrape-job-event';
@@ -24,6 +24,8 @@ export class JobEventsComponent implements OnInit {
 
   scrapeJob : ScrapeJob;
   scrapeJobEvents: ScrapeJobEvent[];
+  currentPageScrapeJobEvents: ScrapeJobEvent[];
+  eventsPerPage = 5;
 
   constructor(
     private readonly modalService: BsModalService,
@@ -35,27 +37,24 @@ export class JobEventsComponent implements OnInit {
 
   openJobEventsModal(job: ScrapeJob){
     this.scrapeJob = job;
-    //this.loadJobEvents();
-    this.loadTestEvents();
-
+    this.loadJobEvents(job.id);
     this.jobEventsModalRef = this.modalService.show(this.jobEventsModalTemplateRef, this.modalConfig);
+    this.jobEventsModalRef.setClass("modal-lg");
   }
 
-  loadJobEvents() {
-    this.jobService.getScrapeJobEvents().subscribe(
+  loadJobEvents(scrapeJobId: number) {
+    this.jobService.getScrapeJobEvents(scrapeJobId).subscribe(
       events => {
         this.scrapeJobEvents = events;
+        this.currentPageScrapeJobEvents = this.scrapeJobEvents.slice(0, this.eventsPerPage);
       }
     );
   }
 
-  loadTestEvents(){
-    this.scrapeJobEvents = [
-      { id: 0, HttpResponseCode: 200, HttpResponseTimeInMs: 200, Message: "testasdf", TimeStamp: "11-12-2019" },
-      { id: 1, HttpResponseCode: 404, HttpResponseTimeInMs: 200, Message: "asdfadsf", TimeStamp: "12-12-2019" },
-      { id: 2, HttpResponseCode: 200, HttpResponseTimeInMs: 200, Message: "hzzjd", TimeStamp: "13-12-2019" },
-      { id: 3, HttpResponseCode: 200, HttpResponseTimeInMs: 200, Message: "vbcxb", TimeStamp: "14-12-2019" }
-    ];
+  pageChanged(event: PageChangedEvent): void {
+    const startItem = (event.page - 1) * this.eventsPerPage;
+    const endItem = event.page * this.eventsPerPage;
+    this.currentPageScrapeJobEvents = this.scrapeJobEvents.slice(startItem, endItem);
   }
 
   onErrorAlertClosed() {

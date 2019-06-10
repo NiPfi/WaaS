@@ -25,8 +25,9 @@ export class OverviewService{
       .pipe(map((response: ScrapeJob[]) => response));
   }
 
-  getScrapeJobEvents(): Observable<ScrapeJobEvent[]> {
-    return this.http.get(`${environment.apiUrl}/scrapejobevent`)
+  getScrapeJobEvents(scrapeJobId: number): Observable<ScrapeJobEvent[]> {
+    const params = new HttpParams().set('scrapeJobId', `${scrapeJobId}`);
+    return this.http.get(`${environment.apiUrl}/scrapejobevent`, {params})
       .pipe(catchError(this.handler.handleError))
       .pipe(map((response: ScrapeJobEvent[]) => response));
   }

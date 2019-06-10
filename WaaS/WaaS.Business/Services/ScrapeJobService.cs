@@ -1,11 +1,14 @@
 using System;
+using System.Collections;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using WaaS.Business.Dtos;
+using WaaS.Business.Dtos.ScrapeJob;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
@@ -22,13 +25,16 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobDomainService _scrapeJobDomainService;
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IServiceProvider _services;
+    private readonly IEmailService _emailService;
 
     public ScrapeJobService
       (
       IMapper mapper,
       UserManager<IdentityUser> userManager,
       IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService,
-      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork)
+      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork, IServiceProvider services,
+      IEmailService emailService)
     {
       _mapper = mapper;
       _userManager = userManager;
@@ -36,6 +42,8 @@ namespace WaaS.Business.Services
       _scrapeJobEventDomainService = scrapeJobEventDomainService;
       _scrapeJobDomainService = scrapeJobDomainService;
       _unitOfWork = unitOfWork;
+      _services = services;
+      _emailService = emailService;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -59,7 +67,7 @@ namespace WaaS.Business.Services
 
         if (success)
         {
-          ExecuteScrapeJob(entity);
+          await ExecuteScrapeJobAsync(entity);
           return _mapper.Map<ScrapeJobDto>(entity);
         }
 
@@ -69,30 +77,31 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<bool> Delete(long id, ClaimsPrincipal principal)
+    public async Task<bool> Delete(long userSpecificId, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(id, idUser.Id))
+      var scrapeJob = GetScrapeJobByUserSpecificId(userSpecificId, idUser.Id);
+
+      if (scrapeJob != null)
       {
-        await _scrapeJobDomainService.DeleteAsync(id);
+        await _scrapeJobDomainService.DeleteAsync(scrapeJob.Id);
         return await _unitOfWork.CommitAsync();
       }
-
-      return false;
+      else
+      {
+        return false;
+      }
 
     }
 
-    public async Task<ScrapeJobDto> ReadUserScrapeJob(long id, ClaimsPrincipal principal)
+    public async Task<ScrapeJob> ReadUserScrapeJob(long userSpecificId, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(id, idUser.Id))
-      {
-        var entity = await _scrapeJobDomainService.GetAsync(id);
+      var scrapeJob = GetScrapeJobByUserSpecificId(userSpecificId, idUser.Id);
 
-        if (entity != null)
-        {
-          return _mapper.Map<ScrapeJobDto>(entity);
-        }
+      if (scrapeJob != null)
+      {
+        return scrapeJob;
       }
 
       return null;
@@ -113,32 +122,16 @@ namespace WaaS.Business.Services
       return Enumerable.Empty<ScrapeJobDto>();
 
     }
+    
 
-    public async Task<ScrapeJobDto> ToggleEnabled(long id, ClaimsPrincipal principal)
+    public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJobDto, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(id, idUser.Id))
+      var scrapeJob = GetScrapeJobByUserSpecificId(scrapeJobDto.Id, idUser.Id);
+
+      if (scrapeJob != null)
       {
-        await _scrapeJobDomainService.UpdateAsync(id, e => e.Enabled = !e.Enabled);
-        var success = await _unitOfWork.CommitAsync();
-
-        if (success)
-        {
-          var updatedEntity = await _scrapeJobDomainService.GetAsync(id);
-          return _mapper.Map<ScrapeJobDto>(updatedEntity);
-        }
-      }
-
-      return null;
-
-    }
-
-    public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
-    {
-      var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(scrapeJob.Id, idUser.Id))
-      {
-        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJob, e));
+        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJobDto, e));
         var success = await _unitOfWork.CommitAsync();
 
         if (success)
@@ -180,23 +173,57 @@ namespace WaaS.Business.Services
       }
       catch (UriFormatException ex)
       {
-        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, job => job.Enabled = false);
-
         result.Type = ScrapeJobEventType.Error;
         result.Message = ex.Message;
         result.Url = scrapeJob.Url;
         result.TimeStamp = DateTime.UtcNow;
       }
       result.ScrapeJobForeignKey = scrapeJob.Id;
+      result.ScrapeJob = scrapeJob;
+
+      if (result.Type.Equals(ScrapeJobEventType.Match))
+      {
+        await SendScrapeSuccessEmail(result);
+      }
 
       await _scrapeJobEventDomainService.AddAsync(result);
       return await _unitOfWork.CommitAsync();
 
     }
 
-    public void ExecuteScrapeJob(ScrapeJob scrapeJob)
+    private async Task SendScrapeSuccessEmail(ScrapeJobEvent result)
     {
-      Task.Factory.StartNew(() => ExecuteScrapeJobAsync(scrapeJob));
+      var email = string.IsNullOrEmpty(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : result.ScrapeJob.IdentityUser.Email;
+
+      await _emailService.SendScrapeSuccessAsync(email, result);
     }
+
+    public async Task<IEnumerable<ScrapeJobStatusDto>> ReadUsersScrapeJobsStatusAsync(ClaimsPrincipal principal)
+    {
+      var idUser = await _userManager.GetUserAsync(principal);
+      var jobs = _scrapeJobDomainService.ReadUsersEnabledScrapeJobs(idUser.Id);
+      List<ScrapeJobStatusDto> resultList = new List<ScrapeJobStatusDto>();
+      foreach (ScrapeJob scrapeJob in jobs)
+      {
+        var scrapeJobEvent = _scrapeJobEventDomainService.ReadLatestScrapeJobEventOfScrapeJob(scrapeJob.Id);
+        if (scrapeJobEvent != null)
+        {
+          var statusDto = new ScrapeJobStatusDto
+          {
+            ScrapeJobId = scrapeJob.UserSpecificId,
+            StatusCode = scrapeJobEvent.Type
+          };
+          resultList.Add(statusDto);
+        }
+      }
+
+      return resultList;
+    }
+
+    private ScrapeJob GetScrapeJobByUserSpecificId(long userSpecificId, string userId)
+    {
+      return _scrapeJobDomainService.GetAll().Where(j => j.UserSpecificId == userSpecificId && j.IdentityUserForeignKey == userId).FirstOrDefault();
+    }
+
   }
 }

@@ -18,7 +18,12 @@ namespace WaaS.Infrastructure.DomainServices
       return GetAll().Where(x => x.IdentityUser.Id.Equals(userId, StringComparison.InvariantCulture));
     }
 
-    public IEnumerable<ScrapeJob> GetEnabledScrapeJobs()
+    public IQueryable<ScrapeJob> ReadUsersEnabledScrapeJobs(string userId)
+    {
+      return GetAll().Where(x => x.IdentityUser.Id.Equals(userId, StringComparison.InvariantCulture) && x.Enabled);
+    }
+
+    public IEnumerable<ScrapeJob> ReadAllEnabledScrapeJobs()
     {
       return GetAll().Where(p => p.Enabled).AsEnumerable();
     }

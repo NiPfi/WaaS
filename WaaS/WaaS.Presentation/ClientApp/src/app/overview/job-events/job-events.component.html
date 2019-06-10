@@ -31,7 +31,7 @@
 <ng-template #jobEventsTable>
   <div class="row">
 
-      <table class="table table-striped col-sm-12">
+      <table class="table col-sm-12">
         <thead>
           <th>TimeStamp</th>
           <th>Http Response</th>
@@ -39,22 +39,24 @@
           <th>Message</th>
         </thead>
         <tbody>
-          <tr *ngFor="let scrapeJobEvent of scrapeJobEvents;">
+          <tr *ngFor="let scrapeJobEvent of currentPageScrapeJobEvents;" class="{{scrapeJobEvent.httpResponseCode==200 ? 'tableRowColorOK' : 'tableRowColorNotOK'}}">
             <td>
-              {{scrapeJobEvent.TimeStamp}}
+              {{scrapeJobEvent.timeStamp}}
             </td>
             <td>
-              {{scrapeJobEvent.HttpResponseCode}}
+              {{scrapeJobEvent.httpResponseCode}}
             </td>
             <td>
-              {{scrapeJobEvent.HttpResponseTimeInMs}}
+              {{scrapeJobEvent.httpResponseTimeInMs}}
             </td>
             <td>
-              {{scrapeJobEvent.Message}}
+              {{scrapeJobEvent.message}}
             </td>
           </tr>
         </tbody>
       </table>
+
+      <pagination [totalItems]="scrapeJobEvents.length" (pageChanged)="pageChanged($event)"></pagination>
 
   </div>
 </ng-template>

@@ -8,6 +8,7 @@ namespace WaaS.Business.Interfaces.Services.Domain
 {
   public interface IScrapeJobEventDomainService: IBaseDomainService<ScrapeJobEvent, long>
   {
-    IEnumerable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(int scrapeJobId);
+    IEnumerable<ScrapeJobEvent> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId);
+    ScrapeJobEvent ReadLatestScrapeJobEventOfScrapeJob(long scrapeJobId);
   }
 }

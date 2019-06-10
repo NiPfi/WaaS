@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPipe } from 'ng-mocks';
 import { AlertModule } from 'ngx-bootstrap';
-import { CookieModule } from 'ngx-cookie';
 import { ConvertNewLinePipe } from 'src/app/pipes/new-line-pipe/convert-new-line.pipe';
 
 import { VerifyMailChangeComponent } from './verify-mail-change.component';
@@ -18,8 +17,7 @@ describe('VerifyMailChangeComponent', () => {
       imports: [
         AlertModule,
         HttpClientTestingModule,
-        RouterTestingModule,
-        CookieModule.forRoot()
+        RouterTestingModule
       ],
       declarations: [
         VerifyMailChangeComponent,

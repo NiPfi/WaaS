@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using WaaS.Business.Entities;
 using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Business.Services
@@ -66,6 +67,17 @@ namespace WaaS.Business.Services
       string emailVerificationBody = "A password reset was requested.<br /> <br />" +
                                      $"<a href=\"{url}\">Set new password</a>";
       return _emailSender.SendEmailAsync(email, emailVerificationSubject, emailVerificationBody);
+    }
+
+    public Task SendScrapeSuccessAsync(string email, ScrapeJobEvent scrapeJobEvent)
+    {
+
+      const string emailSubject = "ScrapeJob Matched Successfully!";
+
+      string emailBody = $"The pattern \"{scrapeJobEvent.ScrapeJob.Pattern}\" was found on website: <a href=\"{scrapeJobEvent.ScrapeJob.Url}\">\"{scrapeJobEvent.ScrapeJob.Url}\"</a>";
+
+      return _emailSender.SendEmailAsync(email, emailSubject, emailBody);
+
     }
   }
 }
