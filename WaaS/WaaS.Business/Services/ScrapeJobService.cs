@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using WaaS.Business.Dtos;
 using WaaS.Business.Dtos.ScrapeJob;
 using WaaS.Business.Entities;
@@ -24,13 +25,14 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobDomainService _scrapeJobDomainService;
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IServiceProvider _services;
 
     public ScrapeJobService
       (
       IMapper mapper,
       UserManager<IdentityUser> userManager,
       IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService,
-      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork)
+      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork, IServiceProvider services)
     {
       _mapper = mapper;
       _userManager = userManager;
@@ -38,6 +40,7 @@ namespace WaaS.Business.Services
       _scrapeJobEventDomainService = scrapeJobEventDomainService;
       _scrapeJobDomainService = scrapeJobDomainService;
       _unitOfWork = unitOfWork;
+      _services = services;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -61,7 +64,7 @@ namespace WaaS.Business.Services
 
         if (success)
         {
-          ExecuteScrapeJob(entity);
+          await ExecuteScrapeJobAsync(entity);
           return _mapper.Map<ScrapeJobDto>(entity);
         }
 
@@ -182,8 +185,6 @@ namespace WaaS.Business.Services
       }
       catch (UriFormatException ex)
       {
-        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, job => job.Enabled = false); //TODO Resolve bug when context already disposed bc of async
-
         result.Type = ScrapeJobEventType.Error;
         result.Message = ex.Message;
         result.Url = scrapeJob.Url;
@@ -194,11 +195,6 @@ namespace WaaS.Business.Services
       await _scrapeJobEventDomainService.AddAsync(result);
       return await _unitOfWork.CommitAsync();
 
-    }
-
-    public void ExecuteScrapeJob(ScrapeJob scrapeJob)
-    {
-      Task.Factory.StartNew(() => ExecuteScrapeJobAsync(scrapeJob));
     }
 
     public async Task<IEnumerable<ScrapeJobStatusDto>> ReadUsersScrapeJobsStatusAsync(ClaimsPrincipal principal)
