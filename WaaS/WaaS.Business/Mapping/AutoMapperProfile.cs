@@ -18,12 +18,15 @@ namespace WaaS.Business.Mapping
       CreateMap<IdentityUser, UserDto>()
         .ForMember(destination => destination.Password, options => options.Ignore());
 
-      CreateMap<ScrapeJobDto, ScrapeJob>().ForMember(destination => destination.UserSpecificId, options => options.MapFrom(dto => dto.Id));
-      CreateMap<ScrapeJob, ScrapeJobDto>().ForMember(destination => destination.Id, options => options.MapFrom(sj => sj.UserSpecificId));
+      CreateMap<ScrapeJobDto, ScrapeJob>()
+        .ForMember(destination => destination.UserSpecificId, options => options.MapFrom(dto => dto.Id))
+        .ForMember(destination => destination.Id, options => options.Ignore());
+      CreateMap<ScrapeJob, ScrapeJobDto>()
+        .ForMember(destination => destination.Id, options => options.MapFrom(sj => sj.UserSpecificId));
 
       CreateMap<ScrapeJobEventDto, ScrapeJobEvent>();
       CreateMap<ScrapeJobEvent, ScrapeJobEventDto>()
-        .ForMember(x => x.TimeStamp, o => o.MapFrom(s => s.TimeStamp.ToString("yyyy-MM-dd HH:mm")));
+        .ForMember(destination => destination.TimeStamp, options => options.MapFrom(dto => dto.TimeStamp.ToString("yyyy-MM-dd HH:mm")));
 
     }
   }

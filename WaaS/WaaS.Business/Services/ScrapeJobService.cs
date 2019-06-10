@@ -74,30 +74,31 @@ namespace WaaS.Business.Services
 
     }
 
-    public async Task<bool> Delete(long id, ClaimsPrincipal principal)
+    public async Task<bool> Delete(long userSpecificId, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(id, idUser.Id))
+      var scrapeJob = GetScrapeJobByUserSpecificId(userSpecificId, idUser.Id);
+
+      if (scrapeJob != null)
       {
-        await _scrapeJobDomainService.DeleteAsync(id);
+        await _scrapeJobDomainService.DeleteAsync(scrapeJob.Id);
         return await _unitOfWork.CommitAsync();
       }
-
-      return false;
+      else
+      {
+        return false;
+      }
 
     }
 
-    public async Task<ScrapeJobDto> ReadUserScrapeJob(long id, ClaimsPrincipal principal)
+    public async Task<ScrapeJob> ReadUserScrapeJob(long userSpecificId, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(id, idUser.Id))
-      {
-        var entity = await _scrapeJobDomainService.GetAsync(id);
+      var scrapeJob = GetScrapeJobByUserSpecificId(userSpecificId, idUser.Id);
 
-        if (entity != null)
-        {
-          return _mapper.Map<ScrapeJobDto>(entity);
-        }
+      if (scrapeJob != null)
+      {
+        return scrapeJob;
       }
 
       return null;
@@ -118,32 +119,16 @@ namespace WaaS.Business.Services
       return Enumerable.Empty<ScrapeJobDto>();
 
     }
+    
 
-    public async Task<ScrapeJobDto> ToggleEnabled(long id, ClaimsPrincipal principal)
+    public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJobDto, ClaimsPrincipal principal)
     {
       var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(id, idUser.Id))
+      var scrapeJob = GetScrapeJobByUserSpecificId(scrapeJobDto.Id, idUser.Id);
+
+      if (scrapeJob != null)
       {
-        await _scrapeJobDomainService.UpdateAsync(id, e => e.Enabled = !e.Enabled);
-        var success = await _unitOfWork.CommitAsync();
-
-        if (success)
-        {
-          var updatedEntity = await _scrapeJobDomainService.GetAsync(id);
-          return _mapper.Map<ScrapeJobDto>(updatedEntity);
-        }
-      }
-
-      return null;
-
-    }
-
-    public async Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
-    {
-      var idUser = await _userManager.GetUserAsync(principal);
-      if (await ScrapeJobIsOfUser(scrapeJob.Id, idUser.Id))
-      {
-        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJob, e));
+        await _scrapeJobDomainService.UpdateAsync(scrapeJob.Id, e => _mapper.Map(scrapeJobDto, e));
         var success = await _unitOfWork.CommitAsync();
 
         if (success)
@@ -217,6 +202,11 @@ namespace WaaS.Business.Services
       }
 
       return resultList;
+    }
+
+    private ScrapeJob GetScrapeJobByUserSpecificId(long userSpecificId, string userId)
+    {
+      return _scrapeJobDomainService.GetAll().Where(j => j.UserSpecificId == userSpecificId && j.IdentityUserForeignKey == userId).FirstOrDefault();
     }
 
   }

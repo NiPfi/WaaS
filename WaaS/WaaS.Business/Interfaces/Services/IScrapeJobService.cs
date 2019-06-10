@@ -14,10 +14,9 @@ namespace WaaS.Business.Interfaces.Services
   {
     Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal);
     Task<IEnumerable<ScrapeJobDto>> ReadAllUserScrapeJobs(ClaimsPrincipal principal);
-    Task<ScrapeJobDto> ReadUserScrapeJob(long id, ClaimsPrincipal principal);
+    Task<ScrapeJob> ReadUserScrapeJob(long id, ClaimsPrincipal principal);
     Task<ScrapeJobDto> Update(ScrapeJobDto scrapeJob, ClaimsPrincipal principal);
     Task<bool> Delete(long id, ClaimsPrincipal principal);
-    Task<ScrapeJobDto> ToggleEnabled(long id, ClaimsPrincipal principal);
     Task<bool> ScrapeJobIsOfUser(long scrapeJobId, string userId);
 
     /// <summary>

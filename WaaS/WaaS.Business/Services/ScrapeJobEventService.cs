@@ -84,10 +84,10 @@ namespace WaaS.Business.Services
       return null;
     }
 
-    public async Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(long scrapeJobId, ClaimsPrincipal principal)
+    public async Task<IEnumerable<ScrapeJobEventDto>> ReadScrapeJobEventsOfScrapeJob(long userSpecificId, ClaimsPrincipal principal)
     {
 
-      var scrapeJob = await _scrapeJobService.ReadUserScrapeJob(scrapeJobId, principal);
+      var scrapeJob = await _scrapeJobService.ReadUserScrapeJob(userSpecificId, principal);
 
       if(scrapeJob != null)
       {
