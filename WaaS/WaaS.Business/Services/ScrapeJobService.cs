@@ -193,7 +193,7 @@ namespace WaaS.Business.Services
 
     private async Task SendScrapeSuccessEmail(ScrapeJobEvent result)
     {
-      var email = string.IsNullOrEmpty(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : result.ScrapeJob.IdentityUser.Email;
+      var email = string.IsNullOrWhiteSpace(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : result.ScrapeJob.IdentityUser.Email;
 
       await _emailService.SendScrapeSuccessAsync(email, result);
     }
