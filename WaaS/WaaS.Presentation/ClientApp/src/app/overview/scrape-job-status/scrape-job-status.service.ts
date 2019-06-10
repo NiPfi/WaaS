@@ -27,7 +27,7 @@ export class ScrapeJobStatusService {
       `${environment.signalrUrl}/scrapejob/status`,
       { accessTokenFactory: () => this.authService.getUserToken() }
     )
-    .configureLogging(signalR.LogLevel.Trace)
+    .configureLogging(signalR.LogLevel.Error)
     .build();
 
     this.connection.serverTimeoutInMilliseconds = 1000 * 60;

@@ -1,5 +1,3 @@
-import { ScrapeJobStatusCode } from './scrape-job-status/scrape-job-status-code';
-
 export class ScrapeJob {
   id: number;
   name: string;
@@ -7,5 +5,4 @@ export class ScrapeJob {
   pattern: string;
   enabled: boolean;
   alternativeEmail: string;
-  status: ScrapeJobStatusCode;
 }

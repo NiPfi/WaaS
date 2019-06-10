@@ -7,6 +7,7 @@ import { EditJobComponent } from './edit-job/edit-job.component';
 import { JobEventsComponent } from './job-events/job-events.component';
 import { OverviewService } from './overview-service/overview.service';
 import { ScrapeJob } from './scrape-job';
+import { ScrapeJobStatusCode } from './scrape-job-status/scrape-job-status-code';
 import { ScrapeJobStatusService } from './scrape-job-status/scrape-job-status.service';
 
 @Component({
@@ -36,7 +37,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   successMessage = '';
   errorMessage = '';
 
-  public jobs: ScrapeJob[] = [];
+  public jobs: ScrapeJob[];
+  public jobStatuses = new Map<number, number>();
 
   public currentJobIndex: number;
 
@@ -50,17 +52,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.loadJobs();
     this.statusService.startConnection();
     this.statusService.status.subscribe(statuses => {
-      console.log(statuses);
-      console.log(this.jobs);
-      this.jobs.forEach(job => {
-        const status = statuses.find(x => x.scrapeJobId === job.id);
+      this.jobStatuses.clear();
+      statuses.forEach(status => {
         console.log(status);
-        if (status && status.status) {
-          job.status = status.status;
-        } else {
-          job.status = -1;
-        }
+        this.jobStatuses.set(status.scrapeJobId, status.statusCode);
       });
+      console.log(this.jobStatuses);
     });
   }
 
@@ -151,6 +148,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
     hostname = hostname.split('?')[0];
 
     return hostname;
+  }
+
+  hasOkStatus(jobId: number) {
+    return (this.jobStatuses.get(jobId) === ScrapeJobStatusCode.Match || this.jobStatuses.get(jobId) === ScrapeJobStatusCode.NoMatch);
+  }
+
+  hasErrorStatus(jobId: number) {
+    return this.jobStatuses.get(jobId) === ScrapeJobStatusCode.Error;
   }
 
 }

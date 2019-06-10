@@ -46,8 +46,7 @@
         </div>
         <div class="flex-grow-1 card-text">
             <div class="d-flex justify-content-end job-status">
-              <fa-icon [icon]="faCircle" size="xs"></fa-icon>
-              {{ job.status }}
+              <fa-icon [icon]="faCircle" size="xs" [ngClass]="{'ok': hasOkStatus(job.id), 'error': hasErrorStatus(job.id)}"></fa-icon>
             </div>
             <h2>{{job.name}}</h2>
             <p class="small text-muted">{{job.url}}</p>
