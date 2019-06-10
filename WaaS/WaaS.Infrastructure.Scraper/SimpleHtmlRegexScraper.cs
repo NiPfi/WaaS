@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Crc32C;
+using Force.Crc32;
 using WaaS.Business.Entities;
 using WaaS.Business.Interfaces.Services;
 
