@@ -21,7 +21,8 @@ namespace WaaS.Business.Mapping
       CreateMap<ScrapeJob, ScrapeJobDto>();
 
       CreateMap<ScrapeJobEventDto, ScrapeJobEvent>();
-      CreateMap<ScrapeJobEvent, ScrapeJobEventDto>();
+      CreateMap<ScrapeJobEvent, ScrapeJobEventDto>()
+        .ForMember(x => x.TimeStamp, o => o.MapFrom(s => s.TimeStamp.ToString("yyyy-MM-dd HH:mm")));
 
     }
   }
