@@ -18,8 +18,8 @@ namespace WaaS.Business.Mapping
       CreateMap<IdentityUser, UserDto>()
         .ForMember(destination => destination.Password, options => options.Ignore());
 
-      CreateMap<ScrapeJobDto, ScrapeJob>();
-      CreateMap<ScrapeJob, ScrapeJobDto>();
+      CreateMap<ScrapeJobDto, ScrapeJob>().ForMember(destination => destination.UserSpecificId, options => options.MapFrom(dto => dto.Id));
+      CreateMap<ScrapeJob, ScrapeJobDto>().ForMember(destination => destination.Id, options => options.MapFrom(sj => sj.UserSpecificId));
 
       CreateMap<ScrapeJobEventDto, ScrapeJobEvent>();
       CreateMap<ScrapeJobEvent, ScrapeJobEventDto>()

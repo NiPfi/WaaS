@@ -35,14 +35,12 @@ export class ScrapeJobStatusService {
 
   public startConnection(): void {
     this.connection.start();
-    this.connection.on('statusUpdate', this.handleStatusUpdate);
+    this.connection.on('statusUpdate', (status: ScrapeJobStatus[]) => {
+      this.statusSource.next(status);
+    });
   }
 
   public closeConnection(): void {
     this.connection.stop();
-  }
-
-  private handleStatusUpdate(status: ScrapeJobStatus[]) {
-    this.statusSource.next(status);
   }
 }

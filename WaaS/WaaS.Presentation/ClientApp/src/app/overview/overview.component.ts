@@ -36,7 +36,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   successMessage = '';
   errorMessage = '';
 
-  public jobs: ScrapeJob[];
+  public jobs: ScrapeJob[] = [];
 
   public currentJobIndex: number;
 
@@ -50,10 +50,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.loadJobs();
     this.statusService.startConnection();
     this.statusService.status.subscribe(statuses => {
+      console.log(statuses);
+      console.log(this.jobs);
       this.jobs.forEach(job => {
-        const status = statuses.find(x => x.scrapeJobId = job.id).status;
-        if (status) {
-          job.status = status;
+        const status = statuses.find(x => x.scrapeJobId === job.id);
+        console.log(status);
+        if (status && status.status) {
+          job.status = status.status;
         } else {
           job.status = -1;
         }
