@@ -54,10 +54,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.statusService.status.subscribe(statuses => {
       this.jobStatuses.clear();
       statuses.forEach(status => {
-        console.log(status);
         this.jobStatuses.set(status.scrapeJobId, status.statusCode);
       });
-      console.log(this.jobStatuses);
     });
   }
 

@@ -22,7 +22,7 @@ namespace WaaS.Presentation.Hubs
     public override async Task OnConnectedAsync()
     {
       var statusDto = await _scrapeJobService.ReadUsersScrapeJobsStatusAsync(Context.User);
-      await Clients.Caller.SendAsync("statusUpdate", statusDto);
+      await Clients.Caller.SendAsync("statusInitialize", statusDto);
     }
   }
 }
