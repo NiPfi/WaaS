@@ -35,7 +35,7 @@ export class ScrapeJobStatusService {
 
   public startConnection(): void {
     this.connection.start();
-    this.connection.on('statusUpdate', (status: ScrapeJobStatus[]) => {
+    this.connection.on('statusInitialize', (status: ScrapeJobStatus[]) => {
       this.statusSource.next(status);
     });
   }

@@ -7,15 +7,19 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { ConvertNewLinePipe } from '../pipes/new-line-pipe/convert-new-line.pipe';
 import { EditJobComponent } from './edit-job/edit-job.component';
+import { JobEventsComponent } from './job-events/job-events.component';
 import { OverviewComponent } from './overview.component';
 import { ScrapeJobStatusService } from './scrape-job-status/scrape-job-status.service';
-import { JobEventsComponent } from './job-events/job-events.component';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
   const mockStatusService = {
-    startConnection() { }
+    startConnection() { },
+    closeConnection() { },
+    status: {
+      subscribe() {}
+    }
   };
 
   beforeEach(async(() => {
