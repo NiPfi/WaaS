@@ -41,14 +41,24 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public currentJobIndex: number;
 
   constructor(
-    public readonly statusService: ScrapeJobStatusService,
     private readonly modalService: BsModalService,
-    private readonly jobsService: OverviewService
+    private readonly jobsService: OverviewService,
+    public readonly statusService: ScrapeJobStatusService
   ) { }
 
   ngOnInit(): void {
     this.loadJobs();
     this.statusService.startConnection();
+    this.statusService.status.subscribe(statuses => {
+      this.jobs.forEach(job => {
+        const status = statuses.find(x => x.scrapeJobId = job.id).status;
+        if (status) {
+          job.status = status;
+        } else {
+          job.status = -1;
+        }
+      });
+    });
   }
 
   ngOnDestroy(): void {

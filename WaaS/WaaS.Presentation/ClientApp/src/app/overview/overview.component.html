@@ -43,11 +43,11 @@
       <div class="card-body">
         <div class="d-flex align-items-center">
           <img class="favicon" src="https://www.google.com/s2/favicons?domain={{extractHostname(job.url)}}" alt="Favicon of {{job.url}}">
-          
         </div>
         <div class="flex-grow-1 card-text">
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end job-status">
               <fa-icon [icon]="faCircle" size="xs"></fa-icon>
+              {{ job.status }}
             </div>
             <h2>{{job.name}}</h2>
             <p class="small text-muted">{{job.url}}</p>

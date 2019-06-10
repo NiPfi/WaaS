@@ -40,7 +40,17 @@
 }
 
 .cursor-pointer{
-
     cursor: pointer;
+}
 
+.job-status {
+  color: lightgray;
+
+  .ok {
+    color: green;
+  }
+
+  .error {
+    color: red;
+  }
 }
