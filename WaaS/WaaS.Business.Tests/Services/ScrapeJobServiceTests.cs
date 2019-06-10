@@ -31,6 +31,7 @@ namespace WaaS.Business.Tests.Services
       var mockScrapeJobEventDomainService = Substitute.For<IScrapeJobEventDomainService>();
       var mockScraper = Substitute.For<IScraper>();
       var mockUnitOfWork = Substitute.For<IUnitOfWork>();
+      var mockEmailService = Substitute.For<IEmailService>();
 
       ScrapeJobDto testScrapeJobDto = new ScrapeJobDto()
       {
@@ -52,7 +53,8 @@ namespace WaaS.Business.Tests.Services
                                                                 mockScraper,
                                                                 mockScrapeJobEventDomainService,
                                                                 mockScrapeJobDomainService,
-                                                                mockUnitOfWork
+                                                                mockUnitOfWork,
+                                                                mockEmailService
                                                                 );
 
       // Act

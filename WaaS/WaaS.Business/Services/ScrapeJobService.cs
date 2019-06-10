@@ -25,15 +25,15 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobDomainService _scrapeJobDomainService;
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IServiceProvider _services;
     private readonly IEmailService _emailService;
 
-    public ScrapeJobService
-      (
+    public ScrapeJobService(
       IMapper mapper,
       UserManager<IdentityUser> userManager,
-      IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService,
-      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork, IServiceProvider services,
+      IScraper scraper,
+      IScrapeJobEventDomainService scrapeJobEventDomainService,
+      IScrapeJobDomainService scrapeJobDomainService,
+      IUnitOfWork unitOfWork,
       IEmailService emailService)
     {
       _mapper = mapper;
@@ -42,7 +42,6 @@ namespace WaaS.Business.Services
       _scrapeJobEventDomainService = scrapeJobEventDomainService;
       _scrapeJobDomainService = scrapeJobDomainService;
       _unitOfWork = unitOfWork;
-      _services = services;
       _emailService = emailService;
     }
 
