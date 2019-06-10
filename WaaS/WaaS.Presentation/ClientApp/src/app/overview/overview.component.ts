@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { faHistory, faPen, faPlus, faToggleOff, faToggleOn, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faHistory, faPen, faPlus, faToggleOff, faToggleOn, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { first } from 'rxjs/internal/operators/first';
 
@@ -25,12 +25,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
   faToggleOff = faToggleOff;
   faPlus = faPlus;
   faHistory = faHistory;
+  faCircle = faCircle;
 
   deleteModalRef: BsModalRef;
   modalConfig = {
     backdrop: true,
     ignoreBackdropClick: true
-  }
+  };
 
   successMessage = '';
   errorMessage = '';
@@ -40,9 +41,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
   public currentJobIndex: number;
 
   constructor(
+    public readonly statusService: ScrapeJobStatusService,
     private readonly modalService: BsModalService,
-    private readonly jobsService: OverviewService,
-    private readonly statusService: ScrapeJobStatusService
+    private readonly jobsService: OverviewService
   ) { }
 
   ngOnInit(): void {

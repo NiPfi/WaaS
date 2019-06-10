@@ -37,7 +37,7 @@ export class ScrapeJobStatusService {
     this.connection.stop();
   }
 
-  private handleStatusUpdate(status: ScrapeJobStatus) {
-    console.log(status);
+  private handleStatusUpdate(status: ScrapeJobStatus[]) {
+    this.status = status;
   }
 }
