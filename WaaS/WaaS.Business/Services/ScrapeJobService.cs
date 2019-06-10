@@ -26,13 +26,15 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceProvider _services;
+    private readonly IEmailService _emailService;
 
     public ScrapeJobService
       (
       IMapper mapper,
       UserManager<IdentityUser> userManager,
       IScraper scraper, IScrapeJobEventDomainService scrapeJobEventDomainService,
-      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork, IServiceProvider services)
+      IScrapeJobDomainService scrapeJobDomainService, IUnitOfWork unitOfWork, IServiceProvider services,
+      IEmailService emailService)
     {
       _mapper = mapper;
       _userManager = userManager;
@@ -41,6 +43,7 @@ namespace WaaS.Business.Services
       _scrapeJobDomainService = scrapeJobDomainService;
       _unitOfWork = unitOfWork;
       _services = services;
+      _emailService = emailService;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -176,10 +179,23 @@ namespace WaaS.Business.Services
         result.TimeStamp = DateTime.UtcNow;
       }
       result.ScrapeJobForeignKey = scrapeJob.Id;
+      result.ScrapeJob = scrapeJob;
+
+      if (result.Type.Equals(ScrapeJobEventType.Match))
+      {
+        await SendScrapeSuccessEmail(result);
+      }
 
       await _scrapeJobEventDomainService.AddAsync(result);
       return await _unitOfWork.CommitAsync();
 
+    }
+
+    private async Task SendScrapeSuccessEmail(ScrapeJobEvent result)
+    {
+      var email = result.ScrapeJob.AlternativeEmail ?? result.ScrapeJob.IdentityUser.Email;
+
+      await _emailService.SendScrapeSuccessAsync(email, result);
     }
 
     public async Task<IEnumerable<ScrapeJobStatusDto>> ReadUsersScrapeJobsStatusAsync(ClaimsPrincipal principal)

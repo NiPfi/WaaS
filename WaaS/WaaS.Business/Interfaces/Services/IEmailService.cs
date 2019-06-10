@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using WaaS.Business.Entities;
 
 namespace WaaS.Business.Interfaces.Services
 {
@@ -30,5 +31,7 @@ namespace WaaS.Business.Interfaces.Services
     /// <param name="verificationToken">The token to verify the password change request with</param>
     /// <returns></returns>
     Task SendPasswordResetConfirmationAsync(string email, string verificationToken);
+
+    Task SendScrapeSuccessAsync(string email, ScrapeJobEvent scrapeJobEvent);
   }
 }
