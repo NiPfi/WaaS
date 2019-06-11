@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using WaaS.Business.Entities;
+using WaaS.Business.Exceptions.EmailService;
 using WaaS.Business.Interfaces.Services;
 
 namespace WaaS.Business.Services
@@ -76,7 +77,13 @@ namespace WaaS.Business.Services
 
       string emailBody = $"The pattern \"{scrapeJobEvent.ScrapeJob.Pattern}\" was found on website: <a href=\"{scrapeJobEvent.ScrapeJob.Url}\">\"{scrapeJobEvent.ScrapeJob.Url}\"</a>";
 
-      return _emailSender.SendEmailAsync(email, emailSubject, emailBody);
+      try
+      {
+        return _emailSender.SendEmailAsync(email, emailSubject, emailBody);
+      } catch (EmailServiceException)
+      {
+        return Task.CompletedTask;
+      }
 
     }
   }
