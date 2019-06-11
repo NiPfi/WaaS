@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   error = '';
 
-  @ViewChild('captchaRef') reCaptcha: RecaptchaComponent;
+  @ViewChild('captchaRef', { static: true }) reCaptcha: RecaptchaComponent;
 
   constructor(
     private readonly formBuilder: FormBuilder,

@@ -11,7 +11,7 @@ import { ScrapeJobEvent } from '../scrape-job-event';
 })
 export class JobEventsComponent implements OnInit {
 
-  @ViewChild('jobEventsModal') jobEventsModalTemplateRef: TemplateRef<any>;
+  @ViewChild('jobEventsModal', { static: true }) jobEventsModalTemplateRef: TemplateRef<any>;
 
   jobEventsModalRef: BsModalRef;
 

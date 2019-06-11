@@ -17,7 +17,7 @@ export class EditJobComponent implements OnInit {
 
   @Output() jobEdited = new EventEmitter();
 
-  @ViewChild('editScrapeJobModal') editScrapeJobModalTemplateRef: TemplateRef<any>;
+  @ViewChild('editScrapeJobModal', { static: true }) editScrapeJobModalTemplateRef: TemplateRef<any>;
 
   editScrapeJobForm: FormGroup;
   editScrapeJobModalRef: BsModalRef;

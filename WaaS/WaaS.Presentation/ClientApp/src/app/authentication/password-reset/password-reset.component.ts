@@ -14,7 +14,7 @@ import { VerificationService } from '../verify/verification-service/verification
 export class PasswordResetComponent implements OnInit {
   resetPasswordForm: FormGroup;
 
-  @ViewChild('captchaRef') reCaptcha: RecaptchaComponent;
+  @ViewChild('captchaRef', { static: true }) reCaptcha: RecaptchaComponent;
 
   constructor(
     private readonly formBuilder: FormBuilder,

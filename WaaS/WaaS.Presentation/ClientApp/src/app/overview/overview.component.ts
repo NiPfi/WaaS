@@ -17,8 +17,8 @@ import { ScrapeJobStatusService } from './scrape-job-status/scrape-job-status.se
 })
 export class OverviewComponent implements OnInit, OnDestroy {
 
-  @ViewChild(EditJobComponent) editJobComponent: EditJobComponent;
-  @ViewChild(JobEventsComponent) jobEventsComponent: JobEventsComponent;
+  @ViewChild(EditJobComponent, { static: true }) editJobComponent: EditJobComponent;
+  @ViewChild(JobEventsComponent, { static: true }) jobEventsComponent: JobEventsComponent;
 
   faPen = faPen;
   faTrashAlt = faTrashAlt;
