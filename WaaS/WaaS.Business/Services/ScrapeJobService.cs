@@ -185,13 +185,16 @@ namespace WaaS.Business.Services
       result.ScrapeJobForeignKey = scrapeJob.Id;
       result.ScrapeJob = scrapeJob;
 
+      await _scrapeJobEventDomainService.AddAsync(result);
+      var resultStatus = await _unitOfWork.CommitAsync();
+
       if (result.Type.Equals(ScrapeJobEventType.Match))
       {
         await SendScrapeSuccessEmail(result);
       }
 
-      await _scrapeJobEventDomainService.AddAsync(result);
-      return await _unitOfWork.CommitAsync();
+      return resultStatus;
+
 
     }
 
@@ -203,8 +206,7 @@ namespace WaaS.Business.Services
         await _emailService.SendScrapeSuccessAsync(email, result);
       } catch (EmailServiceException e)
       {
-        _logger.LogError(e.Message);
-        _logger.LogError(e.StackTrace);
+        _logger.LogError(e.ToString());
       }
     }
 

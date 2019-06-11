@@ -49,6 +49,8 @@ namespace WaaS.Infrastructure.SendGridMail
       Response response = await client.SendEmailAsync(message);
       if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
       {
+        _logger.LogError("Email Service response status was: " + response.StatusCode);
+        _logger.LogError(response.ToString());
         throw new EmailServiceException($"The response of the SendGrid Service was: {response.StatusCode}");
       }
 
