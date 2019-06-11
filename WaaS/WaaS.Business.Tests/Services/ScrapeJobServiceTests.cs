@@ -14,6 +14,7 @@ using WaaS.Business.Interfaces.Services.Domain;
 using WaaS.Business.Services;
 using WaaS.Business.Tests.Mocks;
 using Xunit;
+using Microsoft.Extensions.Logging;
 
 namespace WaaS.Business.Tests.Services
 {
@@ -33,6 +34,7 @@ namespace WaaS.Business.Tests.Services
       var mockScraper = Substitute.For<IScraper>();
       var mockUnitOfWork = Substitute.For<IUnitOfWork>();
       var mockEmailService = Substitute.For<IEmailService>();
+      var mockLogger = Substitute.For<ILogger<ScrapeJobService>>();
 
       const string testUrl = "http://www.url.trololo";
       const string testPattern = "hello world";
@@ -70,7 +72,8 @@ namespace WaaS.Business.Tests.Services
                                                                 mockScrapeJobEventDomainService,
                                                                 mockScrapeJobDomainService,
                                                                 mockUnitOfWork,
-                                                                mockEmailService
+                                                                mockEmailService,
+                                                                mockLogger
                                                                 );
 
       // Act
