@@ -182,7 +182,6 @@ namespace WaaS.Business.Services
         result.Url = scrapeJob.Url;
         result.TimeStamp = DateTime.UtcNow;
       }
-      result.ScrapeJobForeignKey = scrapeJob.Id;
       result.ScrapeJob = scrapeJob;
 
       await _scrapeJobEventDomainService.AddAsync(result);
@@ -200,7 +199,7 @@ namespace WaaS.Business.Services
 
     private async Task SendScrapeSuccessEmail(ScrapeJobEvent result)
     {
-      var email = string.IsNullOrWhiteSpace(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : result.ScrapeJob.IdentityUser.Email;
+      var email = !string.IsNullOrWhiteSpace(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : result.ScrapeJob.IdentityUser.Email;
       try
       {
         await _emailService.SendScrapeSuccessAsync(email, result);
