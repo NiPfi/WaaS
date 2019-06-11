@@ -182,7 +182,8 @@ namespace WaaS.Business.Services
         result.Url = scrapeJob.Url;
         result.TimeStamp = DateTime.UtcNow;
       }
-      result.ScrapeJob = scrapeJob;
+
+      result.ScrapeJobForeignKey = scrapeJob.Id;
 
       await _scrapeJobEventDomainService.AddAsync(result);
       var resultStatus = await _unitOfWork.CommitAsync();
@@ -199,7 +200,9 @@ namespace WaaS.Business.Services
 
     private async Task SendScrapeSuccessEmail(ScrapeJobEvent result)
     {
-      var email = !string.IsNullOrWhiteSpace(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : result.ScrapeJob.IdentityUser.Email;
+      var scrapeJob = await _scrapeJobDomainService.GetAsync(result.ScrapeJobForeignKey);
+      var user = await _userManager.FindByIdAsync(scrapeJob.IdentityUserForeignKey);
+      var email = !string.IsNullOrWhiteSpace(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : user.Email;
       try
       {
         await _emailService.SendScrapeSuccessAsync(email, result);
@@ -233,7 +236,7 @@ namespace WaaS.Business.Services
 
     private ScrapeJob GetScrapeJobByUserSpecificId(long userSpecificId, string userId)
     {
-      return _scrapeJobDomainService.GetAll().Where(j => j.UserSpecificId == userSpecificId && j.IdentityUserForeignKey == userId).FirstOrDefault();
+      return _scrapeJobDomainService.GetAll().FirstOrDefault(j => j.UserSpecificId == userSpecificId && j.IdentityUserForeignKey == userId);
     }
 
   }
