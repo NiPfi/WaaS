@@ -13,6 +13,8 @@ using WaaS.Business.Entities;
 using WaaS.Business.Interfaces;
 using WaaS.Business.Interfaces.Services;
 using WaaS.Business.Interfaces.Services.Domain;
+using WaaS.Business.Exceptions.EmailService;
+using Microsoft.Extensions.Logging;
 
 namespace WaaS.Business.Services
 {
@@ -26,6 +28,7 @@ namespace WaaS.Business.Services
     private readonly IScrapeJobEventDomainService _scrapeJobEventDomainService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailService _emailService;
+    private readonly ILogger _logger;
 
     public ScrapeJobService(
       IMapper mapper,
@@ -34,7 +37,8 @@ namespace WaaS.Business.Services
       IScrapeJobEventDomainService scrapeJobEventDomainService,
       IScrapeJobDomainService scrapeJobDomainService,
       IUnitOfWork unitOfWork,
-      IEmailService emailService)
+      IEmailService emailService,
+      ILogger<ScrapeJobService> logger)
     {
       _mapper = mapper;
       _userManager = userManager;
@@ -43,6 +47,7 @@ namespace WaaS.Business.Services
       _scrapeJobDomainService = scrapeJobDomainService;
       _unitOfWork = unitOfWork;
       _emailService = emailService;
+      _logger = logger;
     }
 
     public async Task<ScrapeJobDto> Create(ScrapeJobDto scrapeJob, ClaimsPrincipal principal)
@@ -193,8 +198,14 @@ namespace WaaS.Business.Services
     private async Task SendScrapeSuccessEmail(ScrapeJobEvent result)
     {
       var email = string.IsNullOrWhiteSpace(result.ScrapeJob.AlternativeEmail) ? result.ScrapeJob.AlternativeEmail : result.ScrapeJob.IdentityUser.Email;
-
-      await _emailService.SendScrapeSuccessAsync(email, result);
+      try
+      {
+        await _emailService.SendScrapeSuccessAsync(email, result);
+      } catch (EmailServiceException e)
+      {
+        _logger.LogError(e.Message);
+        _logger.LogError(e.StackTrace);
+      }
     }
 
     public async Task<IEnumerable<ScrapeJobStatusDto>> ReadUsersScrapeJobsStatusAsync(ClaimsPrincipal principal)
