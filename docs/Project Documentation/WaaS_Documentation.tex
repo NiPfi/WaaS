@@ -367,7 +367,7 @@ The target group of WaaS are mainly people that are regularly checking websites 
   \item \textbf{Performance}
         \begin{enumerate}
           \item For user interactions, the application should respond 99\% of the requests in 2 seconds.
-          \item The application should score at least 40 points of performance in Google Chromes inbuilt Lighthouse audit up to a number of 500 users.
+          \item The application should score at least 40 points of performance in Google Chromes inbuilt Lighthouse audit up to a number of 500 concurrent users.
         \end{enumerate}
         Those performance related requirements will be evaluated using Performance Testing and Monitoring of the application.
   \item \textbf{Usability}
@@ -379,8 +379,11 @@ The target group of WaaS are mainly people that are regularly checking websites 
   \item \textbf{Other non-functional requirements}
         \begin{enumerate}
           \item The application should be implemented according to best practices and should therefore score 100 points in the best practices section of the Lighthouse audit.
-          \item Due to the use of relational database technology, horizontal scalability is too big of a task to be realized in the given time frame and is therefore outside of the scope of this project.
           \item The application should have a responsive design, so it will be easy to use on a variety of devices with different screen sizes.
+          \item Horizontal scalability is too big of a task to be realized in the given time frame and is therefore outside of the scope of this project. If horizontal scalability were to be achieved, a cloud database service could possibly be used to overcome the issue of relational database scaling. Since EF Core has a DB Provider for Azure Cosmos SQL API in preview, the implementation of it could be more or less of a drop-in replacement. Of course, this solution isn't currently viable for production environments and if another approach is to be used, the application's data access layer would have to be redesigned accordingly.\\
+          Due to the use of SignalR which creates WebSocket based connections to the client application, there might be more issues in regards to those connections and load balancing. Azure provides a SignalR Service which might come in handy for this.\\
+          Those issues are the two most obvious ones which also have a possible solution through cloud services but it is very well possible, that other issues arise in horizontally scaled WaaS environments, which we did not think of at the time of writing this document. 
+          
         \end{enumerate}
 \end{enumerate}
 
@@ -397,7 +400,7 @@ The following diagram depicts principal states and possible user interactions to
 
 The boxes represent states and the arrows the means to transition from one state to another. The boxes with a missing corner represent a modal and the arrows leading up to the modals aren't state transitions since the modals don't
 represent a complete state but a GUI element within their parent state. The modal blocks other interactions until it is dismissed, either through cancelling it or following through on its action. \\
-The user enters the page on "Home" and needs to log in to get to the main state called "Overview". From there, all other interactions to manage Scrapes are possible.
+The user enters the page on "Home" and needs to log in to get to the main state called "Overview". From there, all other interactions to manage Scrapes are possible. In other words, "Overview" acts as a dashboard showing all principal functionality of the application.
 
 \subsubsection{Potential sources of errors}
 The following issues may arise from the navigation.
@@ -414,7 +417,7 @@ It may not be intuitive for some users to click on a card in order to display th
 
 \subsubsection{Automation in Navigation Design}
 
-Once a navigation design was created, it can be useful to analyze it in order to find potential errors and bad design choices. For a small application where the navigation design is not that complex this can easily be achieved by hand. For more complex navigation models this may be difficult to do \cite{mSharonHurleyHall2019}. Therefore a variety of tools can be used to automate this process. One possible choice is Google Analytics. If there already is an existing website or an html prototype google analytics can visualize user flows and direct you to potential problems in the navigational design as described in this article \cite{mAndyCrestodina2018}.
+Once a navigation design was created, it can be useful to analyze it in order to find potential errors and bad design choices. For a small application where the navigation design is not that complex this can easily be achieved by hand. For more complex navigation models this may be difficult to do \cite{mSharonHurleyHall2019}. Therefore a variety of tools can be used to automate this process. One possible choice is Google Analytics. If there already is an existing website or an HTML prototype google analytics can visualize user flows and direct you to potential problems in the navigational design as described in this article \cite{mAndyCrestodina2018}.
 
 Since WaaS is a rather small and simple application we found it unnecessary to do automated analytics of our navigation design.
 
